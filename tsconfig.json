@@ -1,0 +1,10 @@
+{
+  "files": [
+    "*.ts/*.tsx"
+  ],
+  "compilerOptions": {
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
+}
