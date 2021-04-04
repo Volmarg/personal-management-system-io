@@ -4,19 +4,25 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
 
+        {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_link_tags('bootstrap') }}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+
         {% endblock %}
+        {{ encore_entry_link_tags('adminkit') }} {# must always be last#}
 
     </head>
-    <body>
-        <section id="vueApp">
-        </section>
+    {# See: https://demo.adminkit.io/ #}
+    <body data-theme="light">
+        <section id="vueApp"></section>
     </body>
 
     <footer>
+        {{ encore_entry_script_tags('app') }}
+        {{ encore_entry_script_tags('bootstrap') }}
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+
         {% endblock %}
+        {{ encore_entry_script_tags('adminkit') }} {# must always be last#}
     </footer>
 </html>

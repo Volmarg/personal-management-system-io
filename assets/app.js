@@ -12,6 +12,6 @@ var Vue = require('vue');
 
 var router = new Router();
 Vue.createApp(ContainerComponent)
-    .use(Router.getRouter())
+    .use(router.getRouter())
     .use(VueAxios, axios)
     .mount('#vueApp');
