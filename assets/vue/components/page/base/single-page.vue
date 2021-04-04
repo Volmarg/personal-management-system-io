@@ -9,7 +9,9 @@
         </div>
       </div>
 
-      <slot name="pageContent"></slot>
+      <slot name="pageContent">
+        <note-category/>       <!-- todo: remove, this is for testing only, but leave the slot -->
+      </slot>
 
     </div>
   </main>
@@ -17,5 +19,11 @@
 
 <!-- Script -->
 <script type="ts">
-export default {}
+import NoteCategoryPageComponent from "../../../pages/module/notes/category";
+
+export default {
+  components: {
+    "note-category": NoteCategoryPageComponent
+  }
+}
 </script>

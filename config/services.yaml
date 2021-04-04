@@ -31,5 +31,11 @@ services:
         resource: '../src/Action/'
         tags: ['controller.service_arguments']
 
+    App\Controller\Core\Services:
+        public: true
+        calls:
+            - setAttributeReaderService: ['@App\Service\Attribute\AttributeReaderService']
+            - setUrlMatcherService: [ '@App\Service\Routing\UrlMatcherService' ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

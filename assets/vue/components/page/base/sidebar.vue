@@ -12,14 +12,14 @@
         <li class="sidebar-header">
           Pages
         </li>
-        <li class="sidebar-item active">
-          <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link">
-            <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboards</span>
-          </a>
-          <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
-            <li class="sidebar-item active"><a class="sidebar-link" href="index.html">Analytics</a></li>
-          </ul>
-        </li>
+        <menu-node
+          shown-text="Dashboard"
+          feathers-icon-name="sliders"
+        />
+        <menu-node
+            shown-text="Notes"
+            feathers-icon-name="book"
+        />
       </ul>
 
     </div>
@@ -28,5 +28,11 @@
 
 <!-- Script -->
 <script type="ts">
-export default {}
+import MenuNodeComponent from './sidebar/menu-node';
+
+export default {
+  components: {
+    "menu-node": MenuNodeComponent
+  }
+}
 </script>
