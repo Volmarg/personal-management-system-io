@@ -1,9 +1,17 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
+/**
+ *  @description contains definition of vue root component
  */
-
-// any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+
+import axios              from 'axios';
+import VueAxios           from "vue-axios";
+import ContainerComponent from "./vue/components/page/base/container";
+import Router             from './scripts/libs/vue/Router'
+
+var Vue = require('vue');
+
+var router = new Router();
+Vue.createApp(ContainerComponent)
+    .use(Router.getRouter())
+    .use(VueAxios, axios)
+    .mount('#vueApp');
