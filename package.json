@@ -1,20 +1,34 @@
 {
     "devDependencies": {
-        "@symfony/stimulus-bridge": "^2.0.0",
-        "@symfony/webpack-encore": "^1.1.2",
-        "copy-webpack-plugin": "^8.1.0",
+        "@symfony/webpack-encore": "^0.31.0",
+        "@vue/compiler-sfc": "^3.0.4",
+        "browser-sync": "^2.26.13",
         "core-js": "^3.0.0",
+        "del": "4.1.1",
+        "gulp": "4.0.2",
+        "gulp-autoprefixer": "6.1.0",
+        "gulp-clean-css": "4.2.0",
+        "gulp-cssbeautify": "1.0.1",
+        "gulp-file-include": "2.1.0",
+        "gulp-header": "2.0.7",
+        "gulp-htmlmin": "5.0.1",
+        "gulp-npm-dist": "^1.0.3",
+        "gulp-plumber": "1.2.1",
+        "gulp-rename": "1.4.0",
+        "gulp-sass": "4.0.2",
+        "gulp-sourcemaps": "2.6.5",
+        "gulp-uglify": "3.0.2",
+        "gulp-wait": "0.0.2",
+        "merge-stream": "2.0.0",
         "regenerator-runtime": "^0.13.2",
-        "sass-loader": "^11.0.1",
-        "stimulus": "^2.0.0",
-        "ts-loader": "^8.1.0",
-        "typescript": "^4.2.3",
-        "vue": "^2.6.12",
-        "vue-loader": "^15.9.6",
-        "vue-types": "^2.0.3",
-        "webpack-notifier": "^1.13.0"
+        "ts-loader": "^5.4.5",
+        "typescript": "^4.1.2",
+        "vue": "^3.0.5",
+        "vue-loader": "^16.1.2",
+        "vue-template-compiler": "^2.6.12",
+        "webpack-notifier": "^1.6.0"
     },
-    "license": "UNLICENSED",
+    "license": "MIT",
     "private": true,
     "scripts": {
         "dev-server": "encore dev-server",
@@ -23,7 +37,15 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "vue-axios": "^3.2.4",
-        "vue-router": "^3.5.1"
+        "axios": "^0.21.0",
+        "bootstrap": "5.0.0-beta2",
+        "countup.js": "^2.0.6",
+        "jsonpath": "^1.0.2",
+        "node-sass": "^4.14.1",
+        "notyf": "^3.9.0",
+        "sass-loader": "^9.0.3",
+        "vue-axios": "^3.2.0",
+        "vue-router": "^4.0.1",
+        "vue-types": "^3.0.1"
     }
 }
