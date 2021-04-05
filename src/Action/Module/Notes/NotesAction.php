@@ -2,7 +2,7 @@
 
 namespace App\Action\Module\Notes;
 
-use App\Attribute\InternalActionAttribute;
+use App\Attribute\Action\InternalActionAttribute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,6 +23,6 @@ class NotesAction extends AbstractController
     {
         // todo : add exception listener + api responses, never ever add try/catch to actions thx to this
 
-        return $this->render("base.html.twig");
+        return new Response('todo');
     }
 }

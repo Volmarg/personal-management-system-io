@@ -4,7 +4,7 @@
 namespace App\Service\Routing;
 
 
-use App\Controller\Core\Application;
+use App\Controller\Core\Services;
 use Exception;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
@@ -19,12 +19,19 @@ class UrlMatcherService
 
     const URL_MATCHER_RESULT_CONTROLLER_WITH_METHOD = "_controller";
 
-    private Application $app;
+    /**
+     * @var Services $services
+     */
+    private Services $services;
+
+    /**
+     * @var UrlMatcherInterface $urlMatcher
+     */
     private UrlMatcherInterface $urlMatcher;
 
-    public function __construct(UrlMatcherInterface $urlMatcher, Application $app)
+    public function __construct(UrlMatcherInterface $urlMatcher, Services $services)
     {
-        $this->app        = $app;
+        $this->services   = $services;
         $this->urlMatcher = $urlMatcher;
     }
 
@@ -39,7 +46,7 @@ class UrlMatcherService
         try{
             $dataArray = $this->urlMatcher->match($url);
         }catch(Exception $e){
-            $this->app->logException($e, [
+            $this->services->getLoggerService()->logException($e, [
                 "No class with method was found for url", [
                     "url" => $url,
                 ]

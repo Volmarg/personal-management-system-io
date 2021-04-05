@@ -1,0 +1,3 @@
+parameters:
+  paths.translations.backendFolder: "./translations/backend"
+  paths.translations.frontendOutputFilePath: "./translations/frontend/messages.json"

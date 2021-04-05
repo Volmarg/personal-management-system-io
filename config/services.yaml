@@ -35,7 +35,20 @@ services:
         public: true
         calls:
             - setAttributeReaderService: ['@App\Service\Attribute\AttributeReaderService']
-            - setUrlMatcherService: [ '@App\Service\Routing\UrlMatcherService' ]
+            - setUrlMatcherService: ['@App\Service\Routing\UrlMatcherService']
+            - setFormService: ['@App\Service\Form\FormService']
+            - setLoggerService: ['@App\Service\Logger\LoggerService']
+
+    App\Service\ConfigLoader\ConfigLoaderPaths:
+        public: true
+        calls:
+            - setTranslationBackendFolder: ['%paths.translations.backendFolder%']
+            - setTranslationFrontendOutputFilePath: ['%paths.translations.frontendOutputFilePath%']
+
+    App\Controller\Core\ConfigLoader:
+        public: true
+        calls:
+            - setConfigLoaderPaths: ['@App\Service\ConfigLoader\ConfigLoaderPaths']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -1,0 +1,57 @@
+<?php
+
+
+namespace App\Service\ConfigLoader;
+
+/**
+ * Contains configuration regarding anything related to paths like files locations / folders etc.
+ *
+ * Class ConfigLoaderPaths
+ * @package App\Service\ConfigLoader
+ */
+class ConfigLoaderPaths
+{
+
+    /**
+     * @var string $translationBackendFolder
+     */
+    private string $translationBackendFolder = "";
+
+    /**
+     * @var string $translationFrontendOutputFilePath
+     */
+    private string $translationFrontendOutputFilePath = "";
+
+    /**
+     * @return string
+     */
+    public function getTranslationBackendFolder(): string
+    {
+        return $this->translationBackendFolder;
+    }
+
+    /**
+     * @param string $translationBackendFolder
+     */
+    public function setTranslationBackendFolder(string $translationBackendFolder): void
+    {
+        $this->translationBackendFolder = $translationBackendFolder;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTranslationFrontendOutputFilePath(): string
+    {
+        return $this->translationFrontendOutputFilePath;
+    }
+
+    /**
+     * @param string $translationFrontendOutputFilePath
+     */
+    public function setTranslationFrontendOutputFilePath(string $translationFrontendOutputFilePath): void
+    {
+        $this->translationFrontendOutputFilePath = $translationFrontendOutputFilePath;
+    }
+
+}

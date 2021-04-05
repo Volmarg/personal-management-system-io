@@ -4,7 +4,7 @@
 namespace App\Service\Attribute;
 
 
-use App\Controller\Core\Application;
+use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
 use Laminas\Code\Reflection\MethodReflection;
 use ReflectionAttribute;
@@ -19,12 +19,19 @@ use ReflectionException;
 class AttributeReaderService
 {
 
+    /**
+     * @var UrlMatcherService $urlMatcherService
+     */
     private UrlMatcherService $urlMatcherService;
-    private Application $application;
 
-    public function __construct(UrlMatcherService $urlMatcherService, Application $application)
+    /**
+     * @var LoggerService $loggerService
+     */
+    private LoggerService $loggerService;
+
+    public function __construct(UrlMatcherService $urlMatcherService, LoggerService $loggerService)
     {
-        $this->application       = $application;
+        $this->loggerService     = $loggerService;
         $this->urlMatcherService = $urlMatcherService;
     }
 
@@ -40,7 +47,7 @@ class AttributeReaderService
     {
         $classWithMethodForUri = $this->urlMatcherService->getClassAndMethodForCalledUrl($calledUri);
         if( empty($classWithMethodForUri) ){
-            $this->application->getLogger()->warning("Url matcher returned null for uri, so no attribute can be looked for");
+            $this->loggerService->getLogger()->warning("Url matcher returned null for uri, so no attribute can be looked for");
             return false;
         }
 

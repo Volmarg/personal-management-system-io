@@ -1,15 +1,15 @@
 <?php
 
-
-namespace App\Controller\Core;
-
+namespace App\Service\Logger;
 
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class Application
+class LoggerService
 {
-
+    /**
+     * @var LoggerInterface $logger
+     */
     private LoggerInterface $logger;
 
     /**
@@ -18,6 +18,14 @@ class Application
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 
     public function __construct(LoggerInterface $logger)

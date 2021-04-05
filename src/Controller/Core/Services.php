@@ -5,6 +5,8 @@ namespace App\Controller\Core;
 
 
 use App\Service\Attribute\AttributeReaderService;
+use App\Service\Form\FormService;
+use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
 
 /**
@@ -24,6 +26,16 @@ class Services
      * @var UrlMatcherService $urlMatcherService
      */
     private UrlMatcherService $urlMatcherService;
+
+    /**
+     * @var FormService $formService
+     */
+    private FormService $formService;
+
+    /**
+     * @var LoggerService $loggerService
+     */
+    private LoggerService $loggerService;
 
     /**
      * @return AttributeReaderService
@@ -52,6 +64,38 @@ class Services
     public function setUrlMatcherService(UrlMatcherService $urlMatcherService): void
     {
         $this->urlMatcherService = $urlMatcherService;
+    }
+
+    /**
+     * @return FormService
+     */
+    public function getFormService(): FormService
+    {
+        return $this->formService;
+    }
+
+    /**
+     * @param FormService $formService
+     */
+    public function setFormService(FormService $formService): void
+    {
+        $this->formService = $formService;
+    }
+
+    /**
+     * @return LoggerService
+     */
+    public function getLoggerService(): LoggerService
+    {
+        return $this->loggerService;
+    }
+
+    /**
+     * @param LoggerService $loggerService
+     */
+    public function setLoggerService(LoggerService $loggerService): void
+    {
+        $this->loggerService = $loggerService;
     }
 
 }

@@ -2,9 +2,8 @@
 
 namespace App\Listener;
 
-use App\Attribute\ExternalActionAttribute;
-use App\Attribute\InternalActionAttribute;
-use App\Controller\Core\Application;
+use App\Attribute\Action\ExternalActionAttribute;
+use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,12 +22,13 @@ use Throwable;
 class UnhandledExceptionListener implements EventSubscriberInterface
 {
 
-    private Application $app;
+    /**
+     * @var Services $services
+     */
     private Services $services;
 
-    public function __construct(Services $services, Application $app)
+    public function __construct(Services $services)
     {
-        $this->app      = $app;
         $this->services = $services;
     }
 
@@ -50,7 +50,7 @@ class UnhandledExceptionListener implements EventSubscriberInterface
         }
 
         $calledUri = $event->getRequest()->getRequestUri();
-        $this->app->logException($event->getThrowable());
+        $this->services->getLoggerService()->logException($event->getThrowable());
 
         if( $this->services->getAttributeReader()->hasUriAttribute($calledUri, InternalActionAttribute::class) ){
 
@@ -60,7 +60,7 @@ class UnhandledExceptionListener implements EventSubscriberInterface
             $this->handleExternalCallException($event);
         }else{
 
-            $this->app->getLogger()->warning("Missing handler for exception", [
+            $this->services->getLoggerService()->getLogger()->warning("Missing handler for exception", [
                 "info" => "This exception could not be handled in the: " . __CLASS__ . " as no logic was prepared for it",
                 "tip"  => "Did You forget to add the ActionAttribute maybe?",
             ]);

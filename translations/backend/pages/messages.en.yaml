@@ -1,0 +1,4 @@
+pages:
+  notes:
+    category:
+      header: "Note category: {{noteCategoryName}}"

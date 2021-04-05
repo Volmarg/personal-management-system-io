@@ -16,6 +16,9 @@ class Kernel extends BaseKernel
         $container->import('../config/{packages}/*.yaml');
         $container->import('../config/{packages}/'.$this->environment.'/*.yaml');
 
+        // additional configuration loading
+        $container->import("../config/packages/config/*.yaml");
+
         if (is_file(\dirname(__DIR__).'/config/services.yaml')) {
             $container->import('../config/services.yaml');
             $container->import('../config/{services}_'.$this->environment.'.yaml');
