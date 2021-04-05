@@ -1,8 +1,12 @@
 <!-- Template -->
 <template>
   <li class="sidebar-item active">
-    <a class="sidebar-link" href="#123">
-      <i class="align-middle" :data-feather="feathersIconName"></i>
+    <a class="sidebar-link"
+       href="#123"
+    >
+      <i class="align-middle"
+         :data-feather="feathersIconName"
+      ></i>
       <span class="align-middle">
         {{ shownText }}
       </span>
@@ -10,6 +14,7 @@
   </li>
 </template>
 
+<!-- Script -->
 <script type="ts">
 export default{
   props: {
