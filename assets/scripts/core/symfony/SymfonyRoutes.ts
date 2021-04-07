@@ -9,6 +9,12 @@
 export default class SymfonyRoutes {
 
     /**
+     * @description route used to fetch notes for given category id
+     */
+    static readonly GET_NOTES_FOR_CATEGORY_ID                   = "/module/notes/get-for-category/{categoryId}";
+    static readonly GET_NOTES_FOR_CATEGORY_ID_PARAM_CATEGORY_ID = "{categoryId}";
+
+    /**
      * @description returns the information if system demo mode is on or not
      */
     static readonly ENV_IS_DEMO = "/api-internal/env/is-demo";

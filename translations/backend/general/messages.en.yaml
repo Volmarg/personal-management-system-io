@@ -1,0 +1,3 @@
+general:
+  responseCodes:
+    500: Internal server error

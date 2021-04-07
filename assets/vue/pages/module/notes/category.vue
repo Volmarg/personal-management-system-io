@@ -11,14 +11,14 @@
 
   <sweet-alert
     v-for="note in notes"
-    confirm-button-string="yes"
-    cancel-button-string="no"
-    header-string="Header"
-    id="id"
+    :cancel-button-string="dialogCloseButtonTranslatedString()"
+    :header-string="note.title"
+    :dialog-content="note.body"
+    :id="'noteDialogId_' + note.id"
     :ref="'noteDialogId_' + note.id"
   >
     <template #body-content>
-      Dialog content
+      {{ note.body }}
     </template>
   </sweet-alert>
 
@@ -30,19 +30,18 @@ import PageCardComponent   from '../../../components/page/base/page-elements/car
 import NoteCardComponent   from './components/note-card';
 import SweetAlertComponent from "../../../components/dialog/sweet-alert/sweet-alert";
 
+import TranslationsService            from "../../../../scripts/core/service/TranslationsService";
+import SymfonyRoutes                  from "../../../../scripts/core/symfony/SymfonyRoutes";
+import GetNotesForCategoryResponseDto from "../../../../scripts/core/dto/module/notes/GetNotesForCategoryResponseDto";
+import MyNoteDto                      from "../../../../scripts/core/dto/module/notes/MyNoteDto";
+
+let translationService = new TranslationsService();
+
 export default {
   data(){
     return {
-      notes: [ // testing
-        {
-          id    : 1,
-          title : "test 123",
-        },
-        {
-          id    : 2,
-          title : "test 456"
-        }
-      ]
+      categoryId : 1,
+      notes      : []
     }
   },
   components: {
@@ -56,8 +55,35 @@ export default {
      */
     callDialog(noteId) {
       let dialog = this.$refs['noteDialogId_' + noteId];
+      console.log(dialog);
       dialog.showDialog();
+    },
+    /**
+     * @description will get notes for current category id
+     */
+    getNotesForCategory(){
+      let calledUrl = SymfonyRoutes.buildUrlWithReplacedParams(SymfonyRoutes.GET_NOTES_FOR_CATEGORY_ID, {
+        [SymfonyRoutes.GET_NOTES_FOR_CATEGORY_ID_PARAM_CATEGORY_ID] : this.categoryId
+      })
+
+      this.axios.get(calledUrl).then( (response) => {
+        let getNotesForCategoryResponseDto = GetNotesForCategoryResponseDto.fromAxiosResponse(response);
+
+        this.notes = getNotesForCategoryResponseDto.notesJsons.map( (json) => {
+          return MyNoteDto.fromJson(json);
+        });
+
+      })
+    },
+    /**
+     * @description gets the translation for the close button in modal
+     */
+    dialogCloseButtonTranslatedString(){
+      return translationService.getTranslationForString('dialogs.buttons.default.close')
     }
+  },
+  beforeMount(){
+    this.getNotesForCategory();
   }
 }
 </script>

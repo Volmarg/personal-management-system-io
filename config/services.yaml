@@ -38,6 +38,7 @@ services:
             - setUrlMatcherService: ['@App\Service\Routing\UrlMatcherService']
             - setFormService: ['@App\Service\Form\FormService']
             - setLoggerService: ['@App\Service\Logger\LoggerService']
+            - setTranslator: ['@translator']
 
     App\Service\ConfigLoader\ConfigLoaderPaths:
         public: true

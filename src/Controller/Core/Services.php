@@ -8,6 +8,7 @@ use App\Service\Attribute\AttributeReaderService;
 use App\Service\Form\FormService;
 use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Contains all of the services created for this project
@@ -36,6 +37,11 @@ class Services
      * @var LoggerService $loggerService
      */
     private LoggerService $loggerService;
+
+    /**
+     * @var TranslatorInterface $translator
+     */
+    private TranslatorInterface $translator;
 
     /**
      * @return AttributeReaderService
@@ -96,6 +102,22 @@ class Services
     public function setLoggerService(LoggerService $loggerService): void
     {
         $this->loggerService = $loggerService;
+    }
+
+    /**
+     * @return TranslatorInterface
+     */
+    public function getTranslator(): TranslatorInterface
+    {
+        return $this->translator;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator): void
+    {
+        $this->translator = $translator;
     }
 
 }

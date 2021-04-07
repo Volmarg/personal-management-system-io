@@ -12,10 +12,20 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method MyNoteCategory[]    findAll()
  * @method MyNoteCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MyNoteCategoryRepository extends ServiceEntityRepository {
+class NoteCategoryRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, MyNoteCategory::class);
     }
 
+    /**
+     * Will find one note category for id or null if nothing is found
+     *
+     * @param int $id
+     * @return MyNoteCategory|null
+     */
+    public function getOneForId(int $id): ?MyNoteCategory
+    {
+        return $this->find($id);
+    }
 
 }

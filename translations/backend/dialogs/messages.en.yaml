@@ -1,0 +1,4 @@
+dialogs:
+  buttons:
+    default:
+      close: Close

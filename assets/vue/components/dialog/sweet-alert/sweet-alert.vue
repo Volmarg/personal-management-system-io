@@ -26,8 +26,9 @@
       <div class="swal2-content mt-3">
         <div id="swal2-content"
              class="swal2-html-container d-block"
+             ref="dialogContentWrapper"
         >
-          <slot name="body-content"></slot>
+          <div v-html="dialogContent"></div>
         </div>
       </div>
 
@@ -76,6 +77,10 @@ export default {
     id: {
       type     : String,
       required : true
+    },
+    dialogContent: {
+      type     : String,
+      required : true,
     }
   },
   methods: {
@@ -109,6 +114,9 @@ export default {
         SweetAlert.hideDialogForId(this.id);
       }
     }
+  },
+  mounted(){
+    //todo: handle code highlight - some notes contain it but prismjs is not working with Vue.js
   }
 };
 </script>

@@ -2,14 +2,20 @@
 
 namespace App\Entity\Modules\Notes;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\MyNoteRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\NoteRepository")
  * @ORM\Table(name="my_note")
  */
 class MyNote
 {
+    const KEY_ID          = "id";
+    const KEY_TITLE       = "title";
+    const KEY_BODY        = "body";
+    const KEY_CATEGORY_ID = "categoryId";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -65,5 +71,21 @@ class MyNote
         $this->category = $category;
 
         return $this;
+    }
+
+    /**
+     * Returns json representation of entity
+     */
+    public function toJson(): string
+    {
+        $dataArray = [
+          self::KEY_ID          => $this->getId(),
+          self::KEY_CATEGORY_ID => $this->getCategory()->getId(),
+          self::KEY_BODY        => $this->getBody(),
+          self::KEY_TITLE       => $this->getTitle(),
+        ];
+
+        $json = json_encode($dataArray);
+        return $json;
     }
 }

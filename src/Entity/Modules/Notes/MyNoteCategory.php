@@ -2,14 +2,13 @@
 
 namespace App\Entity\Modules\Notes;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use Exception;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\MyNoteCategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\NoteCategoryRepository")
  * @ORM\Table(name="my_note_category",
  *    indexes={
  *       @Index(
@@ -38,7 +37,7 @@ class MyNoteCategory
     /**
      * @ORM\OneToMany(targetEntity="MyNote", mappedBy="category")
      */
-    private string $note;
+    private Collection $note;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -81,10 +80,6 @@ class MyNoteCategory
      */
     public function __toString() {
         return strval($this->id);
-    }
-
-    public function __construct() {
-        $this->note = new ArrayCollection();
     }
 
     public function getId(): ?int {
