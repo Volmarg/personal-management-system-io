@@ -12,14 +12,20 @@
         <li class="sidebar-header">
           Pages
         </li>
-        <menu-node
+        <single-menu-node
           shown-text="Dashboard"
           feathers-icon-name="sliders"
         />
-        <menu-node
+        <single-menu-node
             shown-text="Notes"
             feathers-icon-name="book"
-        />
+        >
+          <template #submenu>
+            <nested-menu-node :nodes="parentChildDtoArray"
+                              :show="true"
+            />
+          </template>
+        </single-menu-node>
       </ul>
 
     </div>
@@ -28,11 +34,40 @@
 
 <!-- Script -->
 <script type="ts">
-import MenuNodeComponent from './sidebar/menu-node';
+import SingleMenuNodeComponent from './sidebar/single-menu-node';
+import NestedMenuNodeComponent from './sidebar/nested-menu-node';
+import SymfonyRoutes           from "../../../../scripts/core/symfony/SymfonyRoutes";
+
+import GetParentsChildrenCategoriesHierarchyResponse from "../../../../scripts/core/dto/module/notes/GetParentsChildrenCategoriesHierarchyResponse";
+import ParentChildDto                                from "../../../../scripts/core/dto/ParentChildDto";
 
 export default {
+  data(){
+    return {
+      parentChildDtoArray: []
+    }
+  },
   components: {
-    "menu-node": MenuNodeComponent
+    "single-menu-node" : SingleMenuNodeComponent,
+    "nested-menu-node" : NestedMenuNodeComponent,
+  },
+  methods: {
+    /**
+     * @description return the notes categories hierarchy to build men u nodes
+     */
+    getNotesCategoriesHierarchy(){
+
+      this.axios.get(SymfonyRoutes.GET_NOTES_CATEGORIES_HIERARCHY).then( (response) => {
+        let apiResponse = GetParentsChildrenCategoriesHierarchyResponse.fromAxiosResponse(response);
+        this.parentChildDtoArray = apiResponse.hierarchy.map( (object) => {
+          return ParentChildDto.fromObject(object);
+        });
+      });
+
+    },
+  },
+  beforeMount() {
+    this.getNotesCategoriesHierarchy();
   }
 }
 </script>

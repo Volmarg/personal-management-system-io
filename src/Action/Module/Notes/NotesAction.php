@@ -4,9 +4,9 @@ namespace App\Action\Module\Notes;
 
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
+use App\Controller\Modules\Notes\NotesCategoriesController;
 use App\DTO\Internal\Module\Notes\GetNotesForCategoryResponseDto;
 use App\Entity\Modules\Notes\MyNote;
-use App\Repository\Modules\Notes\NoteCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,19 +15,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class NotesAction extends AbstractController
 {
     /**
-     * @var NoteCategoryRepository $noteCategoryRepository
+     * @var NotesCategoriesController $notesCategoriesController
      */
-    private NoteCategoryRepository $noteCategoryRepository;
+    private NotesCategoriesController $notesCategoriesController;
 
     /**
      * @var Services $services
      */
     private Services $services;
 
-    public function __construct(NoteCategoryRepository $noteCategoryRepository, Services $services)
+    public function __construct(NotesCategoriesController $notesCategoriesController, Services $services)
     {
-        $this->noteCategoryRepository = $noteCategoryRepository;
-        $this->services               = $services;
+        $this->notesCategoriesController = $notesCategoriesController;
+        $this->services                  = $services;
     }
 
     /**
@@ -43,8 +43,7 @@ class NotesAction extends AbstractController
         $apiResponse = new GetNotesForCategoryResponseDto();
         $apiResponse->prefillBaseFieldsForSuccessResponse();
 
-        $noteCategory = $this->noteCategoryRepository->getOneForId($categoryId);
-
+        $noteCategory = $this->notesCategoriesController->getOneForId($categoryId);
         if( empty($noteCategory) ){
             $this->services->getLoggerService()->getLogger()->info("No note category was found for give id: {$categoryId}");
             $apiResponse->prefillBaseFieldsForBadRequestResponse();

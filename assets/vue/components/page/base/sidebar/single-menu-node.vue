@@ -11,6 +11,7 @@
         {{ shownText }}
       </span>
     </a>
+    <slot name="submenu"></slot>
   </li>
 </template>
 

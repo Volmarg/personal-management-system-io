@@ -15,6 +15,11 @@ export default class SymfonyRoutes {
     static readonly GET_NOTES_FOR_CATEGORY_ID_PARAM_CATEGORY_ID = "{categoryId}";
 
     /**
+     * @description route used to fetch the notes categories hierarchy (parent - child (sub-categories))
+     */
+    static readonly GET_NOTES_CATEGORIES_HIERARCHY = '/module/notes-categories/get-parents-children-categories-hierarchy';
+
+    /**
      * @description returns the information if system demo mode is on or not
      */
     static readonly ENV_IS_DEMO = "/api-internal/env/is-demo";
