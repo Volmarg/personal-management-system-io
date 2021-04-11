@@ -1,8 +1,11 @@
 <!-- Template -->
 <template>
   <li class="sidebar-item active">
-    <a class="sidebar-link"
+    <a class="sidebar-link collapsed"
        href="#123"
+       :data-bs-target="'#' + submenuId"
+       :data-bs-toggle="submenuId !== '' ? 'collapse' : ''"
+       aria-expanded="false"
     >
       <i class="align-middle"
          :data-feather="feathersIconName"
@@ -26,6 +29,11 @@ export default{
     feathersIconName: {
       type     : String,
       required : true,
+    },
+    submenuId: {
+      type     : String,
+      required : false,
+      default  : ""
     }
   }
 }

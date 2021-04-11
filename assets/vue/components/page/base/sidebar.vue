@@ -19,10 +19,11 @@
         <single-menu-node
             shown-text="Notes"
             feathers-icon-name="book"
+            :submenu-id="'multi-' + notesCategoriesMenuNodeId"
         >
           <template #submenu>
             <nested-menu-node :nodes="parentChildDtoArray"
-                              :show="true"
+                              :node-identifier="notesCategoriesMenuNodeId"
             />
           </template>
         </single-menu-node>
@@ -44,7 +45,8 @@ import ParentChildDto                                from "../../../../scripts/c
 export default {
   data(){
     return {
-      parentChildDtoArray: []
+      parentChildDtoArray       : [],
+      notesCategoriesMenuNodeId : "notesCategories"
     }
   },
   components: {

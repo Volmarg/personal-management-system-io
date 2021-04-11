@@ -3,9 +3,10 @@
  */
 import BaseInternalApiResponseDto from "../../BaseInternalApiResponseDto";
 
-export default class GetNotesForCategoryResponseDto extends BaseInternalApiResponseDto {
+export default class GetCategoryResponseDto extends BaseInternalApiResponseDto {
 
     private _notesJsons : Array<any> = [];
+    private _name        : string     = "";
 
     get notesJsons(): Array<any> {
         return this._notesJsons;
@@ -15,13 +16,21 @@ export default class GetNotesForCategoryResponseDto extends BaseInternalApiRespo
         this._notesJsons = value;
     }
 
+    get name(): string {
+        return this._name;
+    }
+
+    set name(value: string) {
+        this._name = value;
+    }
+
     /**
      * Will build frontend response from backend response
      *
      */
-    public static fromJson(json: string): GetNotesForCategoryResponseDto
+    public static fromJson(json: string): GetCategoryResponseDto
     {
-        let dto = new GetNotesForCategoryResponseDto();
+        let dto = new GetCategoryResponseDto();
 
         try{
             var object = JSON.parse(json);
@@ -37,6 +46,7 @@ export default class GetNotesForCategoryResponseDto extends BaseInternalApiRespo
         dto.message    = object.message;
         dto.code       = object.code;
         dto.notesJsons = object.notesJsons;
+        dto._name      = object.name;
 
         if( "undefined" !== typeof object.invalidFields ){
             dto.invalidFields = JSON.parse(object.invalidFields);
@@ -48,11 +58,11 @@ export default class GetNotesForCategoryResponseDto extends BaseInternalApiRespo
     /**
      * @description creates BaseInternalApiResponseDto from axios response
      */
-    public static fromAxiosResponse(response: object): GetNotesForCategoryResponseDto
+    public static fromAxiosResponse(response: object): GetCategoryResponseDto
     {
         //@ts-ignore
         let json = JSON.stringify(response.data);
-        let dto  = GetNotesForCategoryResponseDto.fromJson(json);
+        let dto  = GetCategoryResponseDto.fromJson(json);
 
         return dto;
     }

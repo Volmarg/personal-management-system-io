@@ -10,9 +10,10 @@ use App\Entity\Modules\Notes\MyNote;
  * Class CsrfTokenResponseDto
  * @package App\DTO\API\Internal
  */
-class GetNotesForCategoryResponseDto extends BaseApiResponseDto
+class GetCategoryResponseDto extends BaseApiResponseDto
 {
     const KEY_NOTES_JSONS = "notesJsons";
+    const KEY_NAME        = "name";
 
     /**
      * Contains jsons representations of the @see MyNote
@@ -20,6 +21,11 @@ class GetNotesForCategoryResponseDto extends BaseApiResponseDto
      * @var string[]
      */
     private array $notesJsons = [];
+
+    /**
+     * @var string $name
+     */
+    private string $name = "";
 
     /**
      * @return string[]
@@ -38,6 +44,22 @@ class GetNotesForCategoryResponseDto extends BaseApiResponseDto
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
      * Return array representation of the dto
      *
      * @return array
@@ -46,6 +68,7 @@ class GetNotesForCategoryResponseDto extends BaseApiResponseDto
     {
         $baseDataArray = parent::toArray();
         $baseDataArray[self::KEY_NOTES_JSONS] = $this->getNotesJsons();
+        $baseDataArray[self::KEY_NAME]        = $this->getName();
 
         return $baseDataArray;
     }

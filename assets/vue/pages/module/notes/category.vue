@@ -1,6 +1,8 @@
 <!-- Template -->
 <template>
 
+  <page-header :shown-text="categoryName"/>
+
   <page-card>
     <note-card
       v-for="note in notes"
@@ -27,12 +29,13 @@
 <!-- Script -->
 <script type="ts">
 import PageCardComponent   from '../../../components/page/base/page-elements/card';
+import PageHeaderComponent from '../../../components/page/base/page-elements/header';
 import NoteCardComponent   from './components/note-card';
 import SweetAlertComponent from "../../../components/dialog/sweet-alert/sweet-alert";
 
 import TranslationsService            from "../../../../scripts/core/service/TranslationsService";
 import SymfonyRoutes                  from "../../../../scripts/core/symfony/SymfonyRoutes";
-import GetNotesForCategoryResponseDto from "../../../../scripts/core/dto/module/notes/GetNotesForCategoryResponseDto";
+import GetCategoryResponseDto from "../../../../scripts/core/dto/module/notes/GetCategoryResponseDto";
 import MyNoteDto                      from "../../../../scripts/core/dto/module/notes/MyNoteDto";
 
 let translationService = new TranslationsService();
@@ -40,12 +43,14 @@ let translationService = new TranslationsService();
 export default {
   data(){
     return {
-      categoryId : 1,
-      notes      : []
+      categoryId   : null,
+      categoryName : null,
+      notes        : []
     }
   },
   components: {
     "page-card"   : PageCardComponent,
+    "page-header" : PageHeaderComponent,
     "note-card"   : NoteCardComponent,
     "sweet-alert" : SweetAlertComponent,
   },
@@ -55,7 +60,6 @@ export default {
      */
     callDialog(noteId) {
       let dialog = this.$refs['noteDialogId_' + noteId];
-      console.log(dialog);
       dialog.showDialog();
     },
     /**
@@ -67,7 +71,8 @@ export default {
       })
 
       this.axios.get(calledUrl).then( (response) => {
-        let getNotesForCategoryResponseDto = GetNotesForCategoryResponseDto.fromAxiosResponse(response);
+        let getNotesForCategoryResponseDto = GetCategoryResponseDto.fromAxiosResponse(response);
+        this.categoryName                  = getNotesForCategoryResponseDto.name;
 
         this.notes = getNotesForCategoryResponseDto.notesJsons.map( (json) => {
           return MyNoteDto.fromJson(json);
@@ -80,10 +85,25 @@ export default {
      */
     dialogCloseButtonTranslatedString(){
       return translationService.getTranslationForString('dialogs.buttons.default.close')
+    },
+    /**
+     * @description will set categoryId based on current route
+     */
+    setCategoryIdFromRoute(){
+      this.categoryId = this.$route.params.id;
     }
   },
-  beforeMount(){
+  beforeMount() {
     this.getNotesForCategory();
+  },
+  created(){
+    this.setCategoryIdFromRoute();
+  },
+  watch: {
+    $route(oldValue, newValue){
+      this.setCategoryIdFromRoute();
+      this.getNotesForCategory();
+    }
   }
 }
 </script>

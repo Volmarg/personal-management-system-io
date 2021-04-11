@@ -9,9 +9,17 @@
         class="sidebar-item"
     >
       <span class="d-flex justify-content-around">
-        <a class="sidebar-link collapsed">
+        <router-link class="sidebar-link collapsed"
+                     :to="
+                      {
+                        name   : 'module_notes_category',
+                        params : {
+                          id : node.id
+                        }
+                      }"
+        >
           {{ node.name }}
-        </a>
+        </router-link>
 
         <span
             v-if="hasNodeChildren(node)"
