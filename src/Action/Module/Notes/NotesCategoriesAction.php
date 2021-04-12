@@ -35,7 +35,9 @@ class NotesCategoriesAction extends AbstractController {
             $this->notesCategoriesController->buildParentsChildrenCategoriesHierarchy(true)
         );
 
-        $apiResponse->setHierarchy($plainArrayHierarchy);
+        $hierarchyArrayWithRenewedIndex = array_values($plainArrayHierarchy);
+
+        $apiResponse->setHierarchy($hierarchyArrayWithRenewedIndex);
         return $apiResponse->toJsonResponse();
     }
 

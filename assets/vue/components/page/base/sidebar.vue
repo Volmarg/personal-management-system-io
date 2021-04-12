@@ -4,26 +4,34 @@
     <div class="sidebar-content js-simplebar">
 
       <!-- Logo -->
-      <a class="sidebar-brand" href="index.html">
-        <span class="align-middle">AdminKit</span>
-      </a>
+      <router-link :to="{ name: routeNameHash}"
+                   class="sidebar-brand logo-link"
+      >
+          <span class="align-middle logo-wrapper">
+          <img src="/img/logo.png" class="logo-image"/>
+        </span>
+      </router-link>
 
+      <!-- Links -->
       <ul class="sidebar-nav">
-        <li class="sidebar-header">
-          Pages
-        </li>
+        <li class="sidebar-header"></li>
         <single-menu-node
-          shown-text="Dashboard"
+          :shown-text="dashboardTranslationString"
           feathers-icon-name="sliders"
+          :to-path-name="routeNameModuleDashboardOverview"
         />
+
         <single-menu-node
-            shown-text="Notes"
+            :shown-text="notesTranslationString"
             feathers-icon-name="book"
             :submenu-id="'multi-' + notesCategoriesMenuNodeId"
+            :show-collapse="parentChildDtoArray.length !== 0"
         >
           <template #submenu>
             <nested-menu-node :nodes="parentChildDtoArray"
                               :node-identifier="notesCategoriesMenuNodeId"
+                              :to-path-name="routeNameModuleNotesCategory"
+                              :to-id-param-name="routeNameModuleNotesCategoryIdParam"
             />
           </template>
         </single-menu-node>
@@ -38,15 +46,25 @@
 import SingleMenuNodeComponent from './sidebar/single-menu-node';
 import NestedMenuNodeComponent from './sidebar/nested-menu-node';
 import SymfonyRoutes           from "../../../../scripts/core/symfony/SymfonyRoutes";
+import TranslationsService     from "../../../../scripts/core/service/TranslationsService";
 
 import GetParentsChildrenCategoriesHierarchyResponse from "../../../../scripts/core/dto/module/notes/GetParentsChildrenCategoriesHierarchyResponse";
 import ParentChildDto                                from "../../../../scripts/core/dto/ParentChildDto";
+import Router                                        from "../../../../scripts/libs/vue/Router";
+
+let translationsService = new TranslationsService();
 
 export default {
   data(){
     return {
-      parentChildDtoArray       : [],
-      notesCategoriesMenuNodeId : "notesCategories"
+      parentChildDtoArray                 : [],
+      notesCategoriesMenuNodeId           : "notesCategories",
+      routeNameModuleNotesCategory        : Router.ROUTE_NAME_MODULE_NOTES_CATEGORY,
+      routeNameModuleNotesCategoryIdParam : Router.ROUTE_NAME_MODULE_NOTES_CATEGORY_ID_PARAM,
+      routeNameModuleDashboardOverview    : Router.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW,
+      routeNameHash                       : Router.ROUTE_NAME_HASH,
+      dashboardTranslationString          : translationsService.getTranslationForString('sidebar.menuNodes.dashboard.label'),
+      notesTranslationString              : translationsService.getTranslationForString('sidebar.menuNodes.notes.label'),
     }
   },
   components: {

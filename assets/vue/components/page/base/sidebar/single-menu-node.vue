@@ -1,11 +1,13 @@
 <!-- Template -->
 <template>
   <li class="sidebar-item active">
-    <a class="sidebar-link collapsed"
-       href="#123"
-       :data-bs-target="'#' + submenuId"
-       :data-bs-toggle="submenuId !== '' ? 'collapse' : ''"
-       aria-expanded="false"
+    <router-link :to="{
+                    name: toPathName,
+                  }"
+                 class="sidebar-link collapsed"
+                 :data-bs-target="showCollapse ? '#' + submenuId : ''"
+                 :data-bs-toggle="showCollapse && (submenuId !== '') ? 'collapse' : ''"
+                 aria-expanded="false"
     >
       <i class="align-middle"
          :data-feather="feathersIconName"
@@ -13,14 +15,17 @@
       <span class="align-middle">
         {{ shownText }}
       </span>
-    </a>
+    </router-link>
+
     <slot name="submenu"></slot>
   </li>
 </template>
 
 <!-- Script -->
 <script type="ts">
-export default{
+import Router from "../../../../../scripts/libs/vue/Router";
+
+export default {
   props: {
     shownText: {
       type     : String,
@@ -34,6 +39,15 @@ export default{
       type     : String,
       required : false,
       default  : ""
+    },
+    showCollapse: {
+      type    : Boolean,
+      default : false,
+    },
+    toPathName: {
+      type     : String,
+      required : false,
+      default  : Router.ROUTE_NAME_HASH
     }
   }
 }

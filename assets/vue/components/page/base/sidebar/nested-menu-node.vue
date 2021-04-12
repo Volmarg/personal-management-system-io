@@ -12,9 +12,9 @@
         <router-link class="sidebar-link collapsed"
                      :to="
                       {
-                        name   : 'module_notes_category',
+                        name   : toPathName,
                         params : {
-                          id : node.id
+                          [toIdParamName] : node.id
                         }
                       }"
         >
@@ -36,6 +36,8 @@
       </span>
       <nested-menu-node :nodes="node.children"
                         :node-identifier="node.id"
+                        :to-path-name="toPathName"
+                        :to-id-param-name="toIdParamName"
       ></nested-menu-node>
     </li>
   </ul>
@@ -59,6 +61,14 @@ export default {
       type     : Boolean,
       required : false,
       default  : false
+    },
+    toPathName: {
+      type     : String,
+      required : true,
+    },
+    toIdParamName: {
+      type     : String,
+      required : true,
     }
   },
   components: {

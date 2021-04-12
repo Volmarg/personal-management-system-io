@@ -1,7 +1,7 @@
 /**
  *  @description contains definition of vue root component
  */
-import './styles/app.css';
+import './styles/app.scss';
 
 import axios              from 'axios';
 import VueAxios           from "vue-axios";

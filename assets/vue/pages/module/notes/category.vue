@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
 
-  <page-header :shown-text="categoryName"/>
+  <page-header :shown-text="getCategoryNameTranslationString"/>
 
   <page-card>
     <note-card
@@ -35,7 +35,7 @@ import SweetAlertComponent from "../../../components/dialog/sweet-alert/sweet-al
 
 import TranslationsService            from "../../../../scripts/core/service/TranslationsService";
 import SymfonyRoutes                  from "../../../../scripts/core/symfony/SymfonyRoutes";
-import GetCategoryResponseDto from "../../../../scripts/core/dto/module/notes/GetCategoryResponseDto";
+import GetCategoryResponseDto         from "../../../../scripts/core/dto/module/notes/GetCategoryResponseDto";
 import MyNoteDto                      from "../../../../scripts/core/dto/module/notes/MyNoteDto";
 
 let translationService = new TranslationsService();
@@ -44,8 +44,8 @@ export default {
   data(){
     return {
       categoryId   : null,
-      categoryName : null,
-      notes        : []
+      categoryName : "",
+      notes        : [],
     }
   },
   components: {
@@ -53,6 +53,16 @@ export default {
     "page-header" : PageHeaderComponent,
     "note-card"   : NoteCardComponent,
     "sweet-alert" : SweetAlertComponent,
+  },
+  computed: {
+    /**
+     * @description will get category name translation string by replacing translation param with category name
+     * */
+    getCategoryNameTranslationString(){
+      return translationService.getTranslationForString('pages.notes.category.header', {
+        "{{noteCategoryName}}" : this.categoryName,
+      });
+    }
   },
   methods: {
     /**
@@ -102,7 +112,11 @@ export default {
   watch: {
     $route(oldValue, newValue){
       this.setCategoryIdFromRoute();
-      this.getNotesForCategory();
+
+      // this might happen when going from note category url to some other - router is still being observed on this step
+      if(this.categoryId){
+        this.getNotesForCategory();
+      }
     }
   }
 }

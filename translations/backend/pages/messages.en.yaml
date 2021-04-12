@@ -1,4 +1,5 @@
 pages:
   notes:
     category:
-      header: "Note category: {{noteCategoryName}}"
+      header: |
+        <b>Note category:</b> {{noteCategoryName}}

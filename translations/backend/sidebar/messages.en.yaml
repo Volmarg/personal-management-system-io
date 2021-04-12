@@ -1,6 +1,6 @@
 sidebar:
   menuNodes:
     dashboard:
-      label: Dashboars
+      label: Dashboard
     notes:
       label: Notes

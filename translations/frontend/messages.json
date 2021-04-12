@@ -1,1 +1,1 @@
-{"general":{"responseCodes":{"500":"Internal server error"}},"sidebar":{"menuNodes":{"dashboard":{"label":"Dashboars"},"notes":{"label":"Notes"}}},"dialogs":{"buttons":{"default":{"close":"Close"}}},"pages":{"notes":{"category":{"header":"Note category: {{noteCategoryName}}"}}}}
+{"general":{"responseCodes":{"500":"Internal server error"}},"sidebar":{"menuNodes":{"dashboard":{"label":"Dashboard"},"notes":{"label":"Notes"}}},"dialogs":{"buttons":{"default":{"close":"Close"}}},"pages":{"notes":{"category":{"header":"<b>Note category:<\/b> {{noteCategoryName}}"}}}}

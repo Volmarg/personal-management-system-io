@@ -23,7 +23,7 @@ class GetParentsChildrenCategoriesHierarchyResponse extends BaseApiResponseDto {
     }
 
     /**
-     * @param ParentChildDTO[] $hierarchy
+     * @param array $hierarchy
      */
     public function setHierarchy(array $hierarchy): void
     {
