@@ -39,6 +39,8 @@ services:
             - setFormService: ['@App\Service\Form\FormService']
             - setLoggerService: ['@App\Service\Logger\LoggerService']
             - setTranslator: ['@translator']
+            - setValidationService: ['@App\Service\Validation\ValidationService']
+            - setDatabaseService: ['@App\Service\Database\DatabaseService']
 
     App\Service\ConfigLoader\ConfigLoaderPaths:
         public: true

@@ -2,10 +2,10 @@
 
 namespace App\DTO\Internal\Module\Notes;
 
-use App\DTO\BaseApiResponseDto;
+use App\DTO\BaseApiResponseDTO;
 use App\DTO\ParentChildDTO;
 
-class GetParentsChildrenCategoriesHierarchyResponse extends BaseApiResponseDto {
+class GetParentsChildrenCategoriesHierarchyResponse extends BaseApiResponseDTO {
 
     const KEY_HIERARCHY = "hierarchy";
 

@@ -5,7 +5,7 @@ namespace App\Listener;
 use App\Attribute\Action\ExternalActionAttribute;
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
-use App\DTO\BaseApiResponseDto;
+use App\DTO\BaseApiResponseDTO;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,7 +87,7 @@ class UnhandledExceptionListener implements EventSubscriberInterface
     private function handleInternalCallException(ExceptionEvent $event): void
     {
         $message      = $this->services->getTranslator()->trans("general.responseCodes.500");
-        $baseResponse = BaseApiResponseDto::buildInternalServerErrorResponse();
+        $baseResponse = BaseApiResponseDTO::buildInternalServerErrorResponse();
         $baseResponse->setMessage($message);
 
         $event->setResponse($baseResponse->toJsonResponse());

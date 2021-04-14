@@ -5,8 +5,8 @@ namespace App\Action\Symfony;
 
 
 use App\Controller\Core\Services;
-use App\DTO\BaseApiResponseDto;
-use App\DTO\Internal\CsrfTokenResponseDto;
+use App\DTO\BaseApiResponseDTO;
+use App\DTO\Internal\CsrfTokenResponseDTO;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,10 +34,10 @@ class FormInternalApiAction extends AbstractController
     }
 
     /**
-     * Will return the @see CsrfTokenResponseDto containing the csrf token for form submission
-     *
-     * @param string $formName
+     * Will return the @param string $formName
      * @return JsonResponse
+     *@see CsrfTokenResponseDTO containing the csrf token for form submission
+     *
      */
     #[Route("/get-csrf-token/{formName}", name: "get-csrf-token", methods: ["GET"])]
     public function getCsrfToken(string $formName): JsonResponse
@@ -45,14 +45,14 @@ class FormInternalApiAction extends AbstractController
         try{
             $token = $this->csrfTokenManager->getToken($formName);
 
-            $dto = new CsrfTokenResponseDto();
+            $dto = new CsrfTokenResponseDTO();
             $dto->prefillBaseFieldsForSuccessResponse();
             $dto->setCsrfToken($token);
 
             return $dto->toJsonResponse();
         }catch(Exception $e){
             $this->services->getLoggerService()->logException($e);
-            return BaseApiResponseDto::buildInternalServerErrorResponse()->toJsonResponse();
+            return BaseApiResponseDTO::buildInternalServerErrorResponse()->toJsonResponse();
         }
 
     }

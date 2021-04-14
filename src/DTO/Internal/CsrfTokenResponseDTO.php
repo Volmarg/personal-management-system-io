@@ -3,7 +3,7 @@
 
 namespace App\DTO\Internal;
 
-use App\DTO\BaseApiResponseDto;
+use App\DTO\BaseApiResponseDTO;
 
 /**
  * This dto transfers the generated csrf token to the frontend
@@ -12,7 +12,7 @@ use App\DTO\BaseApiResponseDto;
  * Class CsrfTokenResponseDto
  * @package App\DTO\API\Internal
  */
-class CsrfTokenResponseDto extends BaseApiResponseDto
+class CsrfTokenResponseDTO extends BaseApiResponseDTO
 {
 
     const KEY_CSRF_TOKEN = "csrToken";

@@ -2,10 +2,12 @@
 
 namespace App\Entity\Modules\Notes;
 
+use App\Service\ArrayService;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use Exception;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\NoteCategoryRepository")
@@ -21,6 +23,11 @@ use Exception;
  */
 class MyNoteCategory
 {
+
+    const KEY_ICON      = "icon";
+    const KEY_NAME      = "name";
+    const KEY_COLOR     = "color";
+    const KEY_PARENT_ID = "parentId";
 
     /**
      * @ORM\Id()
@@ -42,6 +49,7 @@ class MyNoteCategory
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[NotBlank]
     private string $name;
 
     /**
@@ -55,17 +63,18 @@ class MyNoteCategory
     private ?string $parentId = NULL;
 
     /**
-     * @return mixed
+     * @return ?string
      */
-    public function getParentId() {
+    public function getParentId(): ?string
+    {
         return $this->parentId;
     }
 
     /**
-     * @param string $parentId
+     * @param ?string $parentId
      * @throws Exception
      */
-    public function setParentId(string $parentId): void {
+    public function setParentId(?string $parentId): void {
         if (
                 $this->id == $parentId
             &&  !is_null($parentId)
@@ -148,5 +157,31 @@ class MyNoteCategory
         $this->color = strtoupper(str_replace('#', '', $color));
 
         return $this;
+    }
+
+    /**
+     * Creates entity from json
+     *
+     * @param string $json
+     * @return MyNoteCategory
+     * @throws Exception
+     */
+    public static function fromJson(string $json): MyNoteCategory
+    {
+        $dataArray  = json_decode($json, true);
+
+        $icon     = ArrayService::getArrayValueForKey($dataArray, self::KEY_ICON, "");
+        $name     = ArrayService::getArrayValueForKey($dataArray, self::KEY_NAME, "");
+        $color    = ArrayService::getArrayValueForKey($dataArray, self::KEY_COLOR, "");
+        $parentId = ArrayService::getArrayValueForKey($dataArray, self::KEY_PARENT_ID);
+
+        $myNoteCategory = new MyNoteCategory();
+
+        $myNoteCategory->setIcon($icon);
+        $myNoteCategory->setName($name);
+        $myNoteCategory->setColor($color);
+        $myNoteCategory->setParentId($parentId);
+
+        return $myNoteCategory;
     }
 }

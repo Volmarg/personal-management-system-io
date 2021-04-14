@@ -13,15 +13,17 @@ use Symfony\Component\HttpFoundation\Response;
  * Class BaseInternalApiResponseDto
  * @package App\DTO\API\Internal
  */
-class BaseApiResponseDto extends AbstractDTO
+class BaseApiResponseDTO extends AbstractDTO
 {
     const KEY_CODE           = "code";
     const KEY_MESSAGE        = "message";
     const KEY_SUCCESS        = "success";
     const KEY_INVALID_FIELDS = "invalidFields";
 
-    const DEFAULT_CODE    = Response::HTTP_BAD_REQUEST;
-    const DEFAULT_MESSAGE = "Bad request";
+    const DEFAULT_CODE         = Response::HTTP_BAD_REQUEST;
+    const DEFAULT_MESSAGE      = "Bad request";
+    const MESSAGE_INVALID_JSON = "INVALID_JSON";
+    const MESSAGE_OK           = "OK";
 
     /**
      * @var int $code
@@ -171,6 +173,31 @@ class BaseApiResponseDto extends AbstractDTO
     }
 
     /**
+     * Will build ok response
+     */
+    public static function buildOkResponse(): static
+    {
+        $dto = new static();
+        $dto->setCode(Response::HTTP_OK);
+        $dto->setSuccess(true);
+
+        return $dto;
+    }
+
+
+    /**
+     * Will build invalid json response
+     *
+     * @return static
+     */
+    public static function buildInvalidJsonResponse(): static
+    {
+        $dto = static::buildBadRequestErrorResponse();
+        $dto->setMessage(self::MESSAGE_INVALID_JSON);
+        return $dto;
+    }
+
+    /**
      * Will build internal server error response
      *
      * @param string $message
@@ -210,7 +237,7 @@ class BaseApiResponseDto extends AbstractDTO
         $message = self::checkAndGetKey($dataArray, self::KEY_MESSAGE, self::DEFAULT_MESSAGE);
         $code    = self::checkAndGetKey($dataArray, self::KEY_CODE, self:: DEFAULT_CODE);
 
-        $dto = new BaseApiResponseDto();
+        $dto = new BaseApiResponseDTO();
         $dto->setMessage($message);
         $dto->setCode($code);
 

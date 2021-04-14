@@ -5,9 +5,11 @@ namespace App\Controller\Core;
 
 
 use App\Service\Attribute\AttributeReaderService;
+use App\Service\Database\DatabaseService;
 use App\Service\Form\FormService;
 use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
+use App\Service\Validation\ValidationService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -42,6 +44,16 @@ class Services
      * @var TranslatorInterface $translator
      */
     private TranslatorInterface $translator;
+
+    /**
+     * @var ValidationService $validationService
+     */
+    private ValidationService $validationService;
+
+    /**
+     * @var DatabaseService $databaseService
+     */
+    private DatabaseService $databaseService;
 
     /**
      * @return AttributeReaderService
@@ -118,6 +130,38 @@ class Services
     public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
+    }
+
+    /**
+     * @return ValidationService
+     */
+    public function getValidationService(): ValidationService
+    {
+        return $this->validationService;
+    }
+
+    /**
+     * @param ValidationService $validationService
+     */
+    public function setValidationService(ValidationService $validationService): void
+    {
+        $this->validationService = $validationService;
+    }
+
+    /**
+     * @return DatabaseService
+     */
+    public function getDatabaseService(): DatabaseService
+    {
+        return $this->databaseService;
+    }
+
+    /**
+     * @param DatabaseService $databaseService
+     */
+    public function setDatabaseService(DatabaseService $databaseService): void
+    {
+        $this->databaseService = $databaseService;
     }
 
 }

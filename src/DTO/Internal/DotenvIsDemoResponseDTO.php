@@ -2,7 +2,7 @@
 
 namespace App\DTO\Internal;
 
-use App\DTO\BaseApiResponseDto;
+use App\DTO\BaseApiResponseDTO;
 
 /**
  * This dto transfers the .env information about the APP_DEMO mode
@@ -10,7 +10,7 @@ use App\DTO\BaseApiResponseDto;
  * Class CsrfTokenResponseDto
  * @package App\DTO\API\Internal
  */
-class DotenvIsDemoResponseDto extends BaseApiResponseDto
+class DotenvIsDemoResponseDTO extends BaseApiResponseDTO
 {
     const KEY_IS_DEMO = "isDemo";
 
