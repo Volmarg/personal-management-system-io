@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command\Assets;
+namespace App\Command\Frontend;
 
 
 use App\Controller\Core\ConfigLoader;
@@ -17,14 +17,12 @@ use Symfony\Component\Yaml\Parser as YamlParser;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Strings present in this command shall not be moved to translation files ad this command DOES generates such
- * and thus it's required to see what's going on in case of crash
- * Class BuildTranslationMessagesYamlFromAssetsCommand
- * @package App\Command\Assets
+ * Class BuildTranslationMessagesCommand
+ * @package App\Command\Frontend
  */
-class BuildTranslationMessagesYamlFromAssetsCommand extends Command
+class BuildTranslationMessagesCommand extends Command
 {
-    protected static $defaultName = 'pms-io:assets:build-frontend-translation-file';
+    protected static $defaultName = 'pms-io:build-frontend-translation-file';
 
     const TRANSLATION_FILE_EXTENSION_YML = "yaml";
 
@@ -58,7 +56,7 @@ class BuildTranslationMessagesYamlFromAssetsCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription("This command will get all the translations files from assets and wil build output bundle usable by symfony");
+            ->setDescription("This command will get all the translations files from and will build output bundle file usable on front");
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output) {
@@ -75,7 +73,7 @@ class BuildTranslationMessagesYamlFromAssetsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->note("Starting building translation messages Yaml file");
+        $io->note("Starting building translation messages from Yaml file");
         {
             $translationFilesData = $this->getBackendTranslationFilesData();
 
@@ -83,13 +81,13 @@ class BuildTranslationMessagesYamlFromAssetsCommand extends Command
                 $this->buildFrontendTranslationFile($translationFilesData);
                 $this->validateOutputFrontendTranslationFile();
             }else{
-                $message = "Translation data array is empty - does Your asset files even exist and are located in correct directory?";
+                $message = "Translation data array is empty - does Your files even exist and are located in correct directory?";
                 $io->warning($message);
                 $this->services->getLoggerService()->getLogger()->warning($message);
             }
         }
         $io->newLine();
-        $io->success("Finished building translation messages Yaml file");
+        $io->success("Finished building translation messages from Yaml file");
 
         return 1;
     }
@@ -103,9 +101,9 @@ class BuildTranslationMessagesYamlFromAssetsCommand extends Command
     {
         $this->services->getLoggerService()->getLogger()->info("Started getting translation files data");
 
-        $translationsAssetsDirectoryExist = file_exists($this->configLoader->getConfigLoaderPaths()->getTranslationBackendFolder());
-        if( !$translationsAssetsDirectoryExist ){
-            $this->services->getLoggerService()->getLogger()->critical("Translations assets directory does not exist: ",[
+        $translationsDirectoryExist = file_exists($this->configLoader->getConfigLoaderPaths()->getTranslationBackendFolder());
+        if( !$translationsDirectoryExist ){
+            $this->services->getLoggerService()->getLogger()->critical("Translations directory does not exist: ",[
                 "directory" => $this->configLoader->getConfigLoaderPaths()->getTranslationBackendFolder(),
             ]);
             return null;
@@ -158,8 +156,8 @@ class BuildTranslationMessagesYamlFromAssetsCommand extends Command
         $allTranslationFilesData = [];
 
         // iterate over all groups
-        foreach($translationFilesData as $filePath => $assetsDataArrays ){
-            $allTranslationFilesData = array_merge($allTranslationFilesData, $assetsDataArrays);
+        foreach($translationFilesData as $filePath => $translationFileDataArrays ){
+            $allTranslationFilesData = array_merge($allTranslationFilesData, $translationFileDataArrays);
         }
 
         $jsonData = json_encode($allTranslationFilesData);

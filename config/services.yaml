@@ -47,6 +47,7 @@ services:
         calls:
             - setTranslationBackendFolder: ['%paths.translations.backendFolder%']
             - setTranslationFrontendOutputFilePath: ['%paths.translations.frontendOutputFilePath%']
+            - setRoutingFrontendFilePath: ['%paths.routing.frontendFilePath%']
 
     App\Controller\Core\ConfigLoader:
         public: true

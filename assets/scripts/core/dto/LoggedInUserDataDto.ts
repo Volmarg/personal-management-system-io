@@ -44,7 +44,8 @@ export default class LoggedInUserDataDto extends BaseInternalApiResponseDto{
      */
     public static fromJson(json: string): LoggedInUserDataDto
     {
-        let baseDto = super.fromJson(json);
+        let loggedInUserDataDto = new LoggedInUserDataDto();
+        loggedInUserDataDto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
@@ -55,10 +56,6 @@ export default class LoggedInUserDataDto extends BaseInternalApiResponseDto{
             }
         }
 
-        let loggedInUserDataDto       = new LoggedInUserDataDto();
-        loggedInUserDataDto.success   = baseDto.success;
-        loggedInUserDataDto.code      = baseDto.code;
-        loggedInUserDataDto.message   = baseDto.message;
         loggedInUserDataDto.avatar    = object.avatar;
         loggedInUserDataDto.shownName = object.shownName;
 

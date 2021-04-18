@@ -1,0 +1,67 @@
+<!-- Template -->
+<template>
+  <single-menu-node
+      :shown-text="notesTranslationString"
+      feathers-icon-name="book"
+      :submenu-id="'multi-' + notesCategoriesMenuNodeId"
+      :show-collapse="parentChildDtoArray.length !== 0"
+  >
+    <template #submenu>
+      <nested-menu-node :nodes="parentChildDtoArray"
+                        :node-identifier="notesCategoriesMenuNodeId"
+                        :to-path-name="routeNameModuleNotesCategory"
+                        :to-id-param-name="routeNameModuleNotesCategoryIdParam"
+      />
+    </template>
+  </single-menu-node>
+</template>
+
+<!-- Script -->
+<script type="ts">
+
+import SymfonyRoutes       from "../../../../../../scripts/core/symfony/SymfonyRoutes";
+import TranslationsService from "../../../../../../scripts/core/service/TranslationsService";
+
+import NestedMenuNodeComponent from "../nested-menu-node.vue";
+import SingleMenuNodeComponent from "../single-menu-node.vue";
+
+import GetParentsChildrenCategoriesHierarchyResponse from "../../../../../../scripts/core/dto/module/notes/GetParentsChildrenCategoriesHierarchyResponse";
+import ParentChildDto                                from "../../../../../../scripts/core/dto/ParentChildDto";
+
+let translationsService = new TranslationsService();
+
+export default {
+  data(){
+    return {
+      parentChildDtoArray                 : [],
+      notesCategoriesMenuNodeId           : "notesCategories",
+      routeNameModuleNotesCategory        : SymfonyRoutes.ROUTE_NAME_MODULE_NOTES_CATEGORY,
+      routeNameModuleNotesCategoryIdParam : SymfonyRoutes.ROUTE_NAME_MODULE_NOTES_CATEGORY_ID_PARAM,
+      notesTranslationString              : translationsService.getTranslationForString('sidebar.menuNodes.notes.label'),
+    }
+  },
+  components: {
+    "nested-menu-node" : NestedMenuNodeComponent,
+    "single-menu-node" : SingleMenuNodeComponent,
+  },
+  methods: {
+    /**
+     * @description return the notes categories hierarchy to build men u nodes
+     */
+    getNotesCategoriesHierarchy(){
+
+      this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_NOTES_CATEGORIES_HIERARCHY)).then( (response) => {
+        let apiResponse = GetParentsChildrenCategoriesHierarchyResponse.fromAxiosResponse(response);
+        this.parentChildDtoArray = apiResponse.hierarchy.map( (object) => {
+          return ParentChildDto.fromObject(object);
+        });
+      });
+
+    },
+  },
+  beforeMount() {
+    this.getNotesCategoriesHierarchy();
+  }
+}
+
+</script>

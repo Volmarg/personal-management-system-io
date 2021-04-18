@@ -10,8 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Contains logic for handling notes categories entries based routes
+ *
+ * Class NotesCategoriesAction
+ * @package App\Action\Module\Notes
+ */
 #[Route("/module/notes-categories/", name: "module_notes_categories_")]
-class NotesCategoriesAction extends AbstractController {
+class NotesCategoriesAction extends AbstractController
+{
 
     /**
      * @var NotesCategoriesController $notesCategoriesController

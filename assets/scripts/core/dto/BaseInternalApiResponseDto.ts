@@ -47,24 +47,7 @@ export default class BaseInternalApiResponseDto {
     public static fromJson(json: string): BaseInternalApiResponseDto
     {
         let dto = new BaseInternalApiResponseDto();
-
-        try{
-            var object = JSON.parse(json);
-        }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: BaseInternalApiResponseDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
-        }
-
-        dto.success = object.success;
-        dto.message = object.message;
-        dto.code    = object.code;
-
-        if( "undefined" !== typeof object.invalidFields ){
-            dto.invalidFields = JSON.parse(object.invalidFields);
-        }
+        dto.prefillBaseFields(json);
 
         return dto;
     }
@@ -79,5 +62,32 @@ export default class BaseInternalApiResponseDto {
         let dto  = BaseInternalApiResponseDto.fromJson(json);
 
         return dto;
+    }
+
+    /**
+     * @description will prefill the fields of current calling class which extends from this one,
+     *              this reduced the necessity of setting the base fields in child class
+     */
+    protected prefillBaseFields(json: string): this
+    {
+        try{
+            var object = JSON.parse(json);
+        }catch(Exception){
+            throw{
+                "message"   : "Could not parse the json for: BaseInternalApiResponseDto",
+                "exception" : Exception,
+                "json"      : json,
+            }
+        }
+
+        this.success = object.success;
+        this.message = object.message;
+        this.code    = object.code;
+
+        if( "undefined" !== typeof object.invalidFields ){
+            this.invalidFields = JSON.parse(object.invalidFields);
+        }
+
+        return this;
     }
 }

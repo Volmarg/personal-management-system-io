@@ -15,6 +15,7 @@ export default class StringUtils {
             ""          == string
             ||  null        == string
             ||  "null"      == string
+            ||  undefined   == string
             ||  "undefined" == undefined
             ||  "undefined" == typeof string
         );

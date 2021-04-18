@@ -23,6 +23,7 @@ export default class GetParentsChildrenCategoriesHierarchyResponse extends BaseI
     public static fromJson(json: string): GetParentsChildrenCategoriesHierarchyResponse
     {
         let dto = new GetParentsChildrenCategoriesHierarchyResponse();
+        dto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
@@ -34,15 +35,7 @@ export default class GetParentsChildrenCategoriesHierarchyResponse extends BaseI
             }
         }
 
-        dto.success    = object.success;
-        dto.message    = object.message;
-        dto.code       = object.code;
         dto._hierarchy = object.hierarchy
-
-        if( "undefined" !== typeof object.invalidFields ){
-            dto.invalidFields = JSON.parse(object.invalidFields);
-        }
-
         return dto;
     }
 

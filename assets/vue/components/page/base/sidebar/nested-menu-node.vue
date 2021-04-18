@@ -8,7 +8,7 @@
     <li v-for="node in nodes"
         class="sidebar-item"
     >
-      <span class="d-flex justify-content-around">
+      <span class="d-flex justify-content-start">
         <router-link class="sidebar-link collapsed"
                      :to="
                       {
@@ -25,7 +25,7 @@
             v-if="hasNodeChildren(node)"
             :data-bs-target="hasNodeChildren(node) ? '#multi-' + node.id : ''"
             :data-bs-toggle="hasNodeChildren(node) ? 'collapse' : ''"
-            class="collapsed cursor-pointer"
+            class="collapsed cursor-pointer ms-4"
             aria-expanded="false"
         ></span>
         <span v-else

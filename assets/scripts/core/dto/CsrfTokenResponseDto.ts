@@ -35,7 +35,8 @@ export default class CsrfTokenResponseDto extends BaseInternalApiResponseDto
      */
     public static fromJson(json: string): CsrfTokenResponseDto
     {
-        let baseDto = super.fromJson(json);
+        let loggedInUserDataDto = new CsrfTokenResponseDto();
+        loggedInUserDataDto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
@@ -46,12 +47,7 @@ export default class CsrfTokenResponseDto extends BaseInternalApiResponseDto
             }
         }
 
-        let loggedInUserDataDto       = new CsrfTokenResponseDto();
-        loggedInUserDataDto.success   = baseDto.success;
-        loggedInUserDataDto.code      = baseDto.code;
-        loggedInUserDataDto.message   = baseDto.message;
-        loggedInUserDataDto.csrToken  = object.csrToken;
-
+        loggedInUserDataDto.csrToken = object.csrToken;
         return loggedInUserDataDto;
     }
 

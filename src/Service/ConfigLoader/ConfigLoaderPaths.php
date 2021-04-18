@@ -21,6 +21,10 @@ class ConfigLoaderPaths
      * @var string $translationFrontendOutputFilePath
      */
     private string $translationFrontendOutputFilePath = "";
+    /**
+     * @var string $routingFrontendFilePath
+     */
+    private string $routingFrontendFilePath = "";
 
     /**
      * @return string
@@ -52,6 +56,22 @@ class ConfigLoaderPaths
     public function setTranslationFrontendOutputFilePath(string $translationFrontendOutputFilePath): void
     {
         $this->translationFrontendOutputFilePath = $translationFrontendOutputFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoutingFrontendFilePath(): string
+    {
+        return $this->routingFrontendFilePath;
+    }
+
+    /**
+     * @param string $routingFrontendFilePath
+     */
+    public function setRoutingFrontendFilePath(string $routingFrontendFilePath): void
+    {
+        $this->routingFrontendFilePath = $routingFrontendFilePath;
     }
 
 }

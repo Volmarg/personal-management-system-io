@@ -16,8 +16,9 @@ class VueAction extends AbstractController
      * This action is needed to allow vue calling pages via standard url calls,
      * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
      */
-    #[Route("/module/notes/category/{id}", name: "modules_notes_category", methods: ["GET"])]
-    #[Route("/module/dashboard/overview", name: "modules_dashboard_overview", methods: ["GET"])]
+    #[Route("/module/notes/category/{id}",  name: "modules_notes_category",      methods: ["GET"])]
+    #[Route("/module/dashboard/overview",   name: "modules_dashboard_overview",  methods: ["GET"])]
+    #[Route("/module/passwords/group/{id}", name: "modules_passwords_group",     methods: ["GET"])]
     public function handleVueCallForPageDisplay(): Response
     {
         return $this->render(self::TEMPLATE_BASE);

@@ -76,8 +76,8 @@ export default {
      * @description will get notes for current category id
      */
     getNotesForCategory(){
-      let calledUrl = SymfonyRoutes.buildUrlWithReplacedParams(SymfonyRoutes.GET_NOTES_FOR_CATEGORY_ID, {
-        [SymfonyRoutes.GET_NOTES_FOR_CATEGORY_ID_PARAM_CATEGORY_ID] : this.categoryId
+      let calledUrl = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_NOTES_FOR_CATEGORY_ID, {
+        [SymfonyRoutes.ROUTE_GET_NOTES_FOR_CATEGORY_ID_PARAM_CATEGORY_ID] : this.categoryId
       })
 
       this.axios.get(calledUrl).then( (response) => {

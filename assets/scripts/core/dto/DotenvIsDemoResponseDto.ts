@@ -35,7 +35,8 @@ export default class DotenvIsDemoResponseDto extends BaseInternalApiResponseDto
      */
     public static fromJson(json: string): DotenvIsDemoResponseDto
     {
-        let baseDto = super.fromJson(json);
+        let loggedInUserDataDto = new DotenvIsDemoResponseDto();
+        loggedInUserDataDto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
@@ -46,11 +47,7 @@ export default class DotenvIsDemoResponseDto extends BaseInternalApiResponseDto
             }
         }
 
-        let loggedInUserDataDto     = new DotenvIsDemoResponseDto();
-        loggedInUserDataDto.success = baseDto.success;
-        loggedInUserDataDto.code    = baseDto.code;
-        loggedInUserDataDto.message = baseDto.message;
-        loggedInUserDataDto.isDemo  = object.isDemo;
+        loggedInUserDataDto.isDemo = object.isDemo;
 
         return loggedInUserDataDto;
     }

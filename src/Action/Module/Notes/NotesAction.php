@@ -11,6 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Contains routes used internally when handling notes entries
+ *
+ * Class NotesAction
+ * @package App\Action\Module\Notes
+ */
 #[Route("/module/notes/", name: "module_notes_")]
 class NotesAction extends AbstractController
 {

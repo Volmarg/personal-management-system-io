@@ -4,3 +4,5 @@ sidebar:
       label: Dashboard
     notes:
       label: Notes
+    passwords:
+      label: Passwords

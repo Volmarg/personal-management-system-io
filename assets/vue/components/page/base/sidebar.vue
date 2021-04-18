@@ -15,79 +15,38 @@
       <!-- Links -->
       <ul class="sidebar-nav">
         <li class="sidebar-header"></li>
-        <single-menu-node
-          :shown-text="dashboardTranslationString"
-          feathers-icon-name="sliders"
-          :to-path-name="routeNameModuleDashboardOverview"
-        />
 
-        <single-menu-node
-            :shown-text="notesTranslationString"
-            feathers-icon-name="book"
-            :submenu-id="'multi-' + notesCategoriesMenuNodeId"
-            :show-collapse="parentChildDtoArray.length !== 0"
-        >
-          <template #submenu>
-            <nested-menu-node :nodes="parentChildDtoArray"
-                              :node-identifier="notesCategoriesMenuNodeId"
-                              :to-path-name="routeNameModuleNotesCategory"
-                              :to-id-param-name="routeNameModuleNotesCategoryIdParam"
-            />
-          </template>
-        </single-menu-node>
+        <dashboard-menu-node/>
+        <password-menu-node/>
+        <notes-menu-node/>
+
       </ul>
-
     </div>
   </nav>
 </template>
 
 <!-- Script -->
 <script type="ts">
-import SingleMenuNodeComponent from './sidebar/single-menu-node';
-import NestedMenuNodeComponent from './sidebar/nested-menu-node';
-import SymfonyRoutes           from "../../../../scripts/core/symfony/SymfonyRoutes";
-import TranslationsService     from "../../../../scripts/core/service/TranslationsService";
+import DashboardMenuNodeComponent from "./sidebar/nodes/dashboard-menu-node";
+import NotesMenuNodeComponent     from "./sidebar/nodes/notes-menu-node";
+import PasswordsMenuNodeComponent from "./sidebar/nodes/passwords-menu-node";
 
-import GetParentsChildrenCategoriesHierarchyResponse from "../../../../scripts/core/dto/module/notes/GetParentsChildrenCategoriesHierarchyResponse";
-import ParentChildDto                                from "../../../../scripts/core/dto/ParentChildDto";
-import Router                                        from "../../../../scripts/libs/vue/Router";
+import TranslationsService from "../../../../scripts/core/service/TranslationsService";
+
+import Router from "../../../../scripts/libs/vue/Router";
 
 let translationsService = new TranslationsService();
 
 export default {
   data(){
     return {
-      parentChildDtoArray                 : [],
-      notesCategoriesMenuNodeId           : "notesCategories",
-      routeNameModuleNotesCategory        : Router.ROUTE_NAME_MODULE_NOTES_CATEGORY,
-      routeNameModuleNotesCategoryIdParam : Router.ROUTE_NAME_MODULE_NOTES_CATEGORY_ID_PARAM,
-      routeNameModuleDashboardOverview    : Router.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW,
-      routeNameHash                       : Router.ROUTE_NAME_HASH,
-      dashboardTranslationString          : translationsService.getTranslationForString('sidebar.menuNodes.dashboard.label'),
-      notesTranslationString              : translationsService.getTranslationForString('sidebar.menuNodes.notes.label'),
+      routeNameHash : Router.ROUTE_NAME_HASH,
     }
   },
   components: {
-    "single-menu-node" : SingleMenuNodeComponent,
-    "nested-menu-node" : NestedMenuNodeComponent,
-  },
-  methods: {
-    /**
-     * @description return the notes categories hierarchy to build men u nodes
-     */
-    getNotesCategoriesHierarchy(){
-
-      this.axios.get(SymfonyRoutes.GET_NOTES_CATEGORIES_HIERARCHY).then( (response) => {
-        let apiResponse = GetParentsChildrenCategoriesHierarchyResponse.fromAxiosResponse(response);
-        this.parentChildDtoArray = apiResponse.hierarchy.map( (object) => {
-          return ParentChildDto.fromObject(object);
-        });
-      });
-
-    },
-  },
-  beforeMount() {
-    this.getNotesCategoriesHierarchy();
+    "dashboard-menu-node" : DashboardMenuNodeComponent,
+    "notes-menu-node"     : NotesMenuNodeComponent,
+    "password-menu-node"  : PasswordsMenuNodeComponent,
   }
 }
 </script>

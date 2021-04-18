@@ -31,26 +31,20 @@ export default class GetCategoryResponseDto extends BaseInternalApiResponseDto {
     public static fromJson(json: string): GetCategoryResponseDto
     {
         let dto = new GetCategoryResponseDto();
+        dto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
         }catch(Exception){
             throw{
-                "message"   : "Could not parse the json for: GetNotesForCategoryResponseDto",
+                "message"   : "Could not parse the json for: GetCategoryResponseDto",
                 "exception" : Exception,
                 "json"      : json,
             }
         }
 
-        dto.success    = object.success;
-        dto.message    = object.message;
-        dto.code       = object.code;
         dto.notesJsons = object.notesJsons;
-        dto._name      = object.name;
-
-        if( "undefined" !== typeof object.invalidFields ){
-            dto.invalidFields = JSON.parse(object.invalidFields);
-        }
+        dto.name      = object.name;
 
         return dto;
     }
