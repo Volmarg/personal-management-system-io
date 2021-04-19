@@ -47,7 +47,8 @@ class Password
     private string  $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Modules\Passwords\PasswordGroup")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Modules\Passwords\PasswordGroup", inversedBy="password")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $group;
 

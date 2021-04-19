@@ -45,18 +45,10 @@ export default class SymfonyRoutes {
     static readonly ROUTE_NAME_GET_ALL_PASSWORDS_GROUPS = "module_passwords_groups_get_all_groups";
 
     /**
-     * @description will use the url with params and replace the params with values
+     * @description will return passwords in given group id, alongside with some base information about password group
      */
-    public static buildUrlWithReplacedParams(processedUrl: string, replacedParamsWithValues: object): string
-    {
-        let keys = Object.keys(replacedParamsWithValues);
-        keys.forEach( (key, index) => {
-            let value = replacedParamsWithValues[key];
-            processedUrl = processedUrl.replace(key, value);
-        })
-
-        return processedUrl;
-    }
+    static readonly ROUTE_NAME_GET_PASSWORDS_FOR_GROUP_ID          = "module_passwords_get_for_group_id";
+    static readonly ROUTE_NAME_GET_PASSWORDS_FOR_GROUP_ID_PARAM_ID = "id";
 
     /**
      * Will get url path for route name

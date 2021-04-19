@@ -31,4 +31,15 @@ class PasswordGroupController extends AbstractController
         return $this->passwordGroupRepository->getAllGroups();
     }
 
+    /**
+     * Will return one password group for given id or null if none is found
+     *
+     * @param string $id
+     * @return PasswordGroup|null
+     */
+    public function getOneForId(string $id): ?PasswordGroup
+    {
+        return $this->passwordGroupRepository->getOneForId($id);
+    }
+
 }

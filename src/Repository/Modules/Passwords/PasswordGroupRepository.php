@@ -21,10 +21,10 @@ class PasswordGroupRepository extends ServiceEntityRepository {
     /**
      * Will find one password group for id or null if nothing is found
      *
-     * @param int $id
+     * @param string $id
      * @return PasswordGroup|null
      */
-    public function getOneForId(int $id): ?PasswordGroup
+    public function getOneForId(string $id): ?PasswordGroup
     {
         return $this->find($id);
     }

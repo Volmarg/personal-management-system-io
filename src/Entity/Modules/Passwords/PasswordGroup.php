@@ -2,6 +2,7 @@
 
 namespace App\Entity\Modules\Passwords;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +26,11 @@ class PasswordGroup
      */
     private string $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Password", mappedBy="category", mappedBy="group")
+     */
+    private Collection $password;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +46,22 @@ class PasswordGroup
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPassword(): Collection
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param Collection $password
+     */
+    public function setPassword(Collection $password): void
+    {
+        $this->password = $password;
     }
 
     /**

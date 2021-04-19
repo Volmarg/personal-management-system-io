@@ -15,6 +15,8 @@
         "monolog/monolog": "^2.2",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
+        "slowprog/composer-copy-file": "^0.3.3",
+        "specshaper/encrypt-bundle": "^2.0",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",

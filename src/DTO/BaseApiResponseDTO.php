@@ -24,6 +24,7 @@ class BaseApiResponseDTO extends AbstractDTO
     const DEFAULT_MESSAGE      = "Bad request";
     const MESSAGE_INVALID_JSON = "INVALID_JSON";
     const MESSAGE_OK           = "OK";
+    const MESSAGE_NOT_FOUND    = "NOT_FOUND";
 
     /**
      * @var int $code
@@ -180,10 +181,23 @@ class BaseApiResponseDTO extends AbstractDTO
         $dto = new static();
         $dto->setCode(Response::HTTP_OK);
         $dto->setSuccess(true);
+        $dto->setMessage(self::MESSAGE_OK);
 
         return $dto;
     }
 
+    /**
+     * Will build 404 response
+     */
+    public static function buildNotFoundResponse(): static
+    {
+        $dto = new static();
+        $dto->setCode(Response::HTTP_NOT_FOUND);
+        $dto->setSuccess(false);
+        $dto->setMessage(self::MESSAGE_NOT_FOUND);
+
+        return $dto;
+    }
 
     /**
      * Will build invalid json response

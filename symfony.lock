@@ -139,6 +139,12 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "slowprog/composer-copy-file": {
+        "version": "0.3.3"
+    },
+    "specshaper/encrypt-bundle": {
+        "version": "v2.0.1"
+    },
     "symfony/asset": {
         "version": "v5.2.4"
     },

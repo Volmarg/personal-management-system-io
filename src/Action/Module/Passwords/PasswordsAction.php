@@ -3,7 +3,13 @@
 
 namespace App\Action\Module\Passwords;
 
+use App\Controller\Core\Services;
+use App\Controller\Modules\Passwords\PasswordGroupController;
+use App\DTO\BaseApiResponseDTO;
+use App\DTO\Internal\Module\Passwords\GetPasswordGroupWithPasswordsResponseDTO;
+use App\Entity\Modules\Passwords\Password;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,5 +21,50 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/module/passwords", name: "module_passwords_")]
 class PasswordsAction extends AbstractController
 {
+
+    /**
+     * @var PasswordGroupController $passwordGroupController
+     */
+    private PasswordGroupController $passwordGroupController;
+
+    /**
+     * @var Services $services
+     */
+    private Services $services;
+
+    public function __construct(PasswordGroupController $passwordGroupController, Services $services)
+    {
+        $this->passwordGroupController = $passwordGroupController;
+        $this->services                = $services;
+    }
+
+    /**
+     * Will return passwords for group id
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
+    #[Route("/get-for-group-id/{id}", name: "get_for_group_id", methods: ["GET"])]
+    public function getPasswordsForGroupId(string $id): JsonResponse
+    {
+        $group = $this->passwordGroupController->getOneForId($id);
+        if( empty($group) ){
+            $this->services->getLoggerService()->getLogger()->warning("No password group was found for id: {$id}");
+            return BaseApiResponseDTO::buildNotFoundResponse()->toJsonResponse();
+        }
+
+        $allPasswordsJsons = array_map(
+            fn(Password $password) => $password->toJson(),
+            $group->getPassword()->getValues()
+        );
+
+        $responseDto = new GetPasswordGroupWithPasswordsResponseDTO();
+        $responseDto->setPasswordsJsons($allPasswordsJsons);
+        $responseDto->setPasswordGroupName($group->getName());
+        $responseDto->setPasswordGroupId($group->getId());
+
+        $responseDto->prefillBaseFieldsForSuccessResponse();
+        return $responseDto->toJsonResponse();
+    }
 
 }
