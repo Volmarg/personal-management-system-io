@@ -4,6 +4,7 @@ namespace App\Repository\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\PasswordGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,18 @@ class PasswordGroupRepository extends ServiceEntityRepository {
     public function getAllGroups(): array
     {
         return $this->findAll();
+    }
+
+    /**
+     * Will save the new entity or update the state of already existing one
+     *
+     * @param PasswordGroup $passwordGroup
+     * @throws ORMException
+     */
+    public function save(PasswordGroup $passwordGroup): void
+    {
+        $this->_em->persist($passwordGroup);;
+        $this->_em->flush();
     }
 
 }

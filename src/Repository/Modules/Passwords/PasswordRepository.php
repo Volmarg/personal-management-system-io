@@ -4,7 +4,6 @@ namespace App\Repository\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\Password;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +17,18 @@ class PasswordRepository extends ServiceEntityRepository {
 
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Password::class);
+    }
+
+    /**
+     * Will save the new entity or update the state of already existing one
+     *
+     * @param Password $password
+     * @throws ORMException
+     */
+    public function save(Password $password): void
+    {
+        $this->_em->persist($password);;
+        $this->_em->flush();
     }
 
 }

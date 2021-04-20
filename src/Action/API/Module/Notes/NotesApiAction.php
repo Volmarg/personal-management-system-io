@@ -4,13 +4,14 @@
 namespace App\Action\API\Module\Notes;
 
 use App\Action\API\ApiAction;
+use App\Attribute\Action\ExternalActionAttribute;
 use App\Controller\API\ApiController;
 use App\Controller\Core\Services;
 use App\Controller\Modules\Notes\NotesCategoriesController;
 use App\Controller\Modules\Notes\NotesController;
 use App\DTO\BaseApiResponseDTO;
-use App\DTO\Request\InsertNotesCategoriesRequestDTO;
-use App\DTO\Request\InsertNotesRequestDTO;
+use App\DTO\Request\Modules\Notes\InsertNotesCategoriesRequestDTO;
+use App\DTO\Request\Modules\Notes\InsertNotesRequestDTO;
 use App\Entity\Modules\Notes\MyNote;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,6 +59,7 @@ class NotesApiAction extends ApiAction
      * @return JsonResponse
      */
     #[Route("/insert-categories", name: "insert_categories")]
+    #[ExternalActionAttribute]
     public function insertNotesCategories(Request $request): JsonResponse
     {
         $json        = $request->getContent();
@@ -116,6 +118,7 @@ class NotesApiAction extends ApiAction
      * @return JsonResponse
      */
     #[Route("/insert-notes", name: "insert_notes")]
+    #[ExternalActionAttribute]
     public function insertNotes(Request $request): JsonResponse
     {
         $json        = $request->getContent();

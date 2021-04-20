@@ -6,6 +6,7 @@ namespace App\Controller\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\Password;
 use App\Repository\Modules\Passwords\PasswordRepository;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -34,6 +35,17 @@ class PasswordController extends AbstractController
     public function getOneForId(string $id): ?Password
     {
         return $this->passwordRepository->find($id);
+    }
+
+    /**
+     * Will save the new entity or update the state of already existing one
+     *
+     * @param Password $password
+     * @throws ORMException
+     */
+    public function save(Password $password): void
+    {
+        $this->passwordRepository->save($password);
     }
 
 }

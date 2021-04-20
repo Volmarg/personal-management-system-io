@@ -2,7 +2,9 @@
 
 namespace App\Entity\Modules\Passwords;
 
+use App\DTO\AbstractDTO;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Modules\Passwords\PasswordRepository")
@@ -27,13 +29,14 @@ class Password
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Assert\NotBlank]
     private string $login;
 
-    // Encrypted
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
      */
+    #[Assert\NotBlank]
     private string $password;
 
     /**
@@ -50,7 +53,15 @@ class Password
      * @ORM\ManyToOne(targetEntity="App\Entity\Modules\Passwords\PasswordGroup", inversedBy="password")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Assert\NotBlank]
     private $group;
+
+    /**
+     * NOT a database based field - helper field for transferring data
+     *
+     * @var int $groupId
+     */
+    private int $groupId;
 
     public function getId(): ?int {
         return $this->id;
@@ -115,6 +126,22 @@ class Password
     }
 
     /**
+     * @return int
+     */
+    public function getGroupId(): int
+    {
+        return $this->groupId;
+    }
+
+    /**
+     * @param int $groupId
+     */
+    public function setGroupId(int $groupId): void
+    {
+        $this->groupId = $groupId;
+    }
+
+    /**
      * Return current dto in form of json string
      *
      * @return string
@@ -134,4 +161,26 @@ class Password
         return $json;
     }
 
+    /**
+     * Will create entity from json string
+     */
+    public static function fromJson(string $json): Password
+    {
+        $dataArray = json_decode($json, true);
+
+        $login       = AbstractDTO::checkAndGetKey($dataArray, self::KEY_LOGIN);
+        $password    = AbstractDTO::checkAndGetKey($dataArray, self::KEY_PASSWORD);
+        $url         = AbstractDTO::checkAndGetKey($dataArray, self::KEY_URL);
+        $description = AbstractDTO::checkAndGetKey($dataArray, self::KEY_DESCRIPTION);
+        $groupId     = AbstractDTO::checkAndGetKey($dataArray, self::KEY_GROUP_ID);
+
+        $passwordEntity = new Password();
+        $passwordEntity->setLogin($login);
+        $passwordEntity->setPassword($password);
+        $passwordEntity->setUrl($url);
+        $passwordEntity->setDescription($description);
+        $passwordEntity->setGroupId($groupId);
+
+        return $passwordEntity;
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Entity\Modules\Passwords;
 
+use App\DTO\AbstractDTO;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Modules\Passwords\PasswordGroupRepository")
@@ -23,6 +25,7 @@ class PasswordGroup
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private string $name;
 
@@ -78,6 +81,23 @@ class PasswordGroup
 
        $json = json_encode($dataArray);
        return $json;
+    }
+
+    /**
+     * Returns the entity created from json
+     *
+     * @param string $json
+     * @return PasswordGroup
+     */
+    public static function fromJson(string $json): PasswordGroup
+    {
+        $dataArray = json_decode($json, true);
+        $name      = AbstractDTO::checkAndGetKey($dataArray, self::KEY_NAME, "");
+
+        $entity = new PasswordGroup();
+        $entity->setName($name);
+
+        return $entity;
     }
 
 }

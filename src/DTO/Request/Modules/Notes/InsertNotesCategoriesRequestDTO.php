@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DTO\Request;
+namespace App\DTO\Request\Modules\Notes;
 
 
 use Symfony\Component\HttpFoundation\Request;

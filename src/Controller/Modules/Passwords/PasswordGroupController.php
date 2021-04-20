@@ -6,6 +6,7 @@ namespace App\Controller\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\PasswordGroup;
 use App\Repository\Modules\Passwords\PasswordGroupRepository;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PasswordGroupController extends AbstractController
@@ -40,6 +41,17 @@ class PasswordGroupController extends AbstractController
     public function getOneForId(string $id): ?PasswordGroup
     {
         return $this->passwordGroupRepository->getOneForId($id);
+    }
+
+    /**
+     * Will save the new entity or update the state of already existing one
+     *
+     * @param PasswordGroup $passwordGroup
+     * @throws ORMException
+     */
+    public function save(PasswordGroup $passwordGroup): void
+    {
+        $this->passwordGroupRepository->save($passwordGroup);
     }
 
 }
