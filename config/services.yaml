@@ -41,6 +41,7 @@ services:
             - setTranslator: ['@translator']
             - setValidationService: ['@App\Service\Validation\ValidationService']
             - setDatabaseService: ['@App\Service\Database\DatabaseService']
+            - setEncryptionService: ['@App\Service\Security\EncryptionService']
 
     App\Service\ConfigLoader\ConfigLoaderPaths:
         public: true
@@ -53,6 +54,11 @@ services:
         public: true
         calls:
             - setConfigLoaderPaths: ['@App\Service\ConfigLoader\ConfigLoaderPaths']
+
+    App\Service\Security\EncryptionService:
+        public: true
+        calls:
+            - initialize: ['@App\Service\Security\EncryptionService']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

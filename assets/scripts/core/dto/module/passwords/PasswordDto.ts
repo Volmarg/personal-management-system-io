@@ -3,6 +3,7 @@
  */
 export default class PasswordDto
 {
+    private _id          : string;
     private _login       : string;
     private _password    : string;
     private _url         : string;
@@ -49,6 +50,14 @@ export default class PasswordDto
         this._groupId = value;
     }
 
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
+    }
+
     /**
      * @description will create password dto from json
      */
@@ -71,6 +80,7 @@ export default class PasswordDto
         dto.url         = object.url;
         dto.description = object.description;
         dto.groupId     = object.groupId;
+        dto.id          = object.id;
 
         return dto;
     }

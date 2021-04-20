@@ -2,7 +2,6 @@
 
 namespace App\Entity\Modules\Passwords;
 
-use App\Entity\Modules\Passwords\PasswordGroup;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Password
 {
+    const KEY_ID          = "id";
     const KEY_LOGIN       = "login";
     const KEY_PASSWORD    = "password";
     const KEY_URL         = "url";
@@ -125,8 +125,9 @@ class Password
             self::KEY_DESCRIPTION => $this->getDescription(),
             self::KEY_GROUP_ID    => $this->getGroup()->getId(),
             self::KEY_LOGIN       => $this->getLogin(),
-            self::KEY_PASSWORD    => $this->getPassword(), // todo: must be decoded
+            self::KEY_PASSWORD    => $this->getPassword(),
             self::KEY_URL         => $this->getUrl(),
+            self::KEY_ID          => $this->getId(),
         ];
 
         $json = json_encode($dataArray);

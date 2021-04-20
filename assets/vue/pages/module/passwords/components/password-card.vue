@@ -15,23 +15,38 @@
         </section>
 
         <section class="actions">
-          <a href="#" class="card-link">Show password</a>
+          <a href="#" class="card-link" @click="showPasswordClick(id)">Show password</a>
         </section>
 
       </div>
     </div>
   </div>
 
+  <sweet-alert :cancel-button-string="'OK'"
+               :id="'passwordDialog' + id"
+               :dialog-content="shownPassword"
+               :ref="'passwordDialog' + id"
+
+  >
+
+  </sweet-alert>
+
 </template>
 
 <!-- Script -->
 <script type="ts">
 
-/**
- * todo: handle decrypt password on show click
- * todo: add backend method
- */
+import SymfonyRoutes from "../../../../../scripts/core/symfony/SymfonyRoutes";
+
+import GetDecryptedPasswordResponseDto  from "../../../../../scripts/core/dto/module/passwords/GetDecryptedPasswordResponseDto";
+import SweetAlert                       from "../../../../components/dialog/sweet-alert/sweet-alert.vue";
+
 export default {
+  data(){
+    return {
+      shownPassword: "",
+    }
+  },
   props: {
     description: {
       type     : String,
@@ -46,7 +61,14 @@ export default {
       type     : String,
       required : true,
       default   : ""
+    },
+    id: {
+      type     : Number,
+      required : true
     }
+  },
+  components: {
+    "sweet-alert": SweetAlert
   },
   methods: {
     /**
@@ -54,6 +76,23 @@ export default {
      */
     decryptPasswordForId(id){
 
+      let url = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_DECRYPT_PASSWORD, {
+        [SymfonyRoutes.ROUTE_NAME_DECRYPT_PASSWORD_PARAM_PASSWORD_ID] : id
+      })
+
+      this.axios.get( url ).then( (response) => {
+        let decryptedPasswordResponse = GetDecryptedPasswordResponseDto.fromAxiosResponse(response);
+
+        this.shownPassword = decryptedPasswordResponse.decryptedPassword;
+        this.$refs['passwordDialog' + id].showDialog();
+      })
+
+    },
+    /**
+     * @description handles clicking on the `show password`
+     */
+    showPasswordClick(passwordId){
+      this.decryptPasswordForId(passwordId);
     }
   }
 }

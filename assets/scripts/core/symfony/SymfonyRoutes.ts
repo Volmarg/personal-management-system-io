@@ -51,6 +51,12 @@ export default class SymfonyRoutes {
     static readonly ROUTE_NAME_GET_PASSWORDS_FOR_GROUP_ID_PARAM_ID = "id";
 
     /**
+     * @description will decrypt the password of given id
+     */
+    static readonly ROUTE_NAME_DECRYPT_PASSWORD                   = "module_passwords_decrypt_password";
+    static readonly ROUTE_NAME_DECRYPT_PASSWORD_PARAM_PASSWORD_ID = "passwordId";
+
+    /**
      * Will get url path for route name
      * Exception is thrown is none match is found
      *

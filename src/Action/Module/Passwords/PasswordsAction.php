@@ -4,10 +4,13 @@
 namespace App\Action\Module\Passwords;
 
 use App\Controller\Core\Services;
+use App\Controller\Modules\Passwords\PasswordController;
 use App\Controller\Modules\Passwords\PasswordGroupController;
 use App\DTO\BaseApiResponseDTO;
+use App\DTO\Internal\Module\Passwords\GetDecryptedPasswordResponseDTO;
 use App\DTO\Internal\Module\Passwords\GetPasswordGroupWithPasswordsResponseDTO;
 use App\Entity\Modules\Passwords\Password;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,13 +31,19 @@ class PasswordsAction extends AbstractController
     private PasswordGroupController $passwordGroupController;
 
     /**
+     * @var PasswordController $passwordController
+     */
+    private PasswordController $passwordController;
+
+    /**
      * @var Services $services
      */
     private Services $services;
 
-    public function __construct(PasswordGroupController $passwordGroupController, Services $services)
+    public function __construct(PasswordGroupController $passwordGroupController, PasswordController $passwordController, Services $services)
     {
         $this->passwordGroupController = $passwordGroupController;
+        $this->passwordController      = $passwordController;
         $this->services                = $services;
     }
 
@@ -64,6 +73,27 @@ class PasswordsAction extends AbstractController
         $responseDto->setPasswordGroupId($group->getId());
 
         $responseDto->prefillBaseFieldsForSuccessResponse();
+        return $responseDto->toJsonResponse();
+    }
+
+    /**
+     * Will decrypt the password for given entity id
+     * @throws Exception
+     */
+    #[Route("/decrypt-password/{passwordId}", name: "decrypt_password", methods: ["GET"])]
+    public function decryptPasswordForId(string $passwordId): JsonResponse
+    {
+        $passwordEntity = $this->passwordController->getOneForId($passwordId);
+        if( empty($passwordEntity) ){
+            return BaseApiResponseDTO::buildNotFoundResponse()->toJsonResponse();
+        }
+
+        $decryptedPassword = $this->services->getEncryptionService()->decryptPassword($passwordEntity->getPassword());
+
+        $responseDto = new GetDecryptedPasswordResponseDTO();
+        $responseDto->prefillBaseFieldsForSuccessResponse();
+        $responseDto->setDecryptedPassword($decryptedPassword);
+
         return $responseDto->toJsonResponse();
     }
 

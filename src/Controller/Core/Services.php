@@ -9,6 +9,7 @@ use App\Service\Database\DatabaseService;
 use App\Service\Form\FormService;
 use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
+use App\Service\Security\EncryptionService;
 use App\Service\Validation\ValidationService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -56,6 +57,11 @@ class Services
     private DatabaseService $databaseService;
 
     /**
+     * @var EncryptionService $encryptionService
+     */
+    private EncryptionService $encryptionService;
+
+    /**
      * @return AttributeReaderService
      */
     public function getAttributeReader(): AttributeReaderService
@@ -63,6 +69,9 @@ class Services
         return $this->attributeReaderService;
     }
 
+    /**
+     * @param AttributeReaderService $attributeReader
+     */
     public function setAttributeReaderService(AttributeReaderService $attributeReader): void
     {
         $this->attributeReaderService = $attributeReader;
@@ -162,6 +171,22 @@ class Services
     public function setDatabaseService(DatabaseService $databaseService): void
     {
         $this->databaseService = $databaseService;
+    }
+
+    /**
+     * @return EncryptionService
+     */
+    public function getEncryptionService(): EncryptionService
+    {
+        return $this->encryptionService;
+    }
+
+    /**
+     * @param EncryptionService $encryptionService
+     */
+    public function setEncryptionService(EncryptionService $encryptionService): void
+    {
+        $this->encryptionService = $encryptionService;
     }
 
 }

@@ -6,6 +6,7 @@
                    :description="password.description"
                    :url="password.url"
                    :login="password.login"
+                   :id="password.id"
     >
 
     </password-card>
