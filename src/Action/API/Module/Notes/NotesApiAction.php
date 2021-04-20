@@ -45,7 +45,12 @@ class NotesApiAction extends ApiAction
      * @param NotesCategoriesController $notesCategoriesController
      * @param NotesController $notesController
      */
-    public function __construct(ApiController $apiController, Services $services, NotesCategoriesController $notesCategoriesController, NotesController $notesController)
+    public function __construct(
+        ApiController             $apiController,
+        Services                  $services,
+        NotesCategoriesController $notesCategoriesController,
+        NotesController           $notesController
+    )
     {
         parent::__construct($apiController, $services);
         $this->notesCategoriesController = $notesCategoriesController;
@@ -62,15 +67,7 @@ class NotesApiAction extends ApiAction
     #[ExternalActionAttribute]
     public function insertNotesCategories(Request $request): JsonResponse
     {
-        $json        = $request->getContent();
-        $isJsonValid = $this->apiController->validateJson($json);
-        if( !$isJsonValid){
-            $this->services->getLoggerService()->getLogger()->warning("Provided json in request is not valid");
-            return BaseApiResponseDTO::buildInvalidJsonResponse()->toJsonResponse();
-        }
-
         $insertRequest = InsertNotesCategoriesRequestDTO::fromRequest($request);
-
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
@@ -121,15 +118,7 @@ class NotesApiAction extends ApiAction
     #[ExternalActionAttribute]
     public function insertNotes(Request $request): JsonResponse
     {
-        $json        = $request->getContent();
-        $isJsonValid = $this->apiController->validateJson($json);
-        if( !$isJsonValid){
-            $this->services->getLoggerService()->getLogger()->warning("Provided json in request is not valid");
-            return BaseApiResponseDTO::buildInvalidJsonResponse()->toJsonResponse();
-        }
-
         $insertRequest = InsertNotesRequestDTO::fromRequest($request);
-
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{

@@ -53,12 +53,20 @@ class UnhandledExceptionListener implements EventSubscriberInterface
         $calledUri = $event->getRequest()->getRequestUri();
         $this->services->getLoggerService()->logException($event->getThrowable());
 
-        if( $this->services->getAttributeReader()->hasUriAttribute($calledUri, InternalActionAttribute::class) ){
+        if(
+                $this->services->getAttributeReader()->hasUriAttribute($calledUri, InternalActionAttribute::class)
+            ||  $this->services->getAttributeReader()->hasUriAttribute($calledUri, ExternalActionAttribute::class)
+        ){
+            $this->services->getLoggerService()->getLogger()->critical("Unhandled Exception was thrown", [
+                "message" => $event->getThrowable()->getMessage(),
+                "code"    => $event->getThrowable()->getCode(),
+            ]);
 
-            $this->handleInternalCallException($event);
-        }elseif( $this->services->getAttributeReader()->hasUriAttribute($calledUri, ExternalActionAttribute::class) ){
+            $message      = $this->services->getTranslator()->trans("general.responseCodes.500");
+            $baseResponse = BaseApiResponseDTO::buildInternalServerErrorResponse();
+            $baseResponse->setMessage($message);
 
-            $this->handleExternalCallException($event);
+            $event->setResponse($baseResponse->toJsonResponse());
         }else{
 
             $this->services->getLoggerService()->getLogger()->warning("Missing handler for exception", [
@@ -79,27 +87,4 @@ class UnhandledExceptionListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * Will handle exception thrown when calling internal route
-     *
-     * @param ExceptionEvent $event
-     */
-    private function handleInternalCallException(ExceptionEvent $event): void
-    {
-        $message      = $this->services->getTranslator()->trans("general.responseCodes.500");
-        $baseResponse = BaseApiResponseDTO::buildInternalServerErrorResponse();
-        $baseResponse->setMessage($message);
-
-        $event->setResponse($baseResponse->toJsonResponse());
-    }
-
-    /**
-     * Will handle exception for external call
-     *
-     * @param ExceptionEvent $event
-     */
-    private function handleExternalCallException(ExceptionEvent $event): void
-    {
-        // todo: special handling of api response
-    }
 }

@@ -4,6 +4,7 @@
 namespace App\Action\API\Module\Passwords;
 
 
+use App\Action\API\ApiAction;
 use App\Attribute\Action\ExternalActionAttribute;
 use App\Controller\API\ApiController;
 use App\Controller\Core\Services;
@@ -15,7 +16,6 @@ use App\DTO\Request\Modules\Passwords\InsertPasswordsRequestDTO;
 use App\Entity\Modules\Passwords\Password;
 use App\Entity\Modules\Passwords\PasswordGroup;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,18 +28,8 @@ use TypeError;
  * @package App\Action\API\Module\Passwords
  */
 #[Route("/api/passwords", name: "api_passwords_")]
-class PasswordsApiAction extends AbstractController
+class PasswordsApiAction extends ApiAction
 {
-    /**
-     * @var Services $services
-     */
-    private Services $services;
-
-    /**
-     * @var ApiController $apiController
-     */
-    private ApiController $apiController;
-
     /**
      * @var PasswordGroupController $passwordGroupController
      */
@@ -65,10 +55,9 @@ class PasswordsApiAction extends AbstractController
         PasswordController      $passwordController
     )
     {
+        parent::__construct($apiController, $services);
         $this->passwordGroupController = $passwordGroupController;
         $this->passwordController      = $passwordController;
-        $this->apiController           = $apiController;
-        $this->services                = $services;
     }
 
     /**
@@ -81,15 +70,7 @@ class PasswordsApiAction extends AbstractController
     #[ExternalActionAttribute]
     public function insertPasswordGroups(Request $request): JsonResponse
     {
-        $json        = $request->getContent();
-        $isJsonValid = $this->apiController->validateJson($json);
-        if( !$isJsonValid){
-            $this->services->getLoggerService()->getLogger()->warning("Provided json in request is not valid");
-            return BaseApiResponseDTO::buildInvalidJsonResponse()->toJsonResponse();
-        }
-
         $insertRequest = InsertPasswordsGroupsRequestDTO::fromRequest($request);
-
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
@@ -140,15 +121,7 @@ class PasswordsApiAction extends AbstractController
     #[ExternalActionAttribute]
     public function insertPasswords(Request $request): JsonResponse
     {
-        $json        = $request->getContent();
-        $isJsonValid = $this->apiController->validateJson($json);
-        if( !$isJsonValid){
-            $this->services->getLoggerService()->getLogger()->warning("Provided json in request is not valid");
-            return BaseApiResponseDTO::buildInvalidJsonResponse()->toJsonResponse();
-        }
-
         $insertRequest = InsertPasswordsRequestDTO::fromRequest($request);
-
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{

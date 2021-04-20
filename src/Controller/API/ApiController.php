@@ -7,6 +7,12 @@ namespace App\Controller\API;
 use App\Controller\Core\Services;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Handles common logic for api calls
+ *
+ * Class ApiController
+ * @package App\Controller\API
+ */
 class ApiController extends AbstractController
 {
     /**
@@ -32,6 +38,7 @@ class ApiController extends AbstractController
         json_decode($json);
         if( JSON_ERROR_NONE !== json_last_error() ){
             $this->services->getLoggerService()->getLogger()->critical("Provided json is not valid", [
+                "json"             => $json,
                 'jsonLastErrorMsg' => json_last_error_msg(),
             ]);
 
