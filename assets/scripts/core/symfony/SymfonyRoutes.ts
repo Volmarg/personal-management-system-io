@@ -57,6 +57,21 @@ export default class SymfonyRoutes {
     static readonly ROUTE_NAME_DECRYPT_PASSWORD_PARAM_PASSWORD_ID = "passwordId";
 
     /**
+     * @description login page
+     */
+    static readonly ROUTE_NAME_LOGIN = "login";
+
+    /**
+     * @description will return csrf token for form submission
+     */
+    static readonly ROUTE_NAME_GET_CSRF_TOKEN = "system_get_csrf_token";
+
+    /**
+     * @description will handle login for user
+     */
+    static readonly ROUTE_NAME_HANDLE_LOGIN = "system_user_handle_login";
+
+    /**
      * Will get url path for route name
      * Exception is thrown is none match is found
      *

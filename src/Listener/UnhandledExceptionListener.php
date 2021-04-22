@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
 
 /**
@@ -42,9 +43,10 @@ class UnhandledExceptionListener implements EventSubscriberInterface
      */
     public function handleException(ExceptionEvent $event): void
     {
-        // ignore 404 exception
+
         if(
-                $event->getThrowable() instanceof NotFoundHttpException
+                $event->getThrowable() instanceof NotFoundHttpException         // ignore 404 exception
+            ||  $event->getThrowable() instanceof ResourceNotFoundException     // mute favicon not found etc.
             ||  Response::HTTP_NOT_FOUND === $event->getThrowable()->getCode()
         ){
             return;

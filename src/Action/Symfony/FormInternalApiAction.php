@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route("/api-internal", name: "api_internal_")]
+#[Route("/system/", name: "system_")]
 class FormInternalApiAction extends AbstractController
 {
 
@@ -34,20 +34,23 @@ class FormInternalApiAction extends AbstractController
     }
 
     /**
-     * Will return the @param string $formName
-     * @return JsonResponse
-     *@see CsrfTokenResponseDTO containing the csrf token for form submission
+     * Will return the @see CsrfTokenResponseDTO containing the csrf token for form submission
      *
+     * @return JsonResponse
      */
-    #[Route("/get-csrf-token/{formName}", name: "get-csrf-token", methods: ["GET"])]
-    public function getCsrfToken(string $formName): JsonResponse
+    #[Route("/get-csrf-token", name: "get_csrf_token", methods: ["GET"])]
+    public function getCsrfToken(): JsonResponse
     {
         try{
-            $token = $this->csrfTokenManager->getToken($formName);
+            /**
+             * It's required to refresh the token, as otherwise always the same is returned, there already
+             * were some issues where submitting form for token generated for constant id resulted in submission  error
+             */
+            $token = $this->csrfTokenManager->refreshToken(rand());
 
             $dto = new CsrfTokenResponseDTO();
             $dto->prefillBaseFieldsForSuccessResponse();
-            $dto->setCsrfToken($token);
+            $dto->setCsrfToken($token->getValue());
 
             return $dto->toJsonResponse();
         }catch(Exception $e){

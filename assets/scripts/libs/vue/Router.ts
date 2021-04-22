@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw, RouterOptions} from 'vue
 import NoteCategoryComponent      from '../../../vue/pages/module/notes/category.vue';
 import DashboardOverviewComponent from '../../../vue/pages/module/dashboard/overview.vue';
 import PasswordsOverviewComponent from '../../../vue/pages/module/passwords/passwords.vue';
+import LoginPageComponent         from "../../../vue/pages/module/secuirty/login.vue";
 import SymfonyRoutes              from "../../core/symfony/SymfonyRoutes";
 
 /**
@@ -37,6 +38,11 @@ export default class Router {
             component : PasswordsOverviewComponent,
             path      : SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_MODULE_PASSWORDS_GROUP),
             name      : SymfonyRoutes.ROUTE_NAME_MODULE_PASSWORDS_GROUP,
+        },
+        {
+            component : LoginPageComponent,
+            path      : SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN),
+            name      : SymfonyRoutes.ROUTE_NAME_LOGIN,
         }
     ];
 

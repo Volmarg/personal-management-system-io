@@ -1,13 +1,20 @@
 <!-- Template -->
 <template>
 
-  <div class="wrapper">
+  <div class="wrapper" v-if="includeBaseComponents">
     <sidebar/>
 
     <div class="main">
       <topbar/>
       <page/>
-      <footer/>
+      <footer-bar/>
+    </div>
+
+  </div>
+
+  <div class="wrapper" v-else>
+    <div class="main">
+      <router-view></router-view>
     </div>
   </div>
 
@@ -20,12 +27,19 @@ import TopbarComponent  from './topbar';
 import PageComponent    from './single-page';
 import FooterComponent  from './footer';
 
-export default{
+export default {
+  props: {
+    includeBaseComponents: {
+      type     : Boolean,
+      required : false,
+      default  : true,
+    }
+  },
   components: {
-    'sidebar' : SidebarComponent,
-    'topbar'  : TopbarComponent,
-    "page"    : PageComponent,
-    "footer"  : FooterComponent,
+    'sidebar'    : SidebarComponent,
+    'topbar'     : TopbarComponent,
+    "page"       : PageComponent,
+    "footer-bar" : FooterComponent,
   }
 }
 </script>
