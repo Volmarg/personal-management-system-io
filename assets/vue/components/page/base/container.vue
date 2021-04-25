@@ -1,6 +1,7 @@
 <!-- Template -->
 <template>
 
+  <spinner/>
   <div class="wrapper" v-if="includeBaseComponents">
     <sidebar/>
 
@@ -26,6 +27,7 @@ import SidebarComponent from './sidebar';
 import TopbarComponent  from './topbar';
 import PageComponent    from './single-page';
 import FooterComponent  from './footer';
+import SpinnerComponent from "./../../spinner/spinner";
 
 export default {
   props: {
@@ -40,6 +42,7 @@ export default {
     'topbar'     : TopbarComponent,
     "page"       : PageComponent,
     "footer-bar" : FooterComponent,
+    "spinner"    : SpinnerComponent
   }
 }
 </script>

@@ -56,8 +56,11 @@
 import SymfonyRoutes       from "../../../../scripts/core/symfony/SymfonyRoutes";
 import ToastifyService     from "../../../../scripts/libs/toastify/ToastifyService";
 import TranslationsService from "../../../../scripts/core/service/TranslationsService";
-import StringUtils from "../../../../scripts/core/utils/StringUtils";
+import StringUtils         from "../../../../scripts/core/utils/StringUtils";
+import SpinnerService      from "../../../../scripts/core/service/SpinnerService";
+
 import LoggedInUserDataDto from "../../../../scripts/core/dto/LoggedInUserDataDto";
+import LocalStorageService from "../../../../scripts/core/service/LocalStorageService";
 
 let translationService = new TranslationsService();
 
@@ -96,22 +99,35 @@ export default {
     },
   },
   beforeMount(){
-
-    // check if user is logged in, and if yes then go back to last page
+    SpinnerService.showSpinner();
+    // check if user is logged in, and if yes then go to dashboard
     this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_LOGGED_IN_USER_DATA)).then( response => {
-      let loggedInUserDataDto = LoggedInUserDataDto.fromAxiosResponse(response);
 
+      let loggedInUserDataDto = LoggedInUserDataDto.fromAxiosResponse(response);
       if(!loggedInUserDataDto.success){
+        SpinnerService.hideSpinner();
         ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
         return;
       }
 
-      if(!loggedInUserDataDto.loggedIn){
-        // this must be handled without Vue as the login page contains different base component (blank)
-        location.href = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW);
+      if(loggedInUserDataDto.loggedIn){
+        // already logged in and tries to enter login page
+        if( LocalStorageService.isLoggedInUserSet() ){
+          ToastifyService.showOrangeNotification(translationService.getTranslationForString('security.login.messages.alreadyLoggedIn'))
+        }else{
+          ToastifyService.showGreenNotification(translationService.getTranslationForString('security.login.messages.OK'))
+          LocalStorageService.setLoggedInUser(loggedInUserDataDto);
+        }
+
+        // let user read the message
+        setTimeout(() => {
+          // this must be handled without Vue as the login page contains different base component (blank)
+          location.href = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW);
+        }, 1000)
         return;
       }
     }).catch( (response) => {
+      SpinnerService.hideSpinner();
       ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
       console.warn(response);
     });

@@ -22,6 +22,16 @@ export default class ToastifyService
     }
 
     /**
+     * Will show orange notification
+     *
+     * @param message
+     */
+    public static showOrangeNotification(message: string)
+    {
+        this.buildToastifyInstance("orange", message);
+    }
+
+    /**
      * Will show green notification
      *
      * @param message

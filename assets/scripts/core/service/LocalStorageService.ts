@@ -9,7 +9,7 @@ export default class LocalStorageService {
     /**
      * @description will set the logged in user dto in local storage
      */
-    public setLoggedInUser(loggedInUserDataDto: LoggedInUserDataDto): void
+    public static setLoggedInUser(loggedInUserDataDto: LoggedInUserDataDto): void
     {
         localStorage.setItem(LocalStorageService.SESSION_KEY_LOGGED_USER, loggedInUserDataDto.toJson());
     }
@@ -17,7 +17,7 @@ export default class LocalStorageService {
     /**
      * @description will get the logged in user dto from local storage or null if it's not set
      */
-    public getLoggedInUser(): LoggedInUserDataDto | null
+    public static getLoggedInUser(): LoggedInUserDataDto | null
     {
         let json = localStorage.getItem(LocalStorageService.SESSION_KEY_LOGGED_USER);
 
@@ -32,7 +32,7 @@ export default class LocalStorageService {
     /**
      * @description will check if the logged in user data is set in local storage
      */
-    public isLoggedInUserSet(): boolean
+    public static isLoggedInUserSet(): boolean
     {
         let json = localStorage.getItem(LocalStorageService.SESSION_KEY_LOGGED_USER);
         return !StringUtils.isEmptyString(json)
@@ -41,7 +41,7 @@ export default class LocalStorageService {
     /**
      * @description will check if this is the first time that user logs in
      */
-    public isFirstLogin(): boolean
+    public static isFirstLogin(): boolean
     {
         let isFirstLogin = localStorage.getItem(LocalStorageService.SESSION_KEY_IS_FIRST_LOGIN);
         return StringUtils.isEmptyString(isFirstLogin);
@@ -50,7 +50,7 @@ export default class LocalStorageService {
     /**
      * @description will set the first login to true
      */
-    public setFirstLogin(): void {
+    public static setFirstLogin(): void {
         localStorage.setItem(LocalStorageService.SESSION_KEY_IS_FIRST_LOGIN, 'true');
     }
 

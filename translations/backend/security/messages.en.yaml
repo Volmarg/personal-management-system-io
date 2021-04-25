@@ -2,4 +2,5 @@ security:
   login:
     messages:
       UNAUTHORIZED: Unauthorized
-      OK: You are logged in
+      OK: Login successful
+      alreadyLoggedIn: You are already logged in!

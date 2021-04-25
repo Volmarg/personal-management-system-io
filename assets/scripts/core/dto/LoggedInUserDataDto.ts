@@ -33,6 +33,20 @@ export default class LoggedInUserDataDto extends BaseInternalApiResponseDto{
     }
 
     /**
+     * @description returns current dto as string
+     */
+    public toJson(): string
+    {
+        let object = {
+            shownName : this.shownName,
+            avatar    : this.avatar,
+            loggedIn  : this.loggedIn,
+        }
+
+        return JSON.stringify(object);
+    }
+
+    /**
      * @description Create LoggedInUserDataDto from json
      */
     public static fromJson(json: string): LoggedInUserDataDto

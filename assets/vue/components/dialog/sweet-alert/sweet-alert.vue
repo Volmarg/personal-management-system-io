@@ -132,4 +132,8 @@ export default {
   overflow-y: auto;
 }
 
+.swal2-popup {
+  width: auto;
+}
+
 </style>
