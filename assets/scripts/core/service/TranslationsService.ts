@@ -3,8 +3,8 @@ import {VUE_APP_DEFAULT_STRING_BEFORE_TRANSLATING}  from "../../env";
 import JsonPath                                     from 'jsonpath';
 
 /**
- * todo: pass translations Service the same way to vue as it's done with AxiosCsrf
  * @description loads the translation from the translation file
+ * @link https://www.npmjs.com/package/jsonpath
  */
 export default class TranslationsService {
 

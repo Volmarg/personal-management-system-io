@@ -7,9 +7,9 @@
           <div class="d-table-cell align-middle">
 
             <div class="text-center mt-4">
-              <h1 class="h2">{{ mainHeaderTranslatedString }}</h1>
+              <h1 class="h2">{{ trans('pages.security.login.form.header.main') }}</h1>
               <p class="lead">
-                {{ subHeaderTranslatedString }}
+                {{ trans('pages.security.login.form.header.sub') }}
               </p>
             </div>
 
@@ -18,26 +18,26 @@
                 <div class="m-sm-4">
                   <form>
                     <div class="mb-3">
-                      <label class="form-label">{{ usernameInputLabelTranslatedString }}</label>
+                      <label class="form-label">{{ trans('pages.security.login.form.inputs.username.label') }}</label>
                       <input class="form-control form-control-lg"
                              type="text"
                              name="username"
-                             :placeholder="usernameInputPlaceholderTranslatedString"
+                             :placeholder="trans('pages.security.login.form.inputs.username.placeholder')"
                              ref="usernameInput"
                       >
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">{{ passwordInputLabelTranslatedString }}</label>
+                      <label class="form-label">{{ trans('pages.security.login.form.inputs.password.label') }}</label>
                       <input class="form-control form-control-lg"
                              type="password"
                              name="password"
-                             :placeholder="passwordInputPlaceholderTranslatedString"
+                             :placeholder="trans('pages.security.login.form.inputs.password.placeholder')"
                              ref="passwordInput"
                       >
                     </div>
 
                     <div class="text-center mt-3">
-                      <a href="#" class="btn btn-lg btn-primary" @click="loginFormSubmitted">{{ singInButtonTranslatedString }}</a>
+                      <a href="#" class="btn btn-lg btn-primary" @click="loginFormSubmitted">{{ trans('pages.security.login.form.buttons.login') }}</a>
                     </div>
                   </form>
                 </div>
@@ -53,24 +53,9 @@
 
 <!-- Script -->
 <script>
-
-import TranslationsService from "../../../../scripts/core/service/TranslationsService";
-import SymfonyRoutes       from "../../../../scripts/core/symfony/SymfonyRoutes";
-
-let translationsService = new TranslationsService();
+import SymfonyRoutes from "../../../../scripts/core/symfony/SymfonyRoutes";
 
 export default {
-  data(){
-    return {
-      mainHeaderTranslatedString               : translationsService.getTranslationForString("pages.security.login.form.header.main"),
-      subHeaderTranslatedString                : translationsService.getTranslationForString("pages.security.login.form.header.sub"),
-      usernameInputLabelTranslatedString       : translationsService.getTranslationForString("pages.security.login.form.inputs.username.label"),
-      usernameInputPlaceholderTranslatedString : translationsService.getTranslationForString("pages.security.login.form.inputs.username.placeholder"),
-      passwordInputLabelTranslatedString       : translationsService.getTranslationForString("pages.security.login.form.inputs.password.label"),
-      passwordInputPlaceholderTranslatedString : translationsService.getTranslationForString("pages.security.login.form.inputs.password.placeholder"),
-      singInButtonTranslatedString             : translationsService.getTranslationForString("pages.security.login.form.buttons.login"),
-    }
-  },
   methods: {
     /**
      * @description handles the login form submission

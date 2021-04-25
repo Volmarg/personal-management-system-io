@@ -31,11 +31,7 @@ import DashboardMenuNodeComponent from "./sidebar/nodes/dashboard-menu-node";
 import NotesMenuNodeComponent     from "./sidebar/nodes/notes-menu-node";
 import PasswordsMenuNodeComponent from "./sidebar/nodes/passwords-menu-node";
 
-import TranslationsService from "../../../../scripts/core/service/TranslationsService";
-
 import Router from "../../../../scripts/libs/vue/Router";
-
-let translationsService = new TranslationsService();
 
 export default {
   data(){

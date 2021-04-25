@@ -3,6 +3,7 @@ import VueAxios           from "vue-axios";
 import ContainerComponent from "./vue/components/page/base/container.vue";
 import Router             from './scripts/libs/vue/Router'
 import AxiosCsrfPlugin    from "./vue/plugins/AxiosCsrfPlugin";
+import TranslationPlugin  from "./vue/plugins/TranslationPlugin";
 
 var Vue = require('vue');
 
@@ -69,6 +70,7 @@ export default class App {
     /**
      * @description will return plugins to be installed to Vue
      *              @see AxiosCsrfPlugin
+     *              @see TranslationPlugin
      * @private
      */
     private getInstallablePlugins(): Object
@@ -76,6 +78,7 @@ export default class App {
         return {
             install(app){
                 app.config.globalProperties.postWithCsrf = AxiosCsrfPlugin.postWithCsrf;
+                app.config.globalProperties.trans        = TranslationPlugin.trans;
             }
         }
     }

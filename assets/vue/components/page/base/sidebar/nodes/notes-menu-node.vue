@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
   <single-menu-node
-      :shown-text="notesTranslationString"
+      :shown-text="trans('sidebar.menuNodes.notes.label')"
       feathers-icon-name="book"
       :submenu-id="'multi-' + notesCategoriesMenuNodeId"
       :show-collapse="parentChildDtoArray.length !== 0"
@@ -19,16 +19,13 @@
 <!-- Script -->
 <script type="ts">
 
-import SymfonyRoutes       from "../../../../../../scripts/core/symfony/SymfonyRoutes";
-import TranslationsService from "../../../../../../scripts/core/service/TranslationsService";
+import SymfonyRoutes from "../../../../../../scripts/core/symfony/SymfonyRoutes";
 
 import NestedMenuNodeComponent from "../nested-menu-node.vue";
 import SingleMenuNodeComponent from "../single-menu-node.vue";
 
 import GetParentsChildrenCategoriesHierarchyResponse from "../../../../../../scripts/core/dto/module/notes/GetParentsChildrenCategoriesHierarchyResponse";
 import ParentChildDto                                from "../../../../../../scripts/core/dto/ParentChildDto";
-
-let translationsService = new TranslationsService();
 
 export default {
   data(){
@@ -37,7 +34,6 @@ export default {
       notesCategoriesMenuNodeId           : "notesCategories",
       routeNameModuleNotesCategory        : SymfonyRoutes.ROUTE_NAME_MODULE_NOTES_CATEGORY,
       routeNameModuleNotesCategoryIdParam : SymfonyRoutes.ROUTE_NAME_MODULE_NOTES_CATEGORY_ID_PARAM,
-      notesTranslationString              : translationsService.getTranslationForString('sidebar.menuNodes.notes.label'),
     }
   },
   components: {

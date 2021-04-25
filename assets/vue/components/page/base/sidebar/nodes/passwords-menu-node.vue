@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
   <single-menu-node
-      :shown-text="passwordsTranslationString"
+      :shown-text="trans('sidebar.menuNodes.passwords.label')"
       :show-collapse="true"
       :submenu-id="passwordsMenuId"
       feathers-icon-name="key"
@@ -40,19 +40,15 @@
 
 import SingleMenuNodeComponent from "../single-menu-node.vue";
 
-import SymfonyRoutes           from "../../../../../../scripts/core/symfony/SymfonyRoutes";
-import TranslationsService     from "../../../../../../scripts/core/service/TranslationsService";
+import SymfonyRoutes from "../../../../../../scripts/core/symfony/SymfonyRoutes";
 
 import GetPasswordGroupsResponseDto  from "../../../../../../scripts/core/dto/module/passwords/GetPasswordGroupsResponseDto";
 import PasswordGroupDto              from "../../../../../../scripts/core/dto/module/passwords/PasswordGroupDto";
-
-let translationsService = new TranslationsService();
 
 export default {
   data(){
     return {
       passwordsGroups                      : [],
-      passwordsTranslationString           : translationsService.getTranslationForString('sidebar.menuNodes.passwords.label'),
       routeNameModulePasswordsGroup        : SymfonyRoutes.ROUTE_NAME_MODULE_PASSWORDS_GROUP,
       routeNameModulePasswordsGroupParamId : SymfonyRoutes.ROUTE_NAME_MODULE_PASSWORDS_GROUP_ID_PARAM,
       passwordsMenuId                      : "passwordsGroups",

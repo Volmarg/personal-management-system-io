@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
   <single-menu-node
-      :shown-text="dashboardTranslationString"
+      :shown-text="trans('sidebar.menuNodes.dashboard.label')"
       feathers-icon-name="sliders"
       :to-path-name="routeNameModuleDashboardOverview"
   />
@@ -10,16 +10,12 @@
 <!-- Script -->
 <script type="ts">
 import SymfonyRoutes           from "../../../../../../scripts/core/symfony/SymfonyRoutes";
-import TranslationsService     from "../../../../../../scripts/core/service/TranslationsService";
 import SingleMenuNodeComponent from "../single-menu-node.vue";
-
-let translationsService = new TranslationsService();
 
 export default {
   data(){
     return{
-      routeNameModuleDashboardOverview    : SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW,
-      dashboardTranslationString          : translationsService.getTranslationForString('sidebar.menuNodes.dashboard.label'),
+      routeNameModuleDashboardOverview : SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW,
     }
   },
   components: {

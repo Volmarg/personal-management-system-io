@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
 
-  <page-header :shown-text="getCategoryNameTranslationString"/>
+  <page-header :shown-text="trans('pages.notes.category.header', {'{{noteCategoryName}}' : categoryName})"/>
 
   <page-card>
     <note-card
@@ -13,7 +13,7 @@
 
   <sweet-alert
     v-for="note in notes"
-    :cancel-button-string="dialogCloseButtonTranslatedString()"
+    :cancel-button-string="trans('dialogs.buttons.default.close')"
     :header-string="note.title"
     :dialog-content="note.body"
     :id="'noteDialogId_' + note.id"
@@ -33,12 +33,9 @@ import PageHeaderComponent from '../../../components/page/base/page-elements/hea
 import NoteCardComponent   from './components/note-card';
 import SweetAlertComponent from "../../../components/dialog/sweet-alert/sweet-alert";
 
-import TranslationsService            from "../../../../scripts/core/service/TranslationsService";
-import SymfonyRoutes                  from "../../../../scripts/core/symfony/SymfonyRoutes";
-import GetCategoryResponseDto         from "../../../../scripts/core/dto/module/notes/GetCategoryResponseDto";
-import MyNoteDto                      from "../../../../scripts/core/dto/module/notes/MyNoteDto";
-
-let translationService = new TranslationsService();
+import SymfonyRoutes          from "../../../../scripts/core/symfony/SymfonyRoutes";
+import GetCategoryResponseDto from "../../../../scripts/core/dto/module/notes/GetCategoryResponseDto";
+import MyNoteDto              from "../../../../scripts/core/dto/module/notes/MyNoteDto";
 
 export default {
   data(){
@@ -53,16 +50,6 @@ export default {
     "page-header" : PageHeaderComponent,
     "note-card"   : NoteCardComponent,
     "sweet-alert" : SweetAlertComponent,
-  },
-  computed: {
-    /**
-     * @description will get category name translation string by replacing translation param with category name
-     * */
-    getCategoryNameTranslationString(){
-      return translationService.getTranslationForString('pages.notes.category.header', {
-        "{{noteCategoryName}}" : this.categoryName,
-      });
-    }
   },
   methods: {
     /**
@@ -89,12 +76,6 @@ export default {
         });
 
       })
-    },
-    /**
-     * @description gets the translation for the close button in modal
-     */
-    dialogCloseButtonTranslatedString(){
-      return translationService.getTranslationForString('dialogs.buttons.default.close')
     },
     /**
      * @description will set categoryId based on current route
