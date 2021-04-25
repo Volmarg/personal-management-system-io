@@ -53,7 +53,13 @@
 
 <!-- Script -->
 <script>
-import SymfonyRoutes from "../../../../scripts/core/symfony/SymfonyRoutes";
+import SymfonyRoutes       from "../../../../scripts/core/symfony/SymfonyRoutes";
+import ToastifyService     from "../../../../scripts/libs/toastify/ToastifyService";
+import TranslationsService from "../../../../scripts/core/service/TranslationsService";
+import StringUtils from "../../../../scripts/core/utils/StringUtils";
+import LoggedInUserDataDto from "../../../../scripts/core/dto/LoggedInUserDataDto";
+
+let translationService = new TranslationsService();
 
 export default {
   methods: {
@@ -65,11 +71,50 @@ export default {
         username : this.$refs.usernameInput.value ?? "",
         password : this.$refs.passwordInput.value ?? "",
       }
-      // todo: handle response
-      this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( (response) => {
-        console.log(response);
+
+      /** @var BaseInternalApiResponseDto baseApiResponse */
+      this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( (baseApiResponse) => {
+
+        if(baseApiResponse.success){
+          ToastifyService.showGreenNotification(baseApiResponse.message)
+
+          if( StringUtils.isEmptyString(baseApiResponse.data.redirectRouteName) ){
+            ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+            return;
+          }
+
+          // this must be handled without Vue as the login page contains different base component (blank)
+          location.href = SymfonyRoutes.getPathForName(baseApiResponse.data.redirectRouteName);
+        }else{
+          ToastifyService.showRedNotification(baseApiResponse.message);
+        }
+
+      }).catch( (response) => {
+        ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+        console.warn(response);
       });
-    }
+    },
   },
+  beforeMount(){
+
+    // check if user is logged in, and if yes then go back to last page
+    this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_LOGGED_IN_USER_DATA)).then( response => {
+      let loggedInUserDataDto = LoggedInUserDataDto.fromAxiosResponse(response);
+
+      if(!loggedInUserDataDto.success){
+        ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+        return;
+      }
+
+      if(!loggedInUserDataDto.loggedIn){
+        // this must be handled without Vue as the login page contains different base component (blank)
+        location.href = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW);
+        return;
+      }
+    }).catch( (response) => {
+      ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+      console.warn(response);
+    });
+  }
 }
 </script>

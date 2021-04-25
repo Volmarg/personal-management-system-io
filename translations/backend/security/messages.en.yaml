@@ -2,3 +2,4 @@ security:
   login:
     messages:
       UNAUTHORIZED: Unauthorized
+      OK: You are logged in

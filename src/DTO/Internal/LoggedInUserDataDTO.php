@@ -14,6 +14,7 @@ class LoggedInUserDataDTO extends BaseApiResponseDTO
 {
     const KEY_SHOWN_NAME = "shownName";
     const KEY_AVATAR     = "avatar";
+    const KEY_LOGGED_IN  = "loggedIn";
 
     /**
      * @var string $shownName
@@ -23,7 +24,12 @@ class LoggedInUserDataDTO extends BaseApiResponseDTO
     /**
      * @var string $avatar
      */
-    private string $avatar    = "";
+    private string $avatar = "";
+
+    /**
+     * @var bool $loggedIn
+     */
+    private bool $loggedIn = false;
 
     /**
      * @return string
@@ -58,6 +64,22 @@ class LoggedInUserDataDTO extends BaseApiResponseDTO
     }
 
     /**
+     * @return bool
+     */
+    public function isLoggedIn(): bool
+    {
+        return $this->loggedIn;
+    }
+
+    /**
+     * @param bool $loggedIn
+     */
+    public function setLoggedIn(bool $loggedIn): void
+    {
+        $this->loggedIn = $loggedIn;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -65,6 +87,7 @@ class LoggedInUserDataDTO extends BaseApiResponseDTO
         $array                       = parent::toArray();
         $array[self::KEY_AVATAR]     = $this->getAvatar();
         $array[self::KEY_SHOWN_NAME] = $this->getShownName();
+        $array[self::KEY_LOGGED_IN]  = $this->isLoggedIn();
 
         return $array;
     }

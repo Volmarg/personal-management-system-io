@@ -16,21 +16,6 @@ export default class DotenvIsDemoResponseDto extends BaseInternalApiResponseDto
     }
 
     /**
-     * @description returns current dto as string
-     */
-    public toJson(): string
-    {
-        let object = {
-            demo      : this.isDemo,
-            success   : this.success,
-            code      : this.code,
-            message   : this.message
-        }
-
-        return JSON.stringify(object);
-    }
-
-    /**
      * @description Create DotenvIsDemoResponseDto from json
      */
     public static fromJson(json: string): DotenvIsDemoResponseDto

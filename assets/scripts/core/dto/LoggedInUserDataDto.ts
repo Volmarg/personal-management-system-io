@@ -5,7 +5,8 @@ import BaseInternalApiResponseDto from "./BaseInternalApiResponseDto";
  */
 export default class LoggedInUserDataDto extends BaseInternalApiResponseDto{
     private _shownName : string = "";
-    private _avatar : string = "";
+    private _avatar    : string = "";
+    private _loggedIn  : boolean = false;
 
     get shownName(): string {
         return this._shownName;
@@ -23,20 +24,12 @@ export default class LoggedInUserDataDto extends BaseInternalApiResponseDto{
         this._avatar = value;
     }
 
-    /**
-     * @description returns current dto as string
-     */
-    public toJson(): string
-    {
-        let object = {
-            avatar    : this.avatar,
-            shownName : this.shownName,
-            success   : this.success,
-            code      : this.code,
-            message   : this.message
-        }
+    get loggedIn(): boolean {
+        return this._loggedIn;
+    }
 
-        return JSON.stringify(object);
+    set loggedIn(value: boolean) {
+        this._loggedIn = value;
     }
 
     /**
@@ -58,6 +51,7 @@ export default class LoggedInUserDataDto extends BaseInternalApiResponseDto{
 
         loggedInUserDataDto.avatar    = object.avatar;
         loggedInUserDataDto.shownName = object.shownName;
+        loggedInUserDataDto.loggedIn  = object.loggedIn;
 
         return loggedInUserDataDto;
     }

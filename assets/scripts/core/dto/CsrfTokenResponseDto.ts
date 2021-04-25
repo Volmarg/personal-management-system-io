@@ -16,21 +16,6 @@ export default class CsrfTokenResponseDto extends BaseInternalApiResponseDto
     }
 
     /**
-     * @description returns current dto as string
-     */
-    public toJson(): string
-    {
-        let object = {
-            csrfToken : this.csrToken,
-            success   : this.success,
-            code      : this.code,
-            message   : this.message
-        }
-
-        return JSON.stringify(object);
-    }
-
-    /**
      * @description Create LoggedInUserDataDto from json
      */
     public static fromJson(json: string): CsrfTokenResponseDto

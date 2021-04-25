@@ -39,4 +39,22 @@ class UserController extends AbstractController
 
         return $user;
     }
+
+    /**
+     * Will return logged in user - not just the UserInterface but the actual entity from database with all its data
+     * If user is not logged in then null is returned
+     */
+    public function getLoggedInUser(): ?User
+    {
+        $loggedInBaseUserInterface = $this->getUser();
+        if( empty($loggedInBaseUserInterface) ){
+            return null;
+        }
+
+        $loggedInBaseUserInterface->getUsername();
+
+        $userEntity = $this->getOneByUsername($loggedInBaseUserInterface->getUsername());
+
+        return $userEntity;
+    }
 }

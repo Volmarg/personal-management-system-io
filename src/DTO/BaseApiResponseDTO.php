@@ -256,12 +256,14 @@ class BaseApiResponseDTO extends AbstractDTO
      * Will build unauthorized json response
      *
      * @param string $routeName
+     * @param string $message
      * @return static
      */
-    public static function buildRedirectResponse(string $routeName): static
+    public static function buildRedirectResponse(string $routeName, string $message = ""): static
     {
         $dto = new static();
         $dto->setCode(Response::HTTP_MOVED_PERMANENTLY);
+        $dto->setMessage($message);
         $dto->setSuccess(true);
         $dto->setData([
             self::KEY_DATA_REDIRECT_ROUTE_NAME => $routeName

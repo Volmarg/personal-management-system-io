@@ -179,7 +179,8 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): JsonResponse
     {
-        return BaseApiResponseDTO::buildRedirectResponse('modules_dashboard_overview')->toJsonResponse();
+        $message = $this->services->getTranslator()->trans('security.login.messages.OK');
+        return BaseApiResponseDTO::buildRedirectResponse('modules_dashboard_overview', $message)->toJsonResponse();
     }
 
     /**

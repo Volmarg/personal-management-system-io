@@ -36,10 +36,6 @@ export default class AxiosCsrfPlugin
 
                 return axios.post(calledUrl, extendedDataBag).then( result => {
                     let baseResponse = BaseInternalApiResponseDto.fromAxiosResponse(result);
-                    if(!baseResponse.success){
-                        reject("Server received the response but response was not successful");
-                    }
-
                     resolve(baseResponse);
                 })
             });
