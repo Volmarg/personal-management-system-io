@@ -4,3 +4,7 @@ security:
       UNAUTHORIZED: Unauthorized
       OK: Login successful
       alreadyLoggedIn: You are already logged in!
+  logout:
+    messages:
+      loggingOut: Logging out
+      couldNotLogOut: Could not log out

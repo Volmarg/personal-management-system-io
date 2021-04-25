@@ -3,6 +3,7 @@
 
 namespace App\Action\Module\Passwords;
 
+use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Modules\Passwords\PasswordGroupController;
 use App\DTO\Internal\Module\Passwords\GetAllPasswordGroupsResponseDTO;
 use App\Entity\Modules\Passwords\PasswordGroup;
@@ -36,6 +37,7 @@ class PasswordsGroupsAction extends AbstractController
      * @return JsonResponse
      */
     #[Route("/get-all-groups", name: "get_all_groups")]
+    #[InternalActionAttribute]
     public function getAllPasswordGroups(): JsonResponse
     {
         $allGroups                 = $this->passwordGroupController->getAllGroups();

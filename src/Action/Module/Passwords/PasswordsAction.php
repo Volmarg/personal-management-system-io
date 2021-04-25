@@ -3,6 +3,7 @@
 
 namespace App\Action\Module\Passwords;
 
+use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\Controller\Modules\Passwords\PasswordController;
 use App\Controller\Modules\Passwords\PasswordGroupController;
@@ -54,6 +55,7 @@ class PasswordsAction extends AbstractController
      * @return JsonResponse
      */
     #[Route("/get-for-group-id/{id}", name: "get_for_group_id", methods: ["GET"])]
+    #[InternalActionAttribute]
     public function getPasswordsForGroupId(string $id): JsonResponse
     {
         $group = $this->passwordGroupController->getOneForId($id);
@@ -81,6 +83,7 @@ class PasswordsAction extends AbstractController
      * @throws Exception
      */
     #[Route("/decrypt-password/{passwordId}", name: "decrypt_password", methods: ["GET"])]
+    #[InternalActionAttribute]
     public function decryptPasswordForId(string $passwordId): JsonResponse
     {
         $passwordEntity = $this->passwordController->getOneForId($passwordId);

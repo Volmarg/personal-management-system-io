@@ -25,7 +25,7 @@
             <!-- <img src="img/avatar.png" class="avatar img-fluid rounded me-1" alt="Charles Hall">  --> <span class="text-dark">{{ loggedInUserDto.shownName }}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-end">
-            <a class="dropdown-item" href="#">Log out</a>
+            <a class="dropdown-item" href="#" @click="logoutClicked">{{ trans('topbar.menu.logout') }}</a>
           </div>
         </li>
       </ul>
@@ -35,12 +35,43 @@
 
 <!-- Script -->
 <script type="ts">
+import BaseInternalApiResponseDto from "../../../../scripts/core/dto/BaseInternalApiResponseDto";
+
 import LocalStorageService from "../../../../scripts/core/service/LocalStorageService";
+import SymfonyRoutes       from "../../../../scripts/core/symfony/SymfonyRoutes";
+import ToastifyService     from "../../../../scripts/libs/toastify/ToastifyService";
+import TranslationsService from "../../../../scripts/core/service/TranslationsService";
+
+let translationService = new TranslationsService();
 
 export default {
   data(){
     return{
       loggedInUserDto: LocalStorageService.getLoggedInUser()
+    }
+  },
+  methods: {
+    /**
+     * @description handles the logout click
+     */
+    logoutClicked(){
+      this.axios.post(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_INVALIDATE_USER)).then( response => {
+
+        let baseResponse = BaseInternalApiResponseDto.fromAxiosResponse(response);
+        if(baseResponse.success){
+          ToastifyService.showGreenNotification(translationService.getTranslationForString('security.logout.messages.loggingOut'))
+
+          // this must be handled without Vue as the login page contains different base component (blank)
+          location.href = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN);
+        }else{
+          ToastifyService.showOrangeNotification(translationService.getTranslationForString('security.logout.messages.couldNotLogOut'))
+        }
+
+      }).catch( response => {
+        ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+        console.warn(response);
+      })
+
     }
   }
 };

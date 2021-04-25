@@ -24,6 +24,7 @@
                              name="username"
                              :placeholder="trans('pages.security.login.form.inputs.username.placeholder')"
                              ref="usernameInput"
+                             @keypress.enter="loginFormSubmitted"
                       >
                     </div>
                     <div class="mb-3">
@@ -33,6 +34,7 @@
                              name="password"
                              :placeholder="trans('pages.security.login.form.inputs.password.placeholder')"
                              ref="passwordInput"
+                             @keypress.enter="loginFormSubmitted"
                       >
                     </div>
 
@@ -76,7 +78,9 @@ export default {
       }
 
       /** @var BaseInternalApiResponseDto baseApiResponse */
+      SpinnerService.showSpinner();
       this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( (baseApiResponse) => {
+        SpinnerService.hideSpinner();
 
         if(baseApiResponse.success){
           ToastifyService.showGreenNotification(baseApiResponse.message)
@@ -93,44 +97,54 @@ export default {
         }
 
       }).catch( (response) => {
+        SpinnerService.hideSpinner();
         ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
         console.warn(response);
       });
     },
-  },
-  beforeMount(){
-    SpinnerService.showSpinner();
-    // check if user is logged in, and if yes then go to dashboard
-    this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_LOGGED_IN_USER_DATA)).then( response => {
+    /**
+     * @description will check if user should be able to access the login page
+     *              - if not logged in then yes,
+     *              - if logged in then go to dashboard,
+     */
+    checkLoginPageAccessAttempt(){
+      SpinnerService.showSpinner();
+      // check if user is logged in, and if yes then go to dashboard
+      this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_LOGGED_IN_USER_DATA)).then( response => {
 
-      let loggedInUserDataDto = LoggedInUserDataDto.fromAxiosResponse(response);
-      if(!loggedInUserDataDto.success){
-        SpinnerService.hideSpinner();
-        ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
-        return;
-      }
-
-      if(loggedInUserDataDto.loggedIn){
-        // already logged in and tries to enter login page
-        if( LocalStorageService.isLoggedInUserSet() ){
-          ToastifyService.showOrangeNotification(translationService.getTranslationForString('security.login.messages.alreadyLoggedIn'))
-        }else{
-          ToastifyService.showGreenNotification(translationService.getTranslationForString('security.login.messages.OK'))
-          LocalStorageService.setLoggedInUser(loggedInUserDataDto);
+        let loggedInUserDataDto = LoggedInUserDataDto.fromAxiosResponse(response);
+        if(!loggedInUserDataDto.success){
+          SpinnerService.hideSpinner();
+          ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+          return;
         }
 
-        // let user read the message
-        setTimeout(() => {
-          // this must be handled without Vue as the login page contains different base component (blank)
-          location.href = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW);
-        }, 1000)
-        return;
-      }
-    }).catch( (response) => {
-      SpinnerService.hideSpinner();
-      ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
-      console.warn(response);
-    });
+        if(loggedInUserDataDto.loggedIn){
+          // already logged in and tries to enter login page
+          if( LocalStorageService.isLoggedInUserSet() ){
+            ToastifyService.showOrangeNotification(translationService.getTranslationForString('security.login.messages.alreadyLoggedIn'))
+          }else{
+            LocalStorageService.setLoggedInUser(loggedInUserDataDto);
+          }
+
+          // let user read the message
+          setTimeout(() => {
+            // this must be handled without Vue as the login page contains different base component (blank)
+            location.href = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW);
+          }, 1000)
+          return;
+        }
+
+        SpinnerService.hideSpinner();
+      }).catch( (response) => {
+        SpinnerService.hideSpinner();
+        ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+        console.warn(response);
+      });
+    }
+  },
+  beforeMount(){
+    this.checkLoginPageAccessAttempt();
   }
 }
 </script>

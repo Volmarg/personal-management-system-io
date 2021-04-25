@@ -72,6 +72,12 @@ export default class SymfonyRoutes {
     static readonly ROUTE_NAME_GET_LOGGED_IN_USER_DATA = "user_get_logged_in_user_data";
 
     /**
+     * @description will invalidate the user
+     *              Keep in mind that it's required to redirect user after invalidation
+     */
+    static readonly ROUTE_NAME_INVALIDATE_USER = "user_invalidate_user";
+
+    /**
      * Will get url path for route name
      * Exception is thrown is none match is found
      *

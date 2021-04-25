@@ -2,6 +2,7 @@
 
 
 namespace App\Action\System;
+use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\Controller\UserController;
 use App\DTO\BaseApiResponseDTO;
@@ -41,6 +42,7 @@ class UserAction extends AbstractController
      * @return JsonResponse
      */
     #[Route("/get-logged-in-user-data", name:"get_logged_in_user_data", methods: [Request::METHOD_GET])]
+    #[InternalActionAttribute]
     public function getLoggedInUserData(): JsonResponse
     {
         try{
@@ -66,5 +68,23 @@ class UserAction extends AbstractController
         }
 
         return $loggedInUserDataDto->toJsonResponse();
+    }
+
+    /**
+     * Will return the @see LoggedInUserDataDto as the json
+     * @return JsonResponse
+     */
+    #[Route("/invalidate-user", name:"invalidate_user", methods: [Request::METHOD_POST])]
+    #[InternalActionAttribute]
+    public function invalidateUser(): JsonResponse
+    {
+        try{
+            $this->userController->invalidateUser();
+        }catch(Exception $e){
+            $this->services->getLoggerService()->logException($e);
+            return BaseApiResponseDTO::buildInternalServerErrorResponse()->toJsonResponse();
+        }
+
+        return BaseApiResponseDTO::buildOkResponse()->toJsonResponse();
     }
 }

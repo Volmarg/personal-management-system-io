@@ -4,6 +4,7 @@
 namespace App\Action\Vue;
 
 
+use App\Attribute\Action\InternalActionAttribute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,7 @@ class VueAction extends AbstractController
     #[Route("/module/notes/category/{id}",  name: "modules_notes_category",      methods: [Request::METHOD_GET])]
     #[Route("/module/dashboard/overview",   name: "modules_dashboard_overview",  methods: [Request::METHOD_GET])]
     #[Route("/module/passwords/group/{id}", name: "modules_passwords_group",     methods: [Request::METHOD_GET])]
+    #[InternalActionAttribute]
     public function handleVueCallForPageDisplay(): Response
     {
         return $this->render(self::TEMPLATE_BASE, [
@@ -43,6 +45,7 @@ class VueAction extends AbstractController
      * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
      */
     #[Route("/login", name: "login", methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    #[InternalActionAttribute]
     public function handleVueCallForBlankBasePage(): Response
     {
         return $this->render(self::TEMPLATE_BASE, [

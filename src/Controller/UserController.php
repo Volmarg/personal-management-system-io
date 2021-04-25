@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class UserController
@@ -20,8 +21,14 @@ class UserController extends AbstractController
      */
     private UserRepository $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    /**
+     * @var TokenStorageInterface $tokenStorage
+     */
+    private TokenStorageInterface $tokenStorage;
+
+    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage)
     {
+        $this->tokenStorage   = $tokenStorage;
         $this->userRepository = $userRepository;
     }
 
@@ -56,5 +63,13 @@ class UserController extends AbstractController
         $userEntity = $this->getOneByUsername($loggedInBaseUserInterface->getUsername());
 
         return $userEntity;
+    }
+
+    /**
+     * Will invalidate currently logged in user by cleaning up token
+     */
+    public function invalidateUser(): void
+    {
+        $this->tokenStorage->setToken(null);
     }
 }

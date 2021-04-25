@@ -4,6 +4,7 @@
 namespace App\Action\Symfony;
 
 
+use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\DTO\BaseApiResponseDTO;
 use App\DTO\Internal\CsrfTokenResponseDTO;
@@ -39,6 +40,7 @@ class FormInternalApiAction extends AbstractController
      * @return JsonResponse
      */
     #[Route("/get-csrf-token", name: "get_csrf_token", methods: ["GET"])]
+    #[InternalActionAttribute]
     public function getCsrfToken(): JsonResponse
     {
         try{
