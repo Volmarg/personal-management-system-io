@@ -5,6 +5,7 @@ namespace App\Action\Vue;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,9 +27,9 @@ class VueAction extends AbstractController
      * This consist later on of sidebar, footer etc.
      * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
      */
-    #[Route("/module/notes/category/{id}",  name: "modules_notes_category",      methods: ["GET"])]
-    #[Route("/module/dashboard/overview",   name: "modules_dashboard_overview",  methods: ["GET"])]
-    #[Route("/module/passwords/group/{id}", name: "modules_passwords_group",     methods: ["GET"])]
+    #[Route("/module/notes/category/{id}",  name: "modules_notes_category",      methods: [Request::METHOD_GET])]
+    #[Route("/module/dashboard/overview",   name: "modules_dashboard_overview",  methods: [Request::METHOD_GET])]
+    #[Route("/module/passwords/group/{id}", name: "modules_passwords_group",     methods: [Request::METHOD_GET])]
     public function handleVueCallForPageDisplay(): Response
     {
         return $this->render(self::TEMPLATE_BASE, [
@@ -41,7 +42,7 @@ class VueAction extends AbstractController
      * This regards all pages like which dont use standard GUI: login / register / 404 / 500 etc.
      * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
      */
-    #[Route("/login", name: "login", methods: ["GET"])]
+    #[Route("/login", name: "login", methods: [Request::METHOD_GET, Request::METHOD_POST])]
     public function handleVueCallForBlankBasePage(): Response
     {
         return $this->render(self::TEMPLATE_BASE, [

@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    const FIELD_NAME_USERNAME = "username";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

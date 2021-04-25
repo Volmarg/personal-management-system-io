@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route("/system/", name: "system_")]
+#[Route("/system", name: "system_")]
 class FormInternalApiAction extends AbstractController
 {
 

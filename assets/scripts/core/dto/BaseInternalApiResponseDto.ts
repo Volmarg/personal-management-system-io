@@ -2,10 +2,14 @@
  * @description this is a base dto used as a base for each internal api call response
  */
 export default class BaseInternalApiResponseDto {
+
+    static readonly KEY_DATA_REDIRECT_ROUTE_NAME: string = "redirectRouteName"
+
     private _code: number;
     private _message: string;
     private _success: boolean;
     private _invalidFields: Array<any>;
+    private _data: Array<any>;
 
     get code(): number {
         return this._code;
@@ -37,6 +41,14 @@ export default class BaseInternalApiResponseDto {
 
     set invalidFields(value: Array<any>) {
         this._invalidFields = value;
+    }
+
+    get data(): Array<any> {
+        return this._data;
+    }
+
+    set data(value: Array<any>) {
+        this._data = value;
     }
 
     /**
@@ -83,6 +95,7 @@ export default class BaseInternalApiResponseDto {
         this.success = object.success;
         this.message = object.message;
         this.code    = object.code;
+        this.data    = object.data;
 
         if( "undefined" !== typeof object.invalidFields ){
             this.invalidFields = JSON.parse(object.invalidFields);

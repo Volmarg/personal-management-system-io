@@ -42,6 +42,7 @@ services:
             - setValidationService: ['@App\Service\Validation\ValidationService']
             - setDatabaseService: ['@App\Service\Database\DatabaseService']
             - setEncryptionService: ['@App\Service\Security\EncryptionService']
+            - setUserSecurityService: ['@App\Service\Security\UserSecurityService']
 
     App\Service\ConfigLoader\ConfigLoaderPaths:
         public: true

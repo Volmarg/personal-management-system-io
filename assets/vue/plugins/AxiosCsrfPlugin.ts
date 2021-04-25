@@ -34,7 +34,6 @@ export default class AxiosCsrfPlugin
                     [AxiosCsrfPlugin.SYMFONY_KEY_CSRF_TOKEN] : csrfToken,
                 };
 
-                console.log(extendedDataBag);
                 return axios.post(calledUrl, extendedDataBag).then( result => {
                     let baseResponse = BaseInternalApiResponseDto.fromAxiosResponse(result);
                     if(!baseResponse.success){

@@ -5,6 +5,7 @@ namespace App\Service\Form;
 
 
 use App\Controller\Core\Services;
+use App\DTO\Internal\ValidationResultDTO;
 use Exception;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,18 @@ class FormService
         $form->handleRequest($request);
 
         return $form;
+    }
+
+    /**
+     * Will return violations of the object added to the `data_class`
+     *
+     * @param FormInterface $form
+     * @return ValidationResultDTO
+     */
+    public function getFormViolations(FormInterface $form): ValidationResultDTO
+    {
+        $validationResult = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($form->getData());
+        return $validationResult;
     }
 
     /**

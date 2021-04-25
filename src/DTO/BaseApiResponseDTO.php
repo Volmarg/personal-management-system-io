@@ -20,11 +20,15 @@ class BaseApiResponseDTO extends AbstractDTO
     const KEY_SUCCESS        = "success";
     const KEY_INVALID_FIELDS = "invalidFields";
 
+    const KEY_DATA                     = "data";
+    const KEY_DATA_REDIRECT_ROUTE_NAME = "redirectRouteName";
+
     const DEFAULT_CODE         = Response::HTTP_BAD_REQUEST;
     const DEFAULT_MESSAGE      = "Bad request";
     const MESSAGE_INVALID_JSON = "INVALID_JSON";
     const MESSAGE_OK           = "OK";
     const MESSAGE_NOT_FOUND    = "NOT_FOUND";
+    const MESSAGE_UNAUTHORIZED = "UNAUTHORIZED";
 
     /**
      * @var int $code
@@ -45,6 +49,11 @@ class BaseApiResponseDTO extends AbstractDTO
      * @var array $invalidFields
      */
     private array $invalidFields = [];
+
+    /**
+     * @var array $data
+     */
+    private array $data = [];
 
     /**
      * @return int
@@ -113,12 +122,29 @@ class BaseApiResponseDTO extends AbstractDTO
     /**
      * @return array
      */
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return [
             self::KEY_CODE           => $this->getCode(),
             self::KEY_MESSAGE        => $this->getMessage(),
             self::KEY_SUCCESS        => $this->isSuccess(),
+            self::KEY_DATA           => $this->getData(),
             self::KEY_INVALID_FIELDS => json_encode($this->getInvalidFields()),
         ];
     }
@@ -208,6 +234,38 @@ class BaseApiResponseDTO extends AbstractDTO
     {
         $dto = static::buildBadRequestErrorResponse();
         $dto->setMessage(self::MESSAGE_INVALID_JSON);
+        return $dto;
+    }
+
+    /**
+     * Will build unauthorized json response
+     *
+     * @param string $message
+     * @return static
+     */
+    public static function buildUnauthorizedResponse($message = self::MESSAGE_UNAUTHORIZED): static
+    {
+        $dto = new static();
+        $dto->setCode(Response::HTTP_UNAUTHORIZED);
+        $dto->setSuccess(false);
+        $dto->setMessage($message);
+        return $dto;
+    }
+
+    /**
+     * Will build unauthorized json response
+     *
+     * @param string $routeName
+     * @return static
+     */
+    public static function buildRedirectResponse(string $routeName): static
+    {
+        $dto = new static();
+        $dto->setCode(Response::HTTP_MOVED_PERMANENTLY);
+        $dto->setSuccess(true);
+        $dto->setData([
+            self::KEY_DATA_REDIRECT_ROUTE_NAME => $routeName
+        ]);
         return $dto;
     }
 

@@ -10,6 +10,7 @@ use App\Service\Form\FormService;
 use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
 use App\Service\Security\EncryptionService;
+use App\Service\Security\UserSecurityService;
 use App\Service\Validation\ValidationService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -60,6 +61,11 @@ class Services
      * @var EncryptionService $encryptionService
      */
     private EncryptionService $encryptionService;
+
+    /**
+     * @var UserSecurityService $userSecurityService
+     */
+    private UserSecurityService $userSecurityService;
 
     /**
      * @return AttributeReaderService
@@ -187,6 +193,22 @@ class Services
     public function setEncryptionService(EncryptionService $encryptionService): void
     {
         $this->encryptionService = $encryptionService;
+    }
+
+    /**
+     * @return UserSecurityService
+     */
+    public function getUserSecurityService(): UserSecurityService
+    {
+        return $this->userSecurityService;
+    }
+
+    /**
+     * @param UserSecurityService $userSecurityService
+     */
+    public function setUserSecurityService(UserSecurityService $userSecurityService): void
+    {
+        $this->userSecurityService = $userSecurityService;
     }
 
 }

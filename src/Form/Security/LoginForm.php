@@ -28,7 +28,9 @@ class LoginForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            "data_class" => LoginFormDataDTO::class
+            "data_class" => LoginFormDataDTO::class,
+            "csrf_protection" => false,
+            "allow_extra_fields" => true,
         ]);
     }
 

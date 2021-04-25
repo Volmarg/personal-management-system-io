@@ -77,11 +77,13 @@ export default {
      */
     loginFormSubmitted(){
       let data = {
-        username : this.$refs.usernameInput.value,
-        password : this.$refs.passwordInput.value,
+        username : this.$refs.usernameInput.value ?? "",
+        password : this.$refs.passwordInput.value ?? "",
       }
       // todo: handle response
-      this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_HANDLE_LOGIN), data);
+      this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( (response) => {
+        console.log(response);
+      });
     }
   },
 }
