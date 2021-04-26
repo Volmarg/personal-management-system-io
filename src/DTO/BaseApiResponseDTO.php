@@ -265,9 +265,7 @@ class BaseApiResponseDTO extends AbstractDTO
         $dto->setCode(Response::HTTP_MOVED_PERMANENTLY);
         $dto->setMessage($message);
         $dto->setSuccess(true);
-        $dto->setData([
-            self::KEY_DATA_REDIRECT_ROUTE_NAME => $routeName
-        ]);
+        $dto->setRedirectRoute($routeName);
         return $dto;
     }
 
@@ -316,6 +314,18 @@ class BaseApiResponseDTO extends AbstractDTO
         $dto->setCode($code);
 
         return $dto;
+    }
+
+    /**
+     * Will set redirect route by using data bag array
+     *
+     * @param string $routeName
+     */
+    public function setRedirectRoute(string $routeName): void
+    {
+        $this->setData([
+            self::KEY_DATA_REDIRECT_ROUTE_NAME => $routeName
+        ]);
     }
 
 }

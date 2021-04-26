@@ -10,7 +10,9 @@ use App\DTO\Internal\Form\Security\LoginFormDataDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -197,10 +199,16 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
     /**
      * Called when authentication is needed, but it's not sent
      */
-    public function start(Request $request, AuthenticationException $authException = null): JsonResponse
+    public function start(Request $request, AuthenticationException $authException = null): Response
     {
-        $message = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
-        return BaseApiResponseDTO::buildUnauthorizedResponse($message)->toJsonResponse();
+        if( !$request->isXmlHttpRequest() ){
+            return new RedirectResponse($this->urlGenerator->generate('login'));
+        }
+
+        $message  = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
+        $response = BaseApiResponseDTO::buildUnauthorizedResponse($message);
+        $response->setRedirectRoute("login");;
+        return $response->toJsonResponse();
     }
 
     /**

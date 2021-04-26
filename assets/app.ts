@@ -1,4 +1,4 @@
-import axios              from 'axios';
+import Axios              from "./scripts/libs/axios/Axios";
 import VueAxios           from "vue-axios";
 import ContainerComponent from "./vue/components/page/base/container.vue";
 import Router             from './scripts/libs/vue/Router'
@@ -62,7 +62,6 @@ export default class App {
     {
         Vue.createApp(ContainerComponent)
             .use(this.router.getRouter())
-            .use(VueAxios, axios)
             .use(this.getInstallablePlugins())
             .mount(this.idUsedToMount);
     }
@@ -79,6 +78,7 @@ export default class App {
             install(app){
                 app.config.globalProperties.postWithCsrf = AxiosCsrfPlugin.postWithCsrf;
                 app.config.globalProperties.trans        = TranslationPlugin.trans;
+                app.config.globalProperties.axios        = Axios;
             }
         }
     }

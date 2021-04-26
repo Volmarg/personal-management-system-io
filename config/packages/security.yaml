@@ -30,5 +30,6 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }                 # login page
+         - { path: ^/system/get-csrf-token, roles: IS_AUTHENTICATED_ANONYMOUSLY } # required as the login form needs csrf token as well
+         - { path: ^/.*, roles: ROLE_ADMIN }                                      # any other pages

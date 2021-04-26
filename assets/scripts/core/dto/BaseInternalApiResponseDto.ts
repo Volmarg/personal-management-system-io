@@ -51,6 +51,10 @@ export default class BaseInternalApiResponseDto {
         this._data = value;
     }
 
+    get redirectRouteName(): string {
+        return this.data[BaseInternalApiResponseDto.KEY_DATA_REDIRECT_ROUTE_NAME];
+    }
+
     /**
      * @description will create object from the json (delivered from response)
      *
@@ -95,10 +99,14 @@ export default class BaseInternalApiResponseDto {
         this.success = object.success;
         this.message = object.message;
         this.code    = object.code;
-        this.data    = object.data;
 
         if( "undefined" !== typeof object.invalidFields ){
             this.invalidFields = JSON.parse(object.invalidFields);
+        }
+
+        this.data = object.data;
+        if( "undefined" === typeof object.data ){
+            this.data = [];
         }
 
         return this;

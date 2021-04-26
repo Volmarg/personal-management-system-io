@@ -1,7 +1,7 @@
-import axios                      from 'axios';
 import SymfonyRoutes              from "../../scripts/core/symfony/SymfonyRoutes";
 import CsrfTokenResponseDto       from "../../scripts/core/dto/CsrfTokenResponseDto";
 import BaseInternalApiResponseDto from "../../scripts/core/dto/BaseInternalApiResponseDto";
+import Axios                      from "../../scripts/libs/axios/Axios";
 
 /**
  * @description this plugin handles axios call (POST), but before doing the main call it will first call Symfony backend
@@ -34,7 +34,7 @@ export default class AxiosCsrfPlugin
                     [AxiosCsrfPlugin.SYMFONY_KEY_CSRF_TOKEN] : csrfToken,
                 };
 
-                return axios.post(calledUrl, extendedDataBag).then( result => {
+                return Axios.post(calledUrl, extendedDataBag).then( result => {
                     let baseResponse = BaseInternalApiResponseDto.fromAxiosResponse(result);
                     resolve(baseResponse);
                 })
@@ -55,7 +55,7 @@ export default class AxiosCsrfPlugin
     private static callForCsrf(): Promise<any>
     {
         let calledUrl = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_CSRF_TOKEN);
-        let promise   = axios.get(calledUrl).then( result => {
+        let promise   = Axios.get(calledUrl).then( result => {
 
             let csrfTokenResponse = CsrfTokenResponseDto.fromAxiosResponse(result);
             if( !csrfTokenResponse.success ){
