@@ -113,7 +113,10 @@ export default {
       this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_LOGGED_IN_USER_DATA)).then( response => {
 
         let loggedInUserDataDto = LoggedInUserDataDto.fromAxiosResponse(response);
-        if(!loggedInUserDataDto.success){
+        if(
+                !loggedInUserDataDto.success
+            &&  401 !== loggedInUserDataDto.code
+        ){
           SpinnerService.hideSpinner();
           ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
           return;
