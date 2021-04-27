@@ -2,7 +2,10 @@
 <template>
 
   <div class="row">
-    <password-card v-for="password in passwords"
+    <page-header :shown-text="trans('pages.passwords.group.header', {'{{passwordGroupName}}' : currentGroupName})"/>
+    <search-input @search-input-changed="filterPasswordsForSearchInput" />
+
+    <password-card v-for="password in shownPasswords"
                    :description="password.description"
                    :url="password.url"
                    :login="password.login"
@@ -16,24 +19,30 @@
 
 <!-- Script -->
 <script>
-import PageCardComponent                        from "../../../components/page/base/page-elements/card";
-import PasswordCardComponent                    from "./components/password-card";
+import PageCardComponent     from "../../../components/page/base/page-elements/card";
+import PageHeaderComponent   from "../../../components/page/base/page-elements/header";
+import PasswordCardComponent from "./components/password-card";
+import SearchInputComponent  from "../../../components/page/base/page-elements/search-input";
 
 import SymfonyRoutes                 from "../../../../scripts/core/symfony/SymfonyRoutes";
 import PasswordGroupWithPasswordsDto from "../../../../scripts/core/dto/module/passwords/PasswordGroupWithPasswordsDto";
 import PasswordDto                   from "../../../../scripts/core/dto/module/passwords/PasswordDto";
+import StringUtils                   from "../../../../scripts/core/utils/StringUtils";
 
 export default {
   data(){
     return {
       currentGroupId   : null,
       currentGroupName : "",
-      passwords        : [],
+      allPasswords     : [],
+      shownPasswords   : [],
     }
   },
   components: {
     'page-card'     : PageCardComponent,
-    'password-card' : PasswordCardComponent
+    'page-header'   : PageHeaderComponent,
+    'password-card' : PasswordCardComponent,
+    'search-input'  : SearchInputComponent
   },
   methods: {
     /**
@@ -46,9 +55,11 @@ export default {
 
       this.axios.get(url).then( (response) => {
         let passwordGroupWithPasswords = PasswordGroupWithPasswordsDto.fromAxiosResponse(response);
-        this.passwords                 = passwordGroupWithPasswords.passwordsJsons.map(
+        this.currentGroupName          = passwordGroupWithPasswords.passwordGroupName;
+        this.allPasswords              = passwordGroupWithPasswords.passwordsJsons.map(
             (json) => PasswordDto.fromJson(json)
         )
+        this.shownPasswords = this.allPasswords;
       })
 
     },
@@ -57,6 +68,19 @@ export default {
      */
     setGroupIdFromRoute(){
       this.currentGroupId = this.$route.params[SymfonyRoutes.ROUTE_NAME_MODULE_PASSWORDS_GROUP_ID_PARAM]
+    },
+    /**
+     * @description will filter the currently displayed boxes on page based on what's typed in the search input
+     */
+    filterPasswordsForSearchInput(searchedString){
+      if( StringUtils.isEmptyString(searchedString) ){
+        this.shownPasswords = this.allPasswords;
+        return;
+      }
+
+      this.shownPasswords = this.allPasswords.filter( (passwordDto) => {
+        return passwordDto.description.toLowerCase().includes(searchedString.toLowerCase());
+      })
     }
   },
   beforeMount(){
@@ -64,6 +88,9 @@ export default {
     this.getPasswordsForCurrentGroupId();
   },
   watch: {
+    /**
+     * @description observer router to rebuild data on page
+     */
     $route(currRoute){
 
       /** @description handles fetching passwords upon changing the password group */

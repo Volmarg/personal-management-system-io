@@ -4,6 +4,14 @@ pages:
       header: |
         <b>Note category:</b> {{noteCategoryName}}
 
+  passwords:
+    group:
+      header: |
+        <b>Password group:</b> {{passwordGroupName}}
+    search:
+      label: Search
+      placeholder: Type searched name...
+
   security:
     login:
       form:
