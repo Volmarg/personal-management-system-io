@@ -1,9 +1,9 @@
 /**
  * @description this is a base dto used as a base for each internal api call response
  */
-import BaseInternalApiResponseDto from "../../BaseInternalApiResponseDto";
+import BaseApiDto from "../../BaseApiDto";
 
-export default class GetCategoryResponseDto extends BaseInternalApiResponseDto {
+export default class NotesInCategoryDto extends BaseApiDto {
 
     private _notesJsons : Array<any> = [];
     private _name        : string     = "";
@@ -28,16 +28,16 @@ export default class GetCategoryResponseDto extends BaseInternalApiResponseDto {
      * Will build frontend response from backend response
      *
      */
-    public static fromJson(json: string): GetCategoryResponseDto
+    public static fromJson(json: string): NotesInCategoryDto
     {
-        let dto = new GetCategoryResponseDto();
+        let dto = new NotesInCategoryDto();
         dto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
         }catch(Exception){
             throw{
-                "message"   : "Could not parse the json for: GetCategoryResponseDto",
+                "message"   : "Could not parse the json for: NotesInCategoryDto",
                 "exception" : Exception,
                 "json"      : json,
             }
@@ -50,13 +50,13 @@ export default class GetCategoryResponseDto extends BaseInternalApiResponseDto {
     }
 
     /**
-     * @description creates BaseInternalApiResponseDto from axios response
+     * @description creates BaseApiDto from axios response
      */
-    public static fromAxiosResponse(response: object): GetCategoryResponseDto
+    public static fromAxiosResponse(response: object): NotesInCategoryDto
     {
         //@ts-ignore
         let json = JSON.stringify(response.data);
-        let dto  = GetCategoryResponseDto.fromJson(json);
+        let dto  = NotesInCategoryDto.fromJson(json);
 
         return dto;
     }

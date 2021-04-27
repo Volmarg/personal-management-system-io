@@ -5,7 +5,7 @@ namespace App\Action\System;
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\Controller\UserController;
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 use App\DTO\Internal\LoggedInUserDataDTO;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -64,7 +64,7 @@ class UserAction extends AbstractController
             $loggedInUserDataDto->setLoggedIn(true);
         }catch(Exception $e){
             $this->services->getLoggerService()->logException($e);
-            return BaseApiResponseDTO::buildInternalServerErrorResponse()->toJsonResponse();
+            return BaseApiDTO::buildInternalServerErrorResponse()->toJsonResponse();
         }
 
         return $loggedInUserDataDto->toJsonResponse();
@@ -82,9 +82,9 @@ class UserAction extends AbstractController
             $this->userController->invalidateUser();
         }catch(Exception $e){
             $this->services->getLoggerService()->logException($e);
-            return BaseApiResponseDTO::buildInternalServerErrorResponse()->toJsonResponse();
+            return BaseApiDTO::buildInternalServerErrorResponse()->toJsonResponse();
         }
 
-        return BaseApiResponseDTO::buildOkResponse()->toJsonResponse();
+        return BaseApiDTO::buildOkResponse()->toJsonResponse();
     }
 }

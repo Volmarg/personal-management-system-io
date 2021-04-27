@@ -4,7 +4,7 @@ namespace App\Action\Module\Notes;
 
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Modules\Notes\NotesCategoriesController;
-use App\DTO\Internal\Module\Notes\GetParentsChildrenCategoriesHierarchyResponse;
+use App\DTO\Internal\Module\Notes\ParentsChildrenCategoriesHierarchyDTO;
 use App\DTO\ParentChildDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,7 +34,7 @@ class NotesCategoriesAction extends AbstractController
     #[InternalActionAttribute]
     public function getParentsChildrenCategoriesHierarchy(): JsonResponse
     {
-        $apiResponse = new GetParentsChildrenCategoriesHierarchyResponse();
+        $apiResponse = new ParentsChildrenCategoriesHierarchyDTO();
         $apiResponse->prefillBaseFieldsForSuccessResponse();
 
         $plainArrayHierarchy = array_map(

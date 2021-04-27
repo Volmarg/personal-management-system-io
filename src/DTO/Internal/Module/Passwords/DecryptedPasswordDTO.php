@@ -4,16 +4,16 @@
 namespace App\DTO\Internal\Module\Passwords;
 
 
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 use App\Entity\Modules\Passwords\Password;
 
 /**
  * Consist of the decrypted password from @see Password
  *
- * Class GetDecryptedPasswordResponseDTO
+ * Class DecryptedPasswordDTO
  * @package App\DTO\Internal\Module\Passwords
  */
-class GetDecryptedPasswordResponseDTO extends BaseApiResponseDTO
+class DecryptedPasswordDTO extends BaseApiDTO
 {
     const KEY_DECRYPTED_PASSWORD = "decryptedPassword";
 

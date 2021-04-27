@@ -7,7 +7,7 @@ namespace App\Listener;
 use App\Attribute\Action\ExternalActionAttribute;
 use App\Controller\API\ApiController;
 use App\Controller\Core\Services;
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 use App\Service\Attribute\AttributeReaderService;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -76,7 +76,7 @@ class RequestListener implements EventSubscriberInterface
         $isJsonValid = $this->apiController->validateJson($json);
         if( !$isJsonValid){
             $this->services->getLoggerService()->getLogger()->warning("Provided json in request is not valid");
-            $jsonResponse = BaseApiResponseDTO::buildInvalidJsonResponse()->toJsonResponse();
+            $jsonResponse = BaseApiDTO::buildInvalidJsonResponse()->toJsonResponse();
             $requestEvent->setResponse($jsonResponse);
             $requestEvent->stopPropagation();
 

@@ -19,9 +19,9 @@
 import PageCardComponent                        from "../../../components/page/base/page-elements/card";
 import PasswordCardComponent                    from "./components/password-card";
 
-import SymfonyRoutes                            from "../../../../scripts/core/symfony/SymfonyRoutes";
-import GetPasswordGroupWithPasswordsResponseDTO from "../../../../scripts/core/dto/module/passwords/GetPasswordGroupWithPasswordsResponseDTO";
-import PasswordDto                              from "../../../../scripts/core/dto/module/passwords/PasswordDto";
+import SymfonyRoutes                 from "../../../../scripts/core/symfony/SymfonyRoutes";
+import PasswordGroupWithPasswordsDto from "../../../../scripts/core/dto/module/passwords/PasswordGroupWithPasswordsDto";
+import PasswordDto                   from "../../../../scripts/core/dto/module/passwords/PasswordDto";
 
 export default {
   data(){
@@ -45,8 +45,8 @@ export default {
       })
 
       this.axios.get(url).then( (response) => {
-        let getPasswordGroupWithPasswordsResponse = GetPasswordGroupWithPasswordsResponseDTO.fromAxiosResponse(response);
-        this.passwords                            = getPasswordGroupWithPasswordsResponse.passwordsJsons.map(
+        let passwordGroupWithPasswords = PasswordGroupWithPasswordsDto.fromAxiosResponse(response);
+        this.passwords                 = passwordGroupWithPasswords.passwordsJsons.map(
             (json) => PasswordDto.fromJson(json)
         )
       })

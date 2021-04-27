@@ -1,9 +1,9 @@
-import BaseInternalApiResponseDto from "./BaseInternalApiResponseDto";
+import BaseApiDto from "./BaseApiDto";
 
 /**
  * @description representation of currently logged in user data
  */
-export default class LoggedInUserDataDto extends BaseInternalApiResponseDto{
+export default class LoggedInUserDataDto extends BaseApiDto{
     private _shownName : string = "";
     private _avatar    : string = "";
     private _loggedIn  : boolean = false;

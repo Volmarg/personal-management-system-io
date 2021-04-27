@@ -1,6 +1,6 @@
 import SymfonyRoutes              from "../../scripts/core/symfony/SymfonyRoutes";
-import CsrfTokenResponseDto       from "../../scripts/core/dto/CsrfTokenResponseDto";
-import BaseInternalApiResponseDto from "../../scripts/core/dto/BaseInternalApiResponseDto";
+import CsrfTokenDto               from "../../scripts/core/dto/CsrfTokenDto";
+import BaseApiDto from "../../scripts/core/dto/BaseApiDto";
 import Axios                      from "../../scripts/libs/axios/Axios";
 
 /**
@@ -35,7 +35,7 @@ export default class AxiosCsrfPlugin
                 };
 
                 return Axios.post(calledUrl, extendedDataBag).then( result => {
-                    let baseResponse = BaseInternalApiResponseDto.fromAxiosResponse(result);
+                    let baseResponse = BaseApiDto.fromAxiosResponse(result);
                     resolve(baseResponse);
                 })
             });
@@ -57,7 +57,7 @@ export default class AxiosCsrfPlugin
         let calledUrl = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_CSRF_TOKEN);
         let promise   = Axios.get(calledUrl).then( result => {
 
-            let csrfTokenResponse = CsrfTokenResponseDto.fromAxiosResponse(result);
+            let csrfTokenResponse = CsrfTokenDto.fromAxiosResponse(result);
             if( !csrfTokenResponse.success ){
                 AxiosCsrfPlugin.throwIssueObtainingCsrfTokenMessage(csrfTokenResponse);
                 return;

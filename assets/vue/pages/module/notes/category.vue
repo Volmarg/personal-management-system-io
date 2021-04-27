@@ -33,9 +33,9 @@ import PageHeaderComponent from '../../../components/page/base/page-elements/hea
 import NoteCardComponent   from './components/note-card';
 import SweetAlertComponent from "../../../components/dialog/sweet-alert/sweet-alert";
 
-import SymfonyRoutes          from "../../../../scripts/core/symfony/SymfonyRoutes";
-import GetCategoryResponseDto from "../../../../scripts/core/dto/module/notes/GetCategoryResponseDto";
-import MyNoteDto              from "../../../../scripts/core/dto/module/notes/MyNoteDto";
+import SymfonyRoutes      from "../../../../scripts/core/symfony/SymfonyRoutes";
+import NotesInCategoryDto from "../../../../scripts/core/dto/module/notes/NotesInCategoryDto";
+import MyNoteDto          from "../../../../scripts/core/dto/module/notes/MyNoteDto";
 
 export default {
   data(){
@@ -68,10 +68,10 @@ export default {
       })
 
       this.axios.get(calledUrl).then( (response) => {
-        let getNotesForCategoryResponseDto = GetCategoryResponseDto.fromAxiosResponse(response);
-        this.categoryName                  = getNotesForCategoryResponseDto.name;
+        let notesInCategoryDto = NotesInCategoryDto.fromAxiosResponse(response);
+        this.categoryName      = notesInCategoryDto.name;
 
-        this.notes = getNotesForCategoryResponseDto.notesJsons.map( (json) => {
+        this.notes = notesInCategoryDto.notesJsons.map( (json) => {
           return MyNoteDto.fromJson(json);
         });
 

@@ -9,7 +9,7 @@ use App\Controller\API\ApiController;
 use App\Controller\Core\Services;
 use App\Controller\Modules\Notes\NotesCategoriesController;
 use App\Controller\Modules\Notes\NotesController;
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 use App\DTO\Request\Modules\Notes\InsertNotesCategoriesRequestDTO;
 use App\DTO\Request\Modules\Notes\InsertNotesRequestDTO;
 use App\Entity\Modules\Notes\MyNote;
@@ -77,7 +77,7 @@ class NotesApiAction extends ApiAction
                     $validationDto      = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($noteCategoryEntity);
 
                     if( !$validationDto->isSuccess() ){
-                        $response = BaseApiResponseDTO::buildInvalidFieldsRequestErrorResponse();
+                        $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();
                         $response->setInvalidFields($validationDto->getViolationsWithMessages());
 
                         $message = "One of the categories entity is invalid";
@@ -105,7 +105,7 @@ class NotesApiAction extends ApiAction
         }
         $this->services->getDatabaseService()->commitTransaction();
 
-        return BaseApiResponseDTO::buildOkResponse()->toJsonResponse();
+        return BaseApiDTO::buildOkResponse()->toJsonResponse();
     }
 
     /**
@@ -135,14 +135,14 @@ class NotesApiAction extends ApiAction
                             "noteId" => $categoryId,
                         ]);
 
-                        return BaseApiResponseDTO::buildBadRequestErrorResponse()->toJsonResponse();
+                        return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
                     }
 
                     $noteEntity->setCategory($category);
                     $validationDto = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($noteEntity);
 
                     if( !$validationDto->isSuccess() ){
-                        $response = BaseApiResponseDTO::buildInvalidFieldsRequestErrorResponse();
+                        $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();
                         $response->setInvalidFields($validationDto->getViolationsWithMessages());
 
                         $message = "One of the note entity is invalid";
@@ -170,7 +170,7 @@ class NotesApiAction extends ApiAction
         }
         $this->services->getDatabaseService()->commitTransaction();
 
-        return BaseApiResponseDTO::buildOkResponse()->toJsonResponse();
+        return BaseApiDTO::buildOkResponse()->toJsonResponse();
     }
 
 }

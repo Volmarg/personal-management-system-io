@@ -1,10 +1,10 @@
-import BaseInternalApiResponseDto from "../../BaseInternalApiResponseDto";
+import BaseApiDto from "../../BaseApiDto";
 
 /**
  * @description fronted representation of the GetDecryptedPasswordResponseDTO
  *              contains decrypted password
  */
-export default class GetDecryptedPasswordResponseDto extends BaseInternalApiResponseDto
+export default class DecryptedPasswordDto extends BaseApiDto
 {
 
     private _decryptedPassword: string;
@@ -21,16 +21,16 @@ export default class GetDecryptedPasswordResponseDto extends BaseInternalApiResp
     /**
      * @description will build frontend response from backend response
      */
-    public static fromJson(json: string): GetDecryptedPasswordResponseDto
+    public static fromJson(json: string): DecryptedPasswordDto
     {
-        let dto = new GetDecryptedPasswordResponseDto();
+        let dto = new DecryptedPasswordDto();
         dto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
         }catch(Exception){
             throw{
-                "message"   : "Could not parse the json for: GetDecryptedPasswordResponseDto",
+                "message"   : "Could not parse the json for: DecryptedPasswordDto",
                 "exception" : Exception,
                 "json"      : json,
             }
@@ -43,11 +43,11 @@ export default class GetDecryptedPasswordResponseDto extends BaseInternalApiResp
     /**
      * @description creates GetDecryptedPasswordResponseDto from axios response
      */
-    public static fromAxiosResponse(response: object): GetDecryptedPasswordResponseDto
+    public static fromAxiosResponse(response: object): DecryptedPasswordDto
     {
         //@ts-ignore
         let json = JSON.stringify(response.data);
-        let dto  = GetDecryptedPasswordResponseDto.fromJson(json);
+        let dto  = DecryptedPasswordDto.fromJson(json);
 
         return dto;
     }

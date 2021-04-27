@@ -2,7 +2,7 @@
 
 namespace App\DTO\Internal;
 
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 
 /**
  * Transfer basic data about the user
@@ -10,7 +10,7 @@ use App\DTO\BaseApiResponseDTO;
  * Class LoggedInUserDataDto
  * @package App\DTO\API\Internal
  */
-class LoggedInUserDataDTO extends BaseApiResponseDTO
+class LoggedInUserDataDTO extends BaseApiDTO
 {
     const KEY_SHOWN_NAME = "shownName";
     const KEY_AVATAR     = "avatar";

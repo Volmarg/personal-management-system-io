@@ -77,7 +77,7 @@ export default {
         password : this.$refs.passwordInput.value ?? "",
       }
 
-      /** @var BaseInternalApiResponseDto baseApiResponse */
+      /** @var BaseApiDto baseApiResponse */
       SpinnerService.showSpinner();
       this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( (baseApiResponse) => {
         SpinnerService.hideSpinner();

@@ -4,9 +4,9 @@
 namespace App\DTO\Internal\Module\Passwords;
 
 
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 
-class GetPasswordGroupWithPasswordsResponseDTO extends BaseApiResponseDTO
+class PasswordGroupWithPasswordsDTO extends BaseApiDTO
 {
 
     const KEY_PASSWORD_GROUP_ID   = "passwordGroupId";

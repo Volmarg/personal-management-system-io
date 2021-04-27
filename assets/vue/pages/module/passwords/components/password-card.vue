@@ -38,8 +38,8 @@
 
 import SymfonyRoutes from "../../../../../scripts/core/symfony/SymfonyRoutes";
 
-import GetDecryptedPasswordResponseDto  from "../../../../../scripts/core/dto/module/passwords/GetDecryptedPasswordResponseDto";
-import SweetAlert                       from "../../../../components/dialog/sweet-alert/sweet-alert.vue";
+import DecryptedPasswordDto  from "../../../../../scripts/core/dto/module/passwords/DecryptedPasswordDto";
+import SweetAlert            from "../../../../components/dialog/sweet-alert/sweet-alert.vue";
 
 export default {
   data(){
@@ -81,9 +81,9 @@ export default {
       })
 
       this.axios.get( url ).then( (response) => {
-        let decryptedPasswordResponse = GetDecryptedPasswordResponseDto.fromAxiosResponse(response);
+        let decryptedPasswordDto = DecryptedPasswordDto.fromAxiosResponse(response);
 
-        this.shownPassword = decryptedPasswordResponse.decryptedPassword;
+        this.shownPassword = decryptedPasswordDto.decryptedPassword;
         this.$refs['passwordDialog' + id].showDialog();
       })
 

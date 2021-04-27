@@ -1,9 +1,9 @@
-import BaseInternalApiResponseDto from "../../BaseInternalApiResponseDto";
+import BaseApiDto from "../../BaseApiDto";
 
 /**
  * @description represents the same class present in the backend
  */
-export default class GetParentsChildrenCategoriesHierarchyResponse extends BaseInternalApiResponseDto {
+export default class ParentsChildrenCategoriesHierarchyDto extends BaseApiDto {
 
     private _hierarchy: Array<string>;
 
@@ -20,16 +20,16 @@ export default class GetParentsChildrenCategoriesHierarchyResponse extends BaseI
      *
      * @param json
      */
-    public static fromJson(json: string): GetParentsChildrenCategoriesHierarchyResponse
+    public static fromJson(json: string): ParentsChildrenCategoriesHierarchyDto
     {
-        let dto = new GetParentsChildrenCategoriesHierarchyResponse();
+        let dto = new ParentsChildrenCategoriesHierarchyDto();
         dto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
         }catch(Exception){
             throw{
-                "message"   : "Could not parse the json for: GetParentsChildrenCategoriesHierarchyResponse",
+                "message"   : "Could not parse the json for: ParentsChildrenCategoriesHierarchyDto",
                 "exception" : Exception,
                 "json"      : json,
             }
@@ -40,13 +40,13 @@ export default class GetParentsChildrenCategoriesHierarchyResponse extends BaseI
     }
 
     /**
-     * @description creates BaseInternalApiResponseDto from axios response
+     * @description creates BaseApiDto from axios response
      */
-    public static fromAxiosResponse(response: object): GetParentsChildrenCategoriesHierarchyResponse
+    public static fromAxiosResponse(response: object): ParentsChildrenCategoriesHierarchyDto
     {
         //@ts-ignore
         let json = JSON.stringify(response.data);
-        let dto  = GetParentsChildrenCategoriesHierarchyResponse.fromJson(json);
+        let dto  = ParentsChildrenCategoriesHierarchyDto.fromJson(json);
 
         return dto;
     }

@@ -5,7 +5,7 @@ namespace App\Action\Module\Notes;
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\Controller\Modules\Notes\NotesCategoriesController;
-use App\DTO\Internal\Module\Notes\GetCategoryResponseDTO;
+use App\DTO\Internal\Module\Notes\NotesInCategoryDTO;
 use App\Entity\Modules\Notes\MyNote;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,7 +46,7 @@ class NotesAction extends AbstractController
     #[InternalActionAttribute]
     public function getNotesForCategory(string $categoryId): JsonResponse
     {
-        $apiResponse = new GetCategoryResponseDTO();
+        $apiResponse = new NotesInCategoryDTO();
         $apiResponse->prefillBaseFieldsForSuccessResponse();
 
         $noteCategory = $this->notesCategoriesController->getOneForId($categoryId);

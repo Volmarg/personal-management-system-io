@@ -24,8 +24,8 @@ import SymfonyRoutes from "../../../../../../scripts/core/symfony/SymfonyRoutes"
 import NestedMenuNodeComponent from "../nested-menu-node.vue";
 import SingleMenuNodeComponent from "../single-menu-node.vue";
 
-import GetParentsChildrenCategoriesHierarchyResponse from "../../../../../../scripts/core/dto/module/notes/GetParentsChildrenCategoriesHierarchyResponse";
-import ParentChildDto                                from "../../../../../../scripts/core/dto/ParentChildDto";
+import ParentsChildrenCategoriesHierarchyDto from "../../../../../../scripts/core/dto/module/notes/ParentsChildrenCategoriesHierarchyDto";
+import ParentChildDto                        from "../../../../../../scripts/core/dto/ParentChildDto";
 
 export default {
   data(){
@@ -47,7 +47,7 @@ export default {
     getNotesCategoriesHierarchy(){
 
       this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_NOTES_CATEGORIES_HIERARCHY)).then( (response) => {
-        let apiResponse = GetParentsChildrenCategoriesHierarchyResponse.fromAxiosResponse(response);
+        let apiResponse          = ParentsChildrenCategoriesHierarchyDto.fromAxiosResponse(response);
         this.parentChildDtoArray = apiResponse.hierarchy.map( (object) => {
           return ParentChildDto.fromObject(object);
         });

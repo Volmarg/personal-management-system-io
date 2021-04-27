@@ -42,8 +42,8 @@ import SingleMenuNodeComponent from "../single-menu-node.vue";
 
 import SymfonyRoutes from "../../../../../../scripts/core/symfony/SymfonyRoutes";
 
-import GetPasswordGroupsResponseDto  from "../../../../../../scripts/core/dto/module/passwords/GetPasswordGroupsResponseDto";
-import PasswordGroupDto              from "../../../../../../scripts/core/dto/module/passwords/PasswordGroupDto";
+import PasswordGroupsDto  from "../../../../../../scripts/core/dto/module/passwords/PasswordGroupsDto";
+import PasswordGroupDto   from "../../../../../../scripts/core/dto/module/passwords/PasswordGroupDto";
 
 export default {
   data(){
@@ -64,8 +64,8 @@ export default {
      */
     getAllPasswordsGroups(){
       this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_ALL_PASSWORDS_GROUPS)).then( (response) => {
-        let passwordGroupsResponseDto = GetPasswordGroupsResponseDto.fromAxiosResponse(response);
-        this.passwordsGroups          = passwordGroupsResponseDto.passwordsGroupsJsons.map( (json) => PasswordGroupDto.fromJson(json) );
+        let passwordGroupsDto = PasswordGroupsDto.fromAxiosResponse(response);
+        this.passwordsGroups  = passwordGroupsDto.passwordsGroupsJsons.map( (json) => PasswordGroupDto.fromJson(json) );
       })
     }
   },

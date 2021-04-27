@@ -1,7 +1,7 @@
 /**
  * @description this is a base dto used as a base for each internal api call response
  */
-export default class BaseInternalApiResponseDto {
+export default class BaseApiDto {
 
     static readonly KEY_DATA_REDIRECT_ROUTE_NAME: string = "redirectRouteName"
 
@@ -52,7 +52,7 @@ export default class BaseInternalApiResponseDto {
     }
 
     get redirectRouteName(): string {
-        return this.data[BaseInternalApiResponseDto.KEY_DATA_REDIRECT_ROUTE_NAME];
+        return this.data[BaseApiDto.KEY_DATA_REDIRECT_ROUTE_NAME];
     }
 
     /**
@@ -60,22 +60,22 @@ export default class BaseInternalApiResponseDto {
      *
      * @param json
      */
-    public static fromJson(json: string): BaseInternalApiResponseDto
+    public static fromJson(json: string): BaseApiDto
     {
-        let dto = new BaseInternalApiResponseDto();
+        let dto = new BaseApiDto();
         dto.prefillBaseFields(json);
 
         return dto;
     }
 
     /**
-     * @description creates BaseInternalApiResponseDto from axios response
+     * @description creates BaseApiDto from axios response
      */
-    public static fromAxiosResponse(response: object): BaseInternalApiResponseDto
+    public static fromAxiosResponse(response: object): BaseApiDto
     {
         //@ts-ignore
         let json = JSON.stringify(response.data);
-        let dto  = BaseInternalApiResponseDto.fromJson(json);
+        let dto  = BaseApiDto.fromJson(json);
 
         return dto;
     }
@@ -90,7 +90,7 @@ export default class BaseInternalApiResponseDto {
             var object = JSON.parse(json);
         }catch(Exception){
             throw{
-                "message"   : "Could not parse the json for: BaseInternalApiResponseDto",
+                "message"   : "Could not parse the json for: BaseApiDto",
                 "exception" : Exception,
                 "json"      : json,
             }

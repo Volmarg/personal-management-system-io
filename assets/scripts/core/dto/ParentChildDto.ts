@@ -76,7 +76,7 @@ export default class ParentChildDto {
     }
 
     /**
-     * @description creates BaseInternalApiResponseDto from axios response
+     * @description creates BaseApiDto from axios response
      */
     public static fromAxiosResponse(response: object): ParentChildDto
     {

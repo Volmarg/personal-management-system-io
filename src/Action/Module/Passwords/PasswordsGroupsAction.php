@@ -5,7 +5,7 @@ namespace App\Action\Module\Passwords;
 
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Modules\Passwords\PasswordGroupController;
-use App\DTO\Internal\Module\Passwords\GetAllPasswordGroupsResponseDTO;
+use App\DTO\Internal\Module\Passwords\AllPasswordGroupsDTO;
 use App\Entity\Modules\Passwords\PasswordGroup;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +41,7 @@ class PasswordsGroupsAction extends AbstractController
     public function getAllPasswordGroups(): JsonResponse
     {
         $allGroups                 = $this->passwordGroupController->getAllGroups();
-        $getPasswordGroupsResponse = new GetAllPasswordGroupsResponseDTO();
+        $getPasswordGroupsResponse = new AllPasswordGroupsDTO();
         $getPasswordGroupsResponse->prefillBaseFieldsForSuccessResponse();
 
         $arrayOfPasswordJsons = array_map( fn(PasswordGroup $password) => $password->toJson(), $allGroups );

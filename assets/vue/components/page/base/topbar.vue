@@ -35,7 +35,7 @@
 
 <!-- Script -->
 <script type="ts">
-import BaseInternalApiResponseDto from "../../../../scripts/core/dto/BaseInternalApiResponseDto";
+import BaseApiDto from "../../../../scripts/core/dto/BaseApiDto";
 
 import LocalStorageService from "../../../../scripts/core/service/LocalStorageService";
 import SymfonyRoutes       from "../../../../scripts/core/symfony/SymfonyRoutes";
@@ -57,7 +57,7 @@ export default {
     logoutClicked(){
       this.axios.post(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_INVALIDATE_USER)).then( response => {
 
-        let baseResponse = BaseInternalApiResponseDto.fromAxiosResponse(response);
+        let baseResponse = BaseApiDto.fromAxiosResponse(response);
         if(baseResponse.success){
           ToastifyService.showGreenNotification(translationService.getTranslationForString('security.logout.messages.loggingOut'))
 

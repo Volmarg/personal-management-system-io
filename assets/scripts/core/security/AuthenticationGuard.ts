@@ -2,7 +2,7 @@
  * @description this class handles checking user authentication for given pages, for example
  *              controls the flow of requests from Axios and redirect the user in case of missing authentication
  */
-import BaseInternalApiResponseDto   from "../dto/BaseInternalApiResponseDto";
+import BaseApiDto   from "../dto/BaseApiDto";
 import StringUtils                  from "../utils/StringUtils";
 import SymfonyRoutes                from "../symfony/SymfonyRoutes";
 import TranslationsService from "../service/TranslationsService";
@@ -18,13 +18,13 @@ export default class AuthenticationGuard
      *              then user is redirected (pushed in history) to other page
      *
      *              This is possible thx to all request sharing common base
-     *              @see BaseInternalApiResponseDto
+     *              @see BaseApiDto
      *
      * @return boolean - true if everything is ok, false upon authentication issues
      */
     public checkRouteCallAuthentication(axiosResponse: object): boolean
     {
-        let baseApiResponse = BaseInternalApiResponseDto.fromAxiosResponse(axiosResponse);
+        let baseApiResponse = BaseApiDto.fromAxiosResponse(axiosResponse);
         if(
                 !baseApiResponse.success
             &&  !StringUtils.isEmptyString(baseApiResponse.redirectRouteName)

@@ -1,9 +1,9 @@
-import BaseInternalApiResponseDto from "./BaseInternalApiResponseDto";
+import BaseApiDto from "./BaseApiDto";
 
 /**
  * @description response used to fetch the .env APP_DEMO state
  */
-export default class DotenvIsDemoResponseDto extends BaseInternalApiResponseDto
+export default class DotenvIsDemoResponseDto extends BaseApiDto
 {
     private _isDemo: boolean;
 
@@ -27,7 +27,7 @@ export default class DotenvIsDemoResponseDto extends BaseInternalApiResponseDto
             var object = JSON.parse(json);
         }catch(Exception){
             throw{
-                "message"   : "Could not parse json to object for CsrfTokenResponseDto",
+                "message"   : "Could not parse json to object for DotenvIsDemoDto",
                 "exception" : Exception
             }
         }

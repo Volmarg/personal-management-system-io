@@ -2,9 +2,9 @@
  * @description contains basic information about password group and the passwords in form of json
  *              - the returned password is encoded
  */
-import BaseInternalApiResponseDto from "../../BaseInternalApiResponseDto";
+import BaseApiDto from "../../BaseApiDto";
 
-export default class GetPasswordGroupWithPasswordsResponseDTO extends BaseInternalApiResponseDto
+export default class PasswordGroupWithPasswordsDto extends BaseApiDto
 {
     private _passwordGroupId   : string;
     private _passwordGroupName : string;
@@ -37,16 +37,16 @@ export default class GetPasswordGroupWithPasswordsResponseDTO extends BaseIntern
     /**
      * @description will build frontend response from backend response
      */
-    public static fromJson(json: string): GetPasswordGroupWithPasswordsResponseDTO
+    public static fromJson(json: string): PasswordGroupWithPasswordsDto
     {
-        let dto = new GetPasswordGroupWithPasswordsResponseDTO();
+        let dto = new PasswordGroupWithPasswordsDto();
         dto.prefillBaseFields(json);
 
         try{
             var object = JSON.parse(json);
         }catch(Exception){
             throw{
-                "message"   : "Could not parse the json for: GetNotesForCategoryResponseDto",
+                "message"   : "Could not parse the json for: PasswordGroupWithPasswordsDto",
                 "exception" : Exception,
                 "json"      : json,
             }
@@ -59,13 +59,13 @@ export default class GetPasswordGroupWithPasswordsResponseDTO extends BaseIntern
     }
 
     /**
-     * @description creates BaseInternalApiResponseDto from axios response
+     * @description creates BaseApiDto from axios response
      */
-    public static fromAxiosResponse(response: object): GetPasswordGroupWithPasswordsResponseDTO
+    public static fromAxiosResponse(response: object): PasswordGroupWithPasswordsDto
     {
         //@ts-ignore
         let json = JSON.stringify(response.data);
-        let dto  = GetPasswordGroupWithPasswordsResponseDTO.fromJson(json);
+        let dto  = PasswordGroupWithPasswordsDto.fromJson(json);
 
         return dto;
     }

@@ -10,7 +10,7 @@ use App\Controller\API\ApiController;
 use App\Controller\Core\Services;
 use App\Controller\Modules\Passwords\PasswordController;
 use App\Controller\Modules\Passwords\PasswordGroupController;
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 use App\DTO\Request\Modules\Passwords\InsertPasswordsGroupsRequestDTO;
 use App\DTO\Request\Modules\Passwords\InsertPasswordsRequestDTO;
 use App\Entity\Modules\Passwords\Password;
@@ -80,7 +80,7 @@ class PasswordsApiAction extends ApiAction
                     $validationDto       = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($passwordGroupEntity);
 
                     if( !$validationDto->isSuccess() ){
-                        $response = BaseApiResponseDTO::buildInvalidFieldsRequestErrorResponse();
+                        $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();
                         $response->setInvalidFields($validationDto->getViolationsWithMessages());
 
                         $message = "One of the groups entity is invalid";
@@ -108,7 +108,7 @@ class PasswordsApiAction extends ApiAction
         }
         $this->services->getDatabaseService()->commitTransaction();
 
-        return BaseApiResponseDTO::buildOkResponse()->toJsonResponse();
+        return BaseApiDTO::buildOkResponse()->toJsonResponse();
     }
 
     /**
@@ -134,7 +134,7 @@ class PasswordsApiAction extends ApiAction
                     $passwordEntity->setGroup($passwordGroupEntity);
 
                     if( !$validationDto->isSuccess() ){
-                        $response = BaseApiResponseDTO::buildInvalidFieldsRequestErrorResponse();
+                        $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();
                         $response->setInvalidFields($validationDto->getViolationsWithMessages());
 
                         $message = "One of the password entity is invalid";
@@ -162,6 +162,6 @@ class PasswordsApiAction extends ApiAction
         }
         $this->services->getDatabaseService()->commitTransaction();
 
-        return BaseApiResponseDTO::buildOkResponse()->toJsonResponse();
+        return BaseApiDTO::buildOkResponse()->toJsonResponse();
     }
 }

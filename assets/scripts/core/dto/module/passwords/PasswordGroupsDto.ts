@@ -1,9 +1,9 @@
 /**
  * @description this is a base dto used as a base for each internal api call response
  */
-import BaseInternalApiResponseDto from "../../BaseInternalApiResponseDto";
+import BaseApiDto from "../../BaseApiDto";
 
-export default class GetPasswordGroupsResponseDto extends BaseInternalApiResponseDto {
+export default class PasswordGroupsDto extends BaseApiDto {
 
     private _passwordsGroupsJsons : Array<string> = [];
 
@@ -18,9 +18,9 @@ export default class GetPasswordGroupsResponseDto extends BaseInternalApiRespons
     /**
      * @description will build frontend response from backend response
      */
-    public static fromJson(json: string): GetPasswordGroupsResponseDto
+    public static fromJson(json: string): PasswordGroupsDto
     {
-        let dto = new GetPasswordGroupsResponseDto();
+        let dto = new PasswordGroupsDto();
         dto.prefillBaseFields(json);
 
         try{
@@ -38,13 +38,13 @@ export default class GetPasswordGroupsResponseDto extends BaseInternalApiRespons
     }
 
     /**
-     * @description creates BaseInternalApiResponseDto from axios response
+     * @description creates BaseApiDto from axios response
      */
-    public static fromAxiosResponse(response: object): GetPasswordGroupsResponseDto
+    public static fromAxiosResponse(response: object): PasswordGroupsDto
     {
         //@ts-ignore
         let json = JSON.stringify(response.data);
-        let dto  = GetPasswordGroupsResponseDto.fromJson(json);
+        let dto  = PasswordGroupsDto.fromJson(json);
 
         return dto;
     }

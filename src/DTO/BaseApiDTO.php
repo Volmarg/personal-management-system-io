@@ -7,13 +7,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Base ResponseDTO used for each response in the API calls
- * Each api dto should extend from this class as the fronted will try to build same dto on its side
+ * BaseDto used for each response in the API calls
+ * Each dto should extend from this class as the fronted will try to build same dto on its side
  *
- * Class BaseInternalApiResponseDto
+ * Class BaseApiDTO
  * @package App\DTO\API\Internal
  */
-class BaseApiResponseDTO extends AbstractDTO
+class BaseApiDTO extends AbstractDTO
 {
     const KEY_CODE           = "code";
     const KEY_MESSAGE        = "message";
@@ -309,7 +309,7 @@ class BaseApiResponseDTO extends AbstractDTO
         $message = self::checkAndGetKey($dataArray, self::KEY_MESSAGE, self::DEFAULT_MESSAGE);
         $code    = self::checkAndGetKey($dataArray, self::KEY_CODE, self:: DEFAULT_CODE);
 
-        $dto = new BaseApiResponseDTO();
+        $dto = new BaseApiDTO();
         $dto->setMessage($message);
         $dto->setCode($code);
 

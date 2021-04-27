@@ -7,9 +7,9 @@ use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\Controller\Modules\Passwords\PasswordController;
 use App\Controller\Modules\Passwords\PasswordGroupController;
-use App\DTO\BaseApiResponseDTO;
-use App\DTO\Internal\Module\Passwords\GetDecryptedPasswordResponseDTO;
-use App\DTO\Internal\Module\Passwords\GetPasswordGroupWithPasswordsResponseDTO;
+use App\DTO\BaseApiDTO;
+use App\DTO\Internal\Module\Passwords\DecryptedPasswordDTO;
+use App\DTO\Internal\Module\Passwords\PasswordGroupWithPasswordsDTO;
 use App\Entity\Modules\Passwords\Password;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,7 +61,7 @@ class PasswordsAction extends AbstractController
         $group = $this->passwordGroupController->getOneForId($id);
         if( empty($group) ){
             $this->services->getLoggerService()->getLogger()->warning("No password group was found for id: {$id}");
-            return BaseApiResponseDTO::buildNotFoundResponse()->toJsonResponse();
+            return BaseApiDTO::buildNotFoundResponse()->toJsonResponse();
         }
 
         $allPasswordsJsons = array_map(
@@ -69,7 +69,7 @@ class PasswordsAction extends AbstractController
             $group->getPassword()->getValues()
         );
 
-        $responseDto = new GetPasswordGroupWithPasswordsResponseDTO();
+        $responseDto = new PasswordGroupWithPasswordsDTO();
         $responseDto->setPasswordsJsons($allPasswordsJsons);
         $responseDto->setPasswordGroupName($group->getName());
         $responseDto->setPasswordGroupId($group->getId());
@@ -88,12 +88,12 @@ class PasswordsAction extends AbstractController
     {
         $passwordEntity = $this->passwordController->getOneForId($passwordId);
         if( empty($passwordEntity) ){
-            return BaseApiResponseDTO::buildNotFoundResponse()->toJsonResponse();
+            return BaseApiDTO::buildNotFoundResponse()->toJsonResponse();
         }
 
         $decryptedPassword = $this->services->getEncryptionService()->decryptPassword($passwordEntity->getPassword());
 
-        $responseDto = new GetDecryptedPasswordResponseDTO();
+        $responseDto = new DecryptedPasswordDTO();
         $responseDto->prefillBaseFieldsForSuccessResponse();
         $responseDto->setDecryptedPassword($decryptedPassword);
 

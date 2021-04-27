@@ -3,14 +3,14 @@
 
 namespace App\DTO\Internal\Module\Notes;
 
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 use App\Entity\Modules\Notes\MyNote;
 
 /**
- * Class CsrfTokenResponseDto
+ * Class NoteCategoryDTO
  * @package App\DTO\API\Internal
  */
-class GetCategoryResponseDTO extends BaseApiResponseDTO
+class NotesInCategoryDTO extends BaseApiDTO
 {
     const KEY_NOTES_JSONS = "notesJsons";
     const KEY_NAME        = "name";

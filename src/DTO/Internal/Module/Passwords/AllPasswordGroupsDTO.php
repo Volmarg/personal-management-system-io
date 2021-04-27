@@ -4,9 +4,9 @@
 namespace App\DTO\Internal\Module\Passwords;
 
 
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 
-class GetAllPasswordGroupsResponseDTO extends BaseApiResponseDTO
+class AllPasswordGroupsDTO extends BaseApiDTO
 {
 
     const KEY_PASSWORDS_GROUPS = "passwordsGroups";

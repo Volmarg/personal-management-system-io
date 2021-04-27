@@ -5,7 +5,7 @@ namespace App\Service\Security;
 use App\Controller\Core\Form;
 use App\Controller\Core\Services;
 use App\Controller\UserController;
-use App\DTO\BaseApiResponseDTO;
+use App\DTO\BaseApiDTO;
 use App\DTO\Internal\Form\Security\LoginFormDataDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -182,7 +182,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): JsonResponse
     {
         $message = $this->services->getTranslator()->trans('security.login.messages.OK');
-        return BaseApiResponseDTO::buildRedirectResponse('modules_dashboard_overview', $message)->toJsonResponse();
+        return BaseApiDTO::buildRedirectResponse('modules_dashboard_overview', $message)->toJsonResponse();
     }
 
     /**
@@ -193,7 +193,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?JsonResponse
     {
         $message = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
-        return BaseApiResponseDTO::buildUnauthorizedResponse($message)->toJsonResponse();
+        return BaseApiDTO::buildUnauthorizedResponse($message)->toJsonResponse();
     }
 
     /**
@@ -206,7 +206,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
         }
 
         $message  = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
-        $response = BaseApiResponseDTO::buildUnauthorizedResponse($message);
+        $response = BaseApiDTO::buildUnauthorizedResponse($message);
         $response->setRedirectRoute("login");;
         return $response->toJsonResponse();
     }
