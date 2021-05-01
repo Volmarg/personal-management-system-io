@@ -91,10 +91,13 @@ export default {
     /**
      * @description observer router to rebuild data on page
      */
-    $route(currRoute){
+    $route(currRoute, oldRoute){
 
       /** @description handles fetching passwords upon changing the password group */
-      if(currRoute.name === SymfonyRoutes.ROUTE_NAME_MODULE_PASSWORDS_GROUP){
+      if(
+              currRoute.name === SymfonyRoutes.ROUTE_NAME_MODULE_PASSWORDS_GROUP
+          &&  oldRoute.path  !== currRoute.path
+      ){
         this.setGroupIdFromRoute();
         this.getPasswordsForCurrentGroupId();
       }
