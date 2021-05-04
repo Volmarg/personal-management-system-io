@@ -2,6 +2,7 @@
 
 namespace App\Entity\Modules\Notes;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Entity\AbstractEntity;
 use App\Service\ArrayService;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,12 +27,14 @@ class MyNote extends AbstractEntity
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Encrypted
+     * @ORM\Column(type="text", length=255)
      */
     #[Assert\NotBlank]
     private string $title;
 
     /**
+     * @Encrypted
      * @ORM\Column(type="text", nullable=true)
      */
     private ?string $body;

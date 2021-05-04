@@ -2,6 +2,7 @@
 
 namespace App\Entity\Modules\Passwords;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\DTO\AbstractDTO;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,7 +28,8 @@ class Password
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Encrypted
+     * @ORM\Column(type="text", length=255)
      */
     #[Assert\NotBlank]
     private string $login;
@@ -40,12 +42,14 @@ class Password
     private string $password;
 
     /**
-     * @ORM\Column(type="string", length=255,  nullable=true)
+     * @Encrypted
+     * @ORM\Column(type="text", length=255,  nullable=true)
      */
     private string $url;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Encrypted
+     * @ORM\Column(type="text", length=255, nullable=true)
      */
     private string  $description;
 

@@ -3,6 +3,13 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+
+# https://github.com/GiveMeAllYourCats/DoctrineEncryptBundle
+# This must be later expanded to work with SpecSharp
+ambta_doctrine_encrypt:
+    encryptor_class: Defuse # or Defuse
+    secret_directory_path: '%kernel.project_dir%/var/keys'   # Path where to store the keyfiles - in var as this is only temporary file
+
 parameters:
 
 services:

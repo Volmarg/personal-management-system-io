@@ -2,6 +2,7 @@
 
 namespace App\Entity\Modules\Notes;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Service\ArrayService;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -47,7 +48,9 @@ class MyNoteCategory
     private Collection $note;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Encrypted
+     *
+     * @ORM\Column(type="text", length=255)
      */
     #[NotBlank]
     private string $name;

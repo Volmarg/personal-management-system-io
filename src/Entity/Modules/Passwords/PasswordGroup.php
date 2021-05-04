@@ -2,6 +2,7 @@
 
 namespace App\Entity\Modules\Passwords;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\DTO\AbstractDTO;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +25,8 @@ class PasswordGroup
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Encrypted
+     * @ORM\Column(type="text", length=255, nullable=true)
      * @Assert\NotBlank()
      */
     private string $name;

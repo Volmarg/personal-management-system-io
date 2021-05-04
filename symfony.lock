@@ -2,6 +2,9 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
+    "defuse/php-encryption": {
+        "version": "v2.3.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -97,11 +100,29 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.2.0"
     },
+    "michaeldegroot/doctrine-encrypt-bundle": {
+        "version": "4.0.5"
+    },
     "monolog/monolog": {
         "version": "2.2.0"
     },
     "nikic/php-parser": {
         "version": "v4.10.4"
+    },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.4.0"
+    },
+    "paragonie/halite": {
+        "version": "v4.8.0"
+    },
+    "paragonie/hidden-string": {
+        "version": "v2.0.0"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.100"
+    },
+    "paragonie/sodium_compat": {
+        "version": "v1.15.4"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
