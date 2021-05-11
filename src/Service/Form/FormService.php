@@ -1,12 +1,12 @@
 <?php
 
-
 namespace App\Service\Form;
-
 
 use App\Controller\Core\Services;
 use App\DTO\Internal\ValidationResultDTO;
+use App\Service\Validation\ValidationService;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,13 +15,19 @@ class FormService
 {
 
     /**
-     * @var Services $services
+     * @var LoggerInterface $logger
      */
-    private Services $services;
+    private LoggerInterface $logger;
 
-    public function __construct(Services $services)
+    /**
+     * @var ValidationService $validationService
+     */
+    private ValidationService $validationService;
+
+    public function __construct(LoggerInterface $logger, ValidationService $validationService)
     {
-        $this->services = $services;
+        $this->validationService = $validationService;
+        $this->logger            = $logger;
     }
 
     /**
@@ -52,7 +58,7 @@ class FormService
      */
     public function getFormViolations(FormInterface $form): ValidationResultDTO
     {
-        $validationResult = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($form->getData());
+        $validationResult = $this->validationService->validateAndReturnArrayOfInvalidFieldsWithMessages($form->getData());
         return $validationResult;
     }
 
@@ -71,7 +77,7 @@ class FormService
 
         if( JSON_ERROR_NONE !== json_last_error() ){
             $message = "Provided json is not valid";
-            $this->services->getLoggerService()->getLogger()->critical($message, [
+            $this->logger->critical($message, [
                 'jsonLastErrorMessage' => json_last_error_msg(),
             ]);
 

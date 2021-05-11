@@ -50,6 +50,7 @@ services:
             - setDatabaseService: ['@App\Service\Database\DatabaseService']
             - setEncryptionService: ['@App\Service\Security\EncryptionService']
             - setUserSecurityService: ['@App\Service\Security\UserSecurityService']
+            - setCsrfTokenValidatorService: ['@App\Service\Security\CsrfTokenValidatorService']
 
     App\Service\ConfigLoader\ConfigLoaderPaths:
         public: true

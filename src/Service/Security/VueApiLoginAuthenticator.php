@@ -61,6 +61,14 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
      */
     private TokenStorageInterface $tokenStorage;
 
+    /**
+     * Must be set to class property as authentication is strictly bound to the interface which already defines method parameters
+     * This is used to check the csrf token in incoming request
+     *
+     * @var Request $request
+     */
+    private Request $request;
+
     public function __construct(
         EntityManagerInterface $em,
         Services $services,
@@ -90,6 +98,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
                 $request->getMethod() === Request::METHOD_POST
             &&  $request->getRequestUri() === $this->urlGenerator->generate("login")
         ){
+            $this->request = $request;
             return true;
         }
         return false;
@@ -114,7 +123,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         $loginForm = $this->services->getFormService()->handlePostFormForAxiosCall($this->form->getLoginForm(), $request);
-        if( $loginForm->isSubmitted() ) {
+        if( $loginForm->isSubmitted() && $loginForm->isValid() ) {
             /**@var LoginFormDataDTO $loginFormData */
             $loginFormData = $loginForm->getData();
             return $loginFormData;
@@ -154,6 +163,11 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
+        if(!$this->services->getCsrfTokenValidatorService()->validateCsrfTokenInPostRequest($this->request)){
+            $this->services->getLoggerService()->getLogger()->warning("Provided CSRF token is invalid");
+            return false;
+        }
+
         $validationResult = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($credentials);
         if( !$validationResult->isSuccess() ){
             $this->services->getLoggerService()->getLogger()->warning("Could not log-in, there are login form violations", [

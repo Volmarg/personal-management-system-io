@@ -3,6 +3,7 @@ import NoteCategoryComponent      from '../../../vue/pages/module/notes/category
 import DashboardOverviewComponent from '../../../vue/pages/module/dashboard/overview.vue';
 import PasswordsOverviewComponent from '../../../vue/pages/module/passwords/passwords.vue';
 import LoginPageComponent         from "../../../vue/pages/module/secuirty/login.vue";
+import SearchPageComponent        from "../../../vue/pages/module/search/search.vue";
 import SymfonyRoutes              from "../../core/symfony/SymfonyRoutes";
 
 /**
@@ -43,6 +44,11 @@ export default class Router {
             component : LoginPageComponent,
             path      : SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN),
             name      : SymfonyRoutes.ROUTE_NAME_LOGIN,
+        },
+        {
+            component : SearchPageComponent,
+            path      : SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_MODULE_SEARCH_SEARCH_OVERVIEW),
+            name      : SymfonyRoutes.ROUTE_NAME_MODULE_SEARCH_SEARCH_OVERVIEW,
         }
     ];
 

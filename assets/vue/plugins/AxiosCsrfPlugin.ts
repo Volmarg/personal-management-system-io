@@ -1,7 +1,8 @@
-import SymfonyRoutes              from "../../scripts/core/symfony/SymfonyRoutes";
-import CsrfTokenDto               from "../../scripts/core/dto/CsrfTokenDto";
-import BaseApiDto from "../../scripts/core/dto/BaseApiDto";
-import Axios                      from "../../scripts/libs/axios/Axios";
+import SymfonyRoutes    from "../../scripts/core/symfony/SymfonyRoutes";
+import CsrfTokenDto     from "../../scripts/core/dto/CsrfTokenDto";
+import BaseApiDto       from "../../scripts/core/dto/BaseApiDto";
+import Axios            from "../../scripts/libs/axios/Axios";
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * @description this plugin handles axios call (POST), but before doing the main call it will first call Symfony backend
@@ -27,7 +28,10 @@ export default class AxiosCsrfPlugin
     public static async postWithCsrf(calledUrl: string, dataBag: Object): Promise<any>
     {
         try{
-            let csrfToken             = await AxiosCsrfPlugin.callForCsrf();
+            let csrfTokenId = uuidv4();
+            Axios.setHeader("csrfTokenId", csrfTokenId.toString());
+
+            let csrfToken             = await AxiosCsrfPlugin.callForCsrf(csrfTokenId);
             let handlePostCallPromise = new Promise( (resolve, reject) => {
 
                 let extendedDataBag = {...dataBag,
@@ -52,10 +56,12 @@ export default class AxiosCsrfPlugin
     /**
      * @description makes axios call for CSRF token
      */
-    private static callForCsrf(): Promise<any>
+    private static callForCsrf(csrfTokenId): Promise<any>
     {
-        let calledUrl = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_CSRF_TOKEN);
-        let promise   = Axios.get(calledUrl).then( result => {
+        let calledUrl = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_CSRF_TOKEN, {
+            [SymfonyRoutes.ROUTE_NAME_GET_CSRF_TOKEN_PARAM_TOKEN_ID] : csrfTokenId,
+        });
+        let promise = Axios.get(calledUrl).then( result => {
 
             let csrfTokenResponse = CsrfTokenDto.fromAxiosResponse(result);
             if( !csrfTokenResponse.success ){

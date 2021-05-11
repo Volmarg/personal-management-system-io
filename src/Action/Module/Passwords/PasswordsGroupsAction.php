@@ -9,6 +9,7 @@ use App\DTO\Internal\Module\Passwords\AllPasswordGroupsDTO;
 use App\Entity\Modules\Passwords\PasswordGroup;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -36,7 +37,7 @@ class PasswordsGroupsAction extends AbstractController
      *
      * @return JsonResponse
      */
-    #[Route("/get-all-groups", name: "get_all_groups")]
+    #[Route("/get-all-groups", name: "get_all_groups", methods: [Request::METHOD_GET])]
     #[InternalActionAttribute]
     public function getAllPasswordGroups(): JsonResponse
     {

@@ -33,6 +33,14 @@ export default class Axios
     }
 
     /**
+     * @description will add headers to given axios instance
+     */
+    public static setHeader(key: string, value: string): void
+    {
+        axios.defaults.headers.common[key] = value;
+    }
+
+    /**
      * @description makes axios call
      */
     private static async makeCall(method: string, url: string, data: object): Promise<any>

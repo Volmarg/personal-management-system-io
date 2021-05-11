@@ -5,14 +5,11 @@
       <i class="hamburger align-self-center"></i>
     </a>
 
-<!--    <form class="d-none d-sm-inline-block">-->
-<!--      <div class="input-group input-group-navbar">-->
-<!--        <input type="text" class="form-control" placeholder="Search…" aria-label="Search">-->
-<!--        <button class="btn" type="button">-->
-<!--          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search align-middle"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </form>-->
+    <router-link class="search-icon-wrapper"
+                 :to="{name: searchPageRouteName}"
+    >
+      <i class="align-middle" data-feather="search"></i>
+    </router-link>
 
     <div class="navbar-collapse collapse">
       <ul class="navbar-nav navbar-align">
@@ -47,7 +44,8 @@ let translationService = new TranslationsService();
 export default {
   data(){
     return{
-      loggedInUserDto: LocalStorageService.getLoggedInUser()
+      loggedInUserDto     : LocalStorageService.getLoggedInUser(),
+      searchPageRouteName : SymfonyRoutes.ROUTE_NAME_MODULE_SEARCH_SEARCH_OVERVIEW,
     }
   },
   methods: {
@@ -55,9 +53,8 @@ export default {
      * @description handles the logout click
      */
     logoutClicked(){
-      this.axios.post(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_INVALIDATE_USER)).then( response => {
+      this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_INVALIDATE_USER)).then( baseResponse => {
 
-        let baseResponse = BaseApiDto.fromAxiosResponse(response);
         if(baseResponse.success){
           ToastifyService.showGreenNotification(translationService.getTranslationForString('security.logout.messages.loggingOut'))
 
@@ -67,12 +64,20 @@ export default {
           ToastifyService.showOrangeNotification(translationService.getTranslationForString('security.logout.messages.couldNotLogOut'))
         }
 
-      }).catch( response => {
+      }).catch( baseResponse => {
         ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
-        console.warn(response);
+        console.warn(baseResponse);
       })
 
     }
   }
 };
 </script>
+
+<!-- Style -->
+<style scoped>
+.search-icon-wrapper svg {
+  height: 25px;
+  width: 25px;
+}
+</style>

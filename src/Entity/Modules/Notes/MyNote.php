@@ -14,10 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MyNote extends AbstractEntity
 {
-    const KEY_ID                 = "id";
-    const KEY_TITLE              = "title";
-    const KEY_BODY               = "body";
-    const KEY_CATEGORY_ID        = "categoryId";
+    const KEY_ID          = "id";
+    const KEY_TITLE       = "title";
+    const KEY_BODY        = "body";
+    const KEY_CATEGORY_ID = "categoryId";
 
     /**
      * @ORM\Id()

@@ -1,5 +1,4 @@
 import Axios              from "./scripts/libs/axios/Axios";
-import VueAxios           from "vue-axios";
 import ContainerComponent from "./vue/components/page/base/container.vue";
 import Router             from './scripts/libs/vue/Router'
 import AxiosCsrfPlugin    from "./vue/plugins/AxiosCsrfPlugin";

@@ -35,20 +35,17 @@ class FormInternalApiAction extends AbstractController
     }
 
     /**
-     * Will return the @return JsonResponse
-     *@see CsrfTokenDTO containing the csrf token for form submission
+     * Will return the @see CsrfTokenDTO containing the csrf token for form submission
      *
+     * @param string $tokenId
+     * @return JsonResponse
      */
-    #[Route("/get-csrf-token", name: "get_csrf_token", methods: ["GET"])]
+    #[Route("/get-csrf-token/{tokenId}", name: "get_csrf_token", methods: ["GET"])]
     #[InternalActionAttribute]
-    public function getCsrfToken(): JsonResponse
+    public function getCsrfToken(string $tokenId): JsonResponse
     {
         try{
-            /**
-             * It's required to refresh the token, as otherwise always the same is returned, there already
-             * were some issues where submitting form for token generated for constant id resulted in submission  error
-             */
-            $token = $this->csrfTokenManager->refreshToken(rand());
+            $token = $this->csrfTokenManager->refreshToken($tokenId);
 
             $dto = new CsrfTokenDTO();
             $dto->prefillBaseFieldsForSuccessResponse();

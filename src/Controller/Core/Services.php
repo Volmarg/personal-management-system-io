@@ -9,6 +9,7 @@ use App\Service\Database\DatabaseService;
 use App\Service\Form\FormService;
 use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
+use App\Service\Security\CsrfTokenValidatorService;
 use App\Service\Security\EncryptionService;
 use App\Service\Security\UserSecurityService;
 use App\Service\Validation\ValidationService;
@@ -66,6 +67,11 @@ class Services
      * @var UserSecurityService $userSecurityService
      */
     private UserSecurityService $userSecurityService;
+
+    /**
+     * @var CsrfTokenValidatorService $csrfTokenValidatorService
+     */
+    private CsrfTokenValidatorService $csrfTokenValidatorService;
 
     /**
      * @return AttributeReaderService
@@ -209,6 +215,22 @@ class Services
     public function setUserSecurityService(UserSecurityService $userSecurityService): void
     {
         $this->userSecurityService = $userSecurityService;
+    }
+
+    /**
+     * @return CsrfTokenValidatorService
+     */
+    public function getCsrfTokenValidatorService(): CsrfTokenValidatorService
+    {
+        return $this->csrfTokenValidatorService;
+    }
+
+    /**
+     * @param CsrfTokenValidatorService $csrfTokenValidatorService
+     */
+    public function setCsrfTokenValidatorService(CsrfTokenValidatorService $csrfTokenValidatorService): void
+    {
+        $this->csrfTokenValidatorService = $csrfTokenValidatorService;
     }
 
 }

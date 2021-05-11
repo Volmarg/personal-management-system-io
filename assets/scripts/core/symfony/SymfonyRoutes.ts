@@ -64,7 +64,8 @@ export default class SymfonyRoutes {
     /**
      * @description will return csrf token for form submission
      */
-    static readonly ROUTE_NAME_GET_CSRF_TOKEN = "system_get_csrf_token";
+    static readonly ROUTE_NAME_GET_CSRF_TOKEN                = "system_get_csrf_token";
+    static readonly ROUTE_NAME_GET_CSRF_TOKEN_PARAM_TOKEN_ID = "tokenId";
 
     /**
      * @description will return logged in user data
@@ -76,6 +77,21 @@ export default class SymfonyRoutes {
      *              Keep in mind that it's required to redirect user after invalidation
      */
     static readonly ROUTE_NAME_INVALIDATE_USER = "user_invalidate_user";
+
+    /**
+     * @description will display the search page
+     */
+    static readonly ROUTE_NAME_MODULE_SEARCH_SEARCH_OVERVIEW = "module_search_overview";
+
+    /**
+     * @description will fetch search results for provided parameters (POST)
+     */
+    static readonly ROUTE_NAME_MODULE_SEARCH_GET_RESULTS = "module_search_get_results";
+
+    /**
+     * @description will fetch all modules supported in the search logic (names with their translations)
+     */
+    static readonly ROUTE_NAME_MODULE_GET_ALL_TRANSLATED_MODULES_NAMES_FOR_SEARCH = "module_search_get_all_translated_modules_names";
 
     /**
      * Will get url path for route name

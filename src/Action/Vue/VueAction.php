@@ -5,6 +5,7 @@ namespace App\Action\Vue;
 
 
 use App\Attribute\Action\InternalActionAttribute;
+use App\Attribute\Security\ValidateCsrfTokenAttribute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,7 @@ class VueAction extends AbstractController
      */
     #[Route("/module/notes/category/{id}",  name: "modules_notes_category",      methods: [Request::METHOD_GET])]
     #[Route("/module/dashboard/overview",   name: "modules_dashboard_overview",  methods: [Request::METHOD_GET])]
+    #[Route("/module/search/overview",      name: "module_search_overview",      methods: [Request::METHOD_GET])]
     #[Route("/module/passwords/group/{id}", name: "modules_passwords_group",     methods: [Request::METHOD_GET])]
     #[InternalActionAttribute]
     public function handleVueCallForPageDisplay(): Response
@@ -44,9 +46,24 @@ class VueAction extends AbstractController
      * This regards all pages like which dont use standard GUI: login / register / 404 / 500 etc.
      * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
      */
-    #[Route("/login", name: "login", methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    #[Route("/login", name: "login", methods: [Request::METHOD_GET])]
     #[InternalActionAttribute]
-    public function handleVueCallForBlankBasePage(): Response
+    public function handleVueCallForBlankBasePageViaGet(): Response
+    {
+        return $this->render(self::TEMPLATE_BASE, [
+            "vueId" => self::VUE_ID_VUE_APP_BLANK_BASE,
+        ]);
+    }
+
+    /**
+     * This action is needed to allow vue calling pages via standard url calls,
+     * This regards all pages like which dont use standard GUI: login / register / 404 / 500 etc.
+     * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
+     */
+    #[Route("/login", name: "login", methods: [Request::METHOD_POST])]
+    #[InternalActionAttribute]
+    #[ValidateCsrfTokenAttribute]
+    public function handleVueCallForBlankBasePageViaPost(): Response
     {
         return $this->render(self::TEMPLATE_BASE, [
             "vueId" => self::VUE_ID_VUE_APP_BLANK_BASE,

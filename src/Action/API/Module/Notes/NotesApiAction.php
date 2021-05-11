@@ -63,7 +63,7 @@ class NotesApiAction extends ApiAction
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route("/insert-categories", name: "insert_categories")]
+    #[Route("/insert-categories", name: "insert_categories", methods: [Request::METHOD_POST])]
     #[ExternalActionAttribute]
     public function insertNotesCategories(Request $request): JsonResponse
     {
@@ -114,7 +114,7 @@ class NotesApiAction extends ApiAction
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route("/insert-notes", name: "insert_notes")]
+    #[Route("/insert-notes", name: "insert_notes", methods: [Request::METHOD_POST])]
     #[ExternalActionAttribute]
     public function insertNotes(Request $request): JsonResponse
     {

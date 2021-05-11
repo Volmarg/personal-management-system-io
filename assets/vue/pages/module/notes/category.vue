@@ -2,39 +2,16 @@
 <template>
 
   <page-header :shown-text="trans('pages.notes.category.header', {'{{noteCategoryName}}' : categoryName})"/>
-
   <search-input @search-input-changed="filterNotesForSearchInput" />
-
-  <page-card>
-    <note-card
-      v-for="note in shownNotes"
-      @click="callDialog(note.id)"
-      :title="note.title"
-    />
-  </page-card>
-
-  <sweet-alert
-    v-for="note in shownNotes"
-    :cancel-button-string="trans('dialogs.buttons.default.close')"
-    :header-string="note.title"
-    :dialog-content="note.body"
-    :id="'noteDialogId_' + note.id"
-    :ref="'noteDialogId_' + note.id"
-  >
-    <template #body-content>
-      {{ note.body }}
-    </template>
-  </sweet-alert>
+  <shown-notes :notes="shownNotes"/>
 
 </template>
 
 <!-- Script -->
 <script type="ts">
-import PageCardComponent    from '../../../components/page/base/page-elements/card';
 import PageHeaderComponent  from '../../../components/page/base/page-elements/header';
-import NoteCardComponent    from './components/note-card';
-import SweetAlertComponent  from "../../../components/dialog/sweet-alert/sweet-alert";
 import SearchInputComponent from "../../../components/page/base/page-elements/search-input";
+import ShownNotesComponent  from "./components/shown-notes";
 
 import SymfonyRoutes      from "../../../../scripts/core/symfony/SymfonyRoutes";
 import NotesInCategoryDto from "../../../../scripts/core/dto/module/notes/NotesInCategoryDto";
@@ -51,20 +28,11 @@ export default {
     }
   },
   components: {
-    "page-card"    : PageCardComponent,
     "page-header"  : PageHeaderComponent,
-    "note-card"    : NoteCardComponent,
-    "sweet-alert"  : SweetAlertComponent,
     "search-input" : SearchInputComponent,
+    "shown-notes"  : ShownNotesComponent
   },
   methods: {
-    /**
-     * @description will call sweet alert dialog for given (related) note
-     */
-    callDialog(noteId) {
-      let dialog = this.$refs['noteDialogId_' + noteId];
-      dialog.showDialog();
-    },
     /**
      * @description will get notes for current category id
      */

@@ -5,12 +5,14 @@ namespace App\Listener;
 
 
 use App\Attribute\Action\ExternalActionAttribute;
+use App\Attribute\Security\ValidateCsrfTokenAttribute;
 use App\Controller\API\ApiController;
 use App\Controller\Core\Services;
 use App\DTO\BaseApiDTO;
 use App\Service\Attribute\AttributeReaderService;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -59,7 +61,11 @@ class RequestListener implements EventSubscriberInterface
     {
         $request = $requestEvent->getRequest();
         if( $this->attributeReaderService->hasUriAttribute($request->getUri(), ExternalActionAttribute::class) ){
+
             $this->preValidateExternalActionRequest($requestEvent);
+        }elseif( $this->attributeReaderService->hasUriAttribute($request->getUri(), ValidateCsrfTokenAttribute::class)){
+
+            $this->validateCsrfToken($requestEvent);
         }
     }
 
@@ -74,7 +80,7 @@ class RequestListener implements EventSubscriberInterface
         $json    = $request->getContent();
 
         $isJsonValid = $this->apiController->validateJson($json);
-        if( !$isJsonValid){
+        if(!$isJsonValid){
             $this->services->getLoggerService()->getLogger()->warning("Provided json in request is not valid");
             $jsonResponse = BaseApiDTO::buildInvalidJsonResponse()->toJsonResponse();
             $requestEvent->setResponse($jsonResponse);
@@ -85,6 +91,38 @@ class RequestListener implements EventSubscriberInterface
 
     }
 
+    /**
+     * Will validate the csrf token, sets the unauthorized response on failure
+     *
+     * @param RequestEvent $requestEvent
+     */
+    private function validateCsrfToken(RequestEvent $requestEvent): void
+    {
+        $this->services->getLoggerService()->getLogger()->info("Validating CSRF Token in request");
+        $unauthorizedMessage = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
+        $request             = $requestEvent->getRequest();
+
+        $isJsonValid = $this->apiController->validateJson($requestEvent->getRequest()->getContent());
+        if(!$isJsonValid){
+            $response = BaseApiDTO::buildUnauthorizedResponse($unauthorizedMessage)->toJsonResponse();
+            $requestEvent->setResponse($response);
+            return;
+        }
+
+        $isCsrfTokenValid = $this->services->getCsrfTokenValidatorService()->validateCsrfTokenInPostRequest($request);
+        if(!$isCsrfTokenValid){
+            $this->services->getLoggerService()->getLogger()->info("Could not authenticate incoming request", [
+                'requestHeaders'  => $request->headers->all(),
+                'requestPostData' => $request->request->all(),
+            ]);
+
+            $response = BaseApiDTO::buildUnauthorizedResponse($unauthorizedMessage)->toJsonResponse();
+            $requestEvent->setResponse($response);
+            return;
+        }
+
+        $this->services->getLoggerService()->getLogger()->info("CSRF authentication resulted in SUCCESS");
+    }
 
     /**
      * {@inheritDoc}
