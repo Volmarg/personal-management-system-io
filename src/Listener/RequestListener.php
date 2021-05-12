@@ -63,8 +63,10 @@ class RequestListener implements EventSubscriberInterface
         if( $this->attributeReaderService->hasUriAttribute($request->getUri(), ExternalActionAttribute::class) ){
 
             $this->preValidateExternalActionRequest($requestEvent);
-        }elseif( $this->attributeReaderService->hasUriAttribute($request->getUri(), ValidateCsrfTokenAttribute::class)){
-
+        }elseif(
+                Request::METHOD_POST == $request->getMethod()
+            &&  $this->attributeReaderService->hasUriAttribute($request->getUri(), ValidateCsrfTokenAttribute::class)
+        ){
             $this->validateCsrfToken($requestEvent);
         }
     }

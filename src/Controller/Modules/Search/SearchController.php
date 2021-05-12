@@ -85,7 +85,6 @@ class SearchController extends AbstractController
                 throw new Exception($message);
         }
 
-        return $results;
     }
 
 }

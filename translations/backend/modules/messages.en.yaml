@@ -1,3 +1,7 @@
 modules:
   passwords: Passwords
   notes: Notes
+  search:
+    messages:
+      selectModuleFromList: Select module from list first
+      typeSearchedString: Type searched string first

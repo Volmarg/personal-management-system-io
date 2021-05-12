@@ -45,25 +45,12 @@ class VueAction extends AbstractController
      * This action is needed to allow vue calling pages via standard url calls,
      * This regards all pages like which dont use standard GUI: login / register / 404 / 500 etc.
      * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
+     * - csrf is being handled only in case of POST
      */
-    #[Route("/login", name: "login", methods: [Request::METHOD_GET])]
-    #[InternalActionAttribute]
-    public function handleVueCallForBlankBasePageViaGet(): Response
-    {
-        return $this->render(self::TEMPLATE_BASE, [
-            "vueId" => self::VUE_ID_VUE_APP_BLANK_BASE,
-        ]);
-    }
-
-    /**
-     * This action is needed to allow vue calling pages via standard url calls,
-     * This regards all pages like which dont use standard GUI: login / register / 404 / 500 etc.
-     * the only returned thing here is a response - to prevent symfony from crashing when vue switches pages
-     */
-    #[Route("/login", name: "login", methods: [Request::METHOD_POST])]
+    #[Route("/login", name: "login", methods: [Request::METHOD_GET, Request::METHOD_POST])]
     #[InternalActionAttribute]
     #[ValidateCsrfTokenAttribute]
-    public function handleVueCallForBlankBasePageViaPost(): Response
+    public function handleVueCallForBlankBasePageWithCsrfValidation(): Response
     {
         return $this->render(self::TEMPLATE_BASE, [
             "vueId" => self::VUE_ID_VUE_APP_BLANK_BASE,

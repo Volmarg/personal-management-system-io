@@ -1,7 +1,10 @@
 <!-- Template -->
 <template>
 
-  <select class="form-select" ref="select" v-model="selectedOption">
+  <select class="form-select" ref="select" v-model="selectedOption" :class="{
+      'border'        : !isValid,
+      'border-danger' : !isValid
+    }">
     <option v-for="(name, value) in options"
             :value="value">{{ name }}</option>
   </select>
@@ -14,8 +17,12 @@ export default {
   props: {
     options: {
       type     : Object,
-      required : true
-    }
+      required : true,
+    },
+    isValid : {
+      type     : Boolean,
+      required : false,
+    },
   },
   data(){
     return{

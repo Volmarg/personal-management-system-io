@@ -1,28 +1,16 @@
 <!-- Template -->
 <template>
-
-  <div class="row">
-    <page-header :shown-text="trans('pages.passwords.group.header', {'{{passwordGroupName}}' : currentGroupName})"/>
-    <search-input @search-input-changed="filterPasswordsForSearchInput" />
-
-    <password-card v-for="password in shownPasswords"
-                   :description="password.description"
-                   :url="password.url"
-                   :login="password.login"
-                   :id="password.id"
-    >
-
-    </password-card>
-  </div>
-
+  <page-header :shown-text="trans('pages.passwords.group.header', {'{{passwordGroupName}}' : currentGroupName})"/>
+  <search-input @search-input-changed="filterPasswordsForSearchInput" />
+  <shown-passwords :passwords="shownPasswords"/>
 </template>
 
 <!-- Script -->
 <script>
-import PageCardComponent     from "../../../components/page/base/page-elements/card";
-import PageHeaderComponent   from "../../../components/page/base/page-elements/header";
-import PasswordCardComponent from "./components/password-card";
-import SearchInputComponent  from "../../../components/page/base/page-elements/search-input";
+import PageCardComponent        from "../../../components/page/base/page-elements/card";
+import PageHeaderComponent      from "../../../components/page/base/page-elements/header";
+import ShownPasswordsComponents from "./components/shown-passwords"
+import SearchInputComponent     from "../../../components/page/base/page-elements/search-input";
 
 import SymfonyRoutes                 from "../../../../scripts/core/symfony/SymfonyRoutes";
 import PasswordGroupWithPasswordsDto from "../../../../scripts/core/dto/module/passwords/PasswordGroupWithPasswordsDto";
@@ -39,10 +27,10 @@ export default {
     }
   },
   components: {
-    'page-card'     : PageCardComponent,
-    'page-header'   : PageHeaderComponent,
-    'password-card' : PasswordCardComponent,
-    'search-input'  : SearchInputComponent
+    'shown-passwords' : ShownPasswordsComponents,
+    'page-card'       : PageCardComponent,
+    'page-header'     : PageHeaderComponent,
+    'search-input'    : SearchInputComponent,
   },
   methods: {
     /**
