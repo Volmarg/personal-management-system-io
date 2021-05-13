@@ -2,12 +2,12 @@
 
 namespace App\Entity\Modules\Notes;
 
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Service\ArrayService;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use Exception;
+use SpecShaper\EncryptBundle\Annotations\Encrypted;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**

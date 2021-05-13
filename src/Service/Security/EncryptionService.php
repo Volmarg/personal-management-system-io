@@ -47,12 +47,12 @@ class EncryptionService
     }
 
     /**
-     * Will decrypt the password
+     * Will decrypt the string
      * @throws Exception
      */
-    public function decryptPassword(string $password): string
+    public function decryptString(string $stringToDecrypt): string
     {
-        return $this->openSslEncryptor->decrypt($password);
+        return $this->openSslEncryptor->decrypt($stringToDecrypt);
     }
 
 }

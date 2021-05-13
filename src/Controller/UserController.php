@@ -6,6 +6,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -40,10 +42,7 @@ class UserController extends AbstractController
      */
     public function getOneByUsername(string $username): ?User
     {
-        $user = $this->userRepository->findOneBy([
-            User::FIELD_NAME_USERNAME => $username,
-        ]);
-
+        $user = $this->userRepository->getByUsername($username);
         return $user;
     }
 
@@ -71,5 +70,27 @@ class UserController extends AbstractController
     public function invalidateUser(): void
     {
         $this->tokenStorage->setToken(null);
+    }
+
+    /**
+     * Will either create new record in db or update existing one
+     *
+     * @param User $user
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(User $user): void
+    {
+        $this->userRepository->save($user);
+    }
+
+    /**
+     * Will return all users
+     *
+     * @return User[]
+     */
+    public function getAllUsers(): array
+    {
+        return $this->userRepository->getAllUsers();
     }
 }

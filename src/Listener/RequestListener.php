@@ -8,13 +8,17 @@ use App\Attribute\Action\ExternalActionAttribute;
 use App\Attribute\Security\ValidateCsrfTokenAttribute;
 use App\Controller\API\ApiController;
 use App\Controller\Core\Services;
+use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
 use App\Service\Attribute\AttributeReaderService;
+use DateTime;
+use Exception;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class RequestListener
@@ -39,16 +43,36 @@ class RequestListener implements EventSubscriberInterface
     private Services $services;
 
     /**
+     * @var TokenStorageInterface $tokenStorage
+     */
+    private TokenStorageInterface $tokenStorage;
+
+    /**
+     * @var UserController $userController
+     */
+    private UserController $userController;
+
+    /**
      * RequestListener constructor.
      *
      * @param AttributeReaderService $attributeReaderService
      * @param ApiController $apiController
      * @param Services $services
+     * @param TokenStorageInterface $tokenStorage
+     * @param UserController $userController
      */
-    public function __construct(AttributeReaderService $attributeReaderService, ApiController $apiController, Services $services)
+    public function __construct(
+        AttributeReaderService  $attributeReaderService,
+        ApiController           $apiController,
+        Services                $services,
+        TokenStorageInterface   $tokenStorage,
+        UserController          $userController
+    )
     {
         $this->services               = $services;
+        $this->tokenStorage           = $tokenStorage;
         $this->apiController          = $apiController;
+        $this->userController         = $userController;
         $this->attributeReaderService = $attributeReaderService;
     }
 
@@ -56,6 +80,7 @@ class RequestListener implements EventSubscriberInterface
      * Handle logic upon request
      *
      * @throws ReflectionException
+     * @throws Exception
      */
     public function onRequest(RequestEvent $requestEvent): void
     {
@@ -69,6 +94,8 @@ class RequestListener implements EventSubscriberInterface
         ){
             $this->validateCsrfToken($requestEvent);
         }
+
+        $this->updateUserActivity();
     }
 
     /**
@@ -124,6 +151,28 @@ class RequestListener implements EventSubscriberInterface
         }
 
         $this->services->getLoggerService()->getLogger()->info("CSRF authentication resulted in SUCCESS");
+    }
+
+    /**
+     * If user is logged in then his activity will be updated in database on each request to track if he should be
+     * maybe logged out or if the encryption should be later removed as user was inactive for to long
+     *
+     * @throws Exception
+     */
+    private function updateUserActivity(): void
+    {
+        if( !empty($this->tokenStorage->getToken()?->getUser()) )
+        {
+            $user     = $this->tokenStorage->getToken()->getUser();
+            $realUser = $this->userController->getOneByUsername($user->getUsername());
+
+            if( empty($realUser) ){
+                throw new Exception("No real user has been found for username: {$user->getUsername()}");
+            }
+
+            $realUser->setLastActivity(new DateTime());
+            $this->userController->save($realUser);
+        }
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -40,6 +41,12 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lockPassword;
+
+    /**
+     * @var DateTime|null $lastActivity
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?DateTime $lastActivity;
 
     public function getId(): ?int
     {
@@ -132,4 +139,21 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getLastActivity(): ?DateTime
+    {
+        return $this->lastActivity;
+    }
+
+    /**
+     * @param DateTime|null $lastActivity
+     */
+    public function setLastActivity(?DateTime $lastActivity): void
+    {
+        $this->lastActivity = $lastActivity;
+    }
+
 }

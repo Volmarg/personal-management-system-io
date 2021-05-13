@@ -9,6 +9,7 @@ use App\DTO\BaseApiDTO;
 use App\DTO\Internal\Form\Security\LoginFormDataDTO;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,16 +70,23 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
      */
     private Request $request;
 
+    /**
+     * @var ParameterBagInterface $parameterBag
+     */
+    private ParameterBagInterface $parameterBag;
+
     public function __construct(
         EntityManagerInterface $em,
         Services $services,
         Form $form,
         UserController $userController,
         UrlGeneratorInterface $urlGenerator,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        ParameterBagInterface $parameterBag
     )
     {
         $this->userController = $userController;
+        $this->parameterBag   = $parameterBag;
         $this->tokenStorage   = $tokenStorage;
         $this->urlGenerator   = $urlGenerator;
         $this->services       = $services;

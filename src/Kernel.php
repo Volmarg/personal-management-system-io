@@ -2,6 +2,7 @@
 
 namespace App;
 
+use SpecShaper\EncryptBundle\SpecShaperEncryptBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
@@ -25,6 +26,8 @@ class Kernel extends BaseKernel
         } elseif (is_file($path = \dirname(__DIR__).'/config/services.php')) {
             (require $path)($container->withPath($path), $this);
         }
+
+        $this->setDynamicParameters($container);
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -36,6 +39,34 @@ class Kernel extends BaseKernel
             $routes->import('../config/routes.yaml');
         } elseif (is_file($path = \dirname(__DIR__).'/config/routes.php')) {
             (require $path)($routes->withPath($path), $this);
+        }
+    }
+
+    /**
+     * Will set dynamic parameters
+     *
+     * @param ContainerConfigurator $container
+     */
+    private function setDynamicParameters(ContainerConfigurator $container)
+    {
+        $this->setEncryptionKey($container);
+    }
+
+    /**
+     * Will set the encryption key for @see SpecShaperEncryptBundle
+     * - this must be done on fly where user provides the encryption key upon login
+     * - if wrong key is provided then data won't simply be decrypted properly
+     *
+     * @param ContainerConfigurator $container
+     */
+    private function setEncryptionKey(ContainerConfigurator $container)
+    {
+        $pathToFileWithKey = $this->getContainer()->getParameter("path_to_encryption_file_with_key");
+        if( file_exists($pathToFileWithKey) ){
+            $key = trim(file_get_contents($pathToFileWithKey));
+            if( !empty($key) ){
+                $container->parameters()->set("encrypt_key", $key);
+            }
         }
     }
 }

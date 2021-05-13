@@ -13,7 +13,6 @@
         "doctrine/doctrine-bundle": "^2.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
-        "michaeldegroot/doctrine-encrypt-bundle": "^4.0",
         "monolog/monolog": "^2.2",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",

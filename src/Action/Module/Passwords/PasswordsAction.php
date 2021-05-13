@@ -91,7 +91,8 @@ class PasswordsAction extends AbstractController
             return BaseApiDTO::buildNotFoundResponse()->toJsonResponse();
         }
 
-        $decryptedPassword = $this->services->getEncryptionService()->decryptPassword($passwordEntity->getPassword());
+        // todo: maybe the "Encrypted" on entity will be fine
+        $decryptedPassword = $this->services->getEncryptionService()->decryptString($passwordEntity->getPassword());
 
         $responseDto = new DecryptedPasswordDTO();
         $responseDto->prefillBaseFieldsForSuccessResponse();

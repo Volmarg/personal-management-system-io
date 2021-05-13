@@ -5,6 +5,7 @@ namespace App\Controller\Core;
 
 
 use App\Service\ConfigLoader\ConfigLoaderPaths;
+use App\Service\ConfigLoader\ConfigLoaderSystemData;
 
 class ConfigLoader
 {
@@ -13,6 +14,11 @@ class ConfigLoader
      * @var ConfigLoaderPaths $configLoaderPaths
      */
     private ConfigLoaderPaths $configLoaderPaths;
+
+    /**
+     * @var ConfigLoaderSystemData $configLoaderSystemData
+     */
+    private ConfigLoaderSystemData $configLoaderSystemData;
 
     /**
      * @return ConfigLoaderPaths
@@ -28,6 +34,22 @@ class ConfigLoader
     public function setConfigLoaderPaths(ConfigLoaderPaths $configLoaderPaths): void
     {
         $this->configLoaderPaths = $configLoaderPaths;
+    }
+
+    /**
+     * @return ConfigLoaderSystemData
+     */
+    public function getConfigLoaderSystemData(): ConfigLoaderSystemData
+    {
+        return $this->configLoaderSystemData;
+    }
+
+    /**
+     * @param ConfigLoaderSystemData $configLoaderSystemData
+     */
+    public function setConfigLoaderSystemData(ConfigLoaderSystemData $configLoaderSystemData): void
+    {
+        $this->configLoaderSystemData = $configLoaderSystemData;
     }
 
 }

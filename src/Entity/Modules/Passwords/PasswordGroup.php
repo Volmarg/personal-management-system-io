@@ -2,10 +2,10 @@
 
 namespace App\Entity\Modules\Passwords;
 
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\DTO\AbstractDTO;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use SpecShaper\EncryptBundle\Annotations\Encrypted;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace App\Entity\Modules\Notes;
 
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Entity\AbstractEntity;
 use App\Service\ArrayService;
 use Doctrine\ORM\Mapping as ORM;
+use SpecShaper\EncryptBundle\Annotations\Encrypted;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

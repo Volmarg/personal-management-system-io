@@ -4,13 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 
-# https://github.com/GiveMeAllYourCats/DoctrineEncryptBundle
-# This must be later expanded to work with SpecSharp
-ambta_doctrine_encrypt:
-    encryptor_class: Defuse # or Defuse
-    secret_directory_path: '%kernel.project_dir%/var/keys'   # Path where to store the keyfiles - in var as this is only temporary file
-
+# https://github.com/mogilvie/EncryptBundle
 parameters:
+    encrypt_key: "1aQjpLnuUGSuN27tPTJjxwO9o/HnMvgusOYjLBK8InI=" # See Kernel.php (random key - not used - needs to be set to suppress the encryption bundle error)
+    path_to_encryption_file_with_key: "%kernel.project_dir%/data/encryption_key"
+    max_inactivity_time: 10 #in minutes
 
 services:
     # default configuration for services in *this* file
@@ -51,6 +49,7 @@ services:
             - setEncryptionService: ['@App\Service\Security\EncryptionService']
             - setUserSecurityService: ['@App\Service\Security\UserSecurityService']
             - setCsrfTokenValidatorService: ['@App\Service\Security\CsrfTokenValidatorService']
+            - setFilesService: ['@App\Service\Files\FilesService']
 
     App\Service\ConfigLoader\ConfigLoaderPaths:
         public: true
@@ -58,11 +57,18 @@ services:
             - setTranslationBackendFolder: ['%paths.translations.backendFolder%']
             - setTranslationFrontendOutputFilePath: ['%paths.translations.frontendOutputFilePath%']
             - setRoutingFrontendFilePath: ['%paths.routing.frontendFilePath%']
+            - setEncryptionFilePath: ["%path_to_encryption_file_with_key%"]
+
+    App\Service\ConfigLoader\ConfigLoaderSystemData:
+        public: true
+        calls:
+            - setMaxInactivityTime: ["%max_inactivity_time%"]
 
     App\Controller\Core\ConfigLoader:
         public: true
         calls:
             - setConfigLoaderPaths: ['@App\Service\ConfigLoader\ConfigLoaderPaths']
+            - setConfigLoaderSystemData : ['@App\Service\ConfigLoader\ConfigLoaderSystemData']
 
     App\Service\Security\EncryptionService:
         public: true
