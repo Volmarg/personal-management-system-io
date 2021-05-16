@@ -7,6 +7,7 @@ namespace App\Listener;
 use App\Attribute\Action\ExternalActionAttribute;
 use App\Attribute\Security\ValidateCsrfTokenAttribute;
 use App\Controller\API\ApiController;
+use App\Controller\Core\ConfigLoader;
 use App\Controller\Core\Services;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
@@ -53,6 +54,11 @@ class RequestListener implements EventSubscriberInterface
     private UserController $userController;
 
     /**
+     * @var ConfigLoader $configLoader
+     */
+    private ConfigLoader $configLoader;
+
+    /**
      * RequestListener constructor.
      *
      * @param AttributeReaderService $attributeReaderService
@@ -66,10 +72,12 @@ class RequestListener implements EventSubscriberInterface
         ApiController           $apiController,
         Services                $services,
         TokenStorageInterface   $tokenStorage,
-        UserController          $userController
+        UserController          $userController,
+        ConfigLoader            $configLoader
     )
     {
         $this->services               = $services;
+        $this->configLoader           = $configLoader;
         $this->tokenStorage           = $tokenStorage;
         $this->apiController          = $apiController;
         $this->userController         = $userController;
@@ -84,6 +92,20 @@ class RequestListener implements EventSubscriberInterface
      */
     public function onRequest(RequestEvent $requestEvent): void
     {
+        if(
+            !empty($this->tokenStorage->getToken())
+        &&  !file_exists($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath())
+        ){
+            $unauthorizedMessage = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
+            $this->services->getLoggerService()->getLogger()->info("User was still logged in but the encryption key has been invalidated");
+
+            $this->userController->invalidateUser();
+
+            $response = BaseApiDTO::buildUnauthorizedResponse($unauthorizedMessage)->toJsonResponse();
+            $requestEvent->setResponse($response);
+            return;
+        }
+
         $request = $requestEvent->getRequest();
         if( $this->attributeReaderService->hasUriAttribute($request->getUri(), ExternalActionAttribute::class) ){
 

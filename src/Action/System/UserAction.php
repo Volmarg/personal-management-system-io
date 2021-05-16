@@ -80,6 +80,12 @@ class UserAction extends AbstractController
     {
         try{
             $this->userController->invalidateUser();
+
+            $isRemoved = $this->services->getFilesService()->removeEncryptionFile();
+            if(!$isRemoved){
+                throw new Exception("Could not remove the encryption file!");
+            }
+
         }catch(Exception $e){
             $this->services->getLoggerService()->logException($e);
             return BaseApiDTO::buildInternalServerErrorResponse()->toJsonResponse();
