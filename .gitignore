@@ -22,3 +22,4 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 /.idea
+/data/encryption_key

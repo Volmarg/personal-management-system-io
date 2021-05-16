@@ -168,6 +168,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
      * @param LoginFormDataDTO $credentials
      * @param UserInterface $user
      * @return bool
+     * @throws Exception
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
@@ -190,6 +191,20 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
             $this->services->getLoggerService()->getLogger()->warning("Provided password is invalid");
             return false;
         }
+
+        if( empty($credentials->getKey()) ){
+            $this->services->getLoggerService()->getLogger()->warning("Key is missing");
+            return false;
+        }
+
+        if( !$this->services->getEncryptionService()->isEncryptionKeyValid($credentials->getKey()) ){
+            $this->services->getLoggerService()->getLogger()->warning("Invalid encryption key", [
+                "encryptionKey" => $credentials->getKey(),
+            ]);
+            return false;
+        }
+
+        $this->services->getFilesService()->setEncryptionFileContent($credentials->getKey());
 
         // Return `true` to cause authentication success
         return true;

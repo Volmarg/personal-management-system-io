@@ -17,12 +17,14 @@ class LoginForm extends AbstractType
 {
     const FIELD_NAME_USERNAME = "username";
     const FIELD_NAME_PASSWORD = "password";
+    const FIELD_NAME_KEY      = "key";
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(self::FIELD_NAME_USERNAME, TextType::class)
-            ->add(self::FIELD_NAME_PASSWORD, PasswordType::class);
+            ->add(self::FIELD_NAME_PASSWORD, PasswordType::class)
+            ->add(self::FIELD_NAME_KEY, PasswordType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

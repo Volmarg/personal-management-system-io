@@ -25,5 +25,8 @@ pages:
           password:
             label: Password
             placeholder: Enter your password
+          key:
+            label: Key
+            placeholder: Enter your key
         buttons:
           login: Sign in

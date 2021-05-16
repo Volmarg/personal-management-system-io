@@ -32,5 +32,15 @@ class FilesService extends AbstractController
         return true;
     }
 
-    // todo: add some logic to either store user uploaded file with encryption key OR get from input
+    /**
+     * Will set the provided string as content of encryption file
+     *
+     * @param string $content
+     * @return bool
+     */
+    public function setEncryptionFileContent(string $content): bool
+    {
+        $result = file_put_contents($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath(), $content);
+        return (bool)$result;
+    }
 }

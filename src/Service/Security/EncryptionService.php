@@ -6,6 +6,7 @@ namespace App\Service\Security;
 use App\Controller\System\PmsConfigController;
 use Exception;
 use SpecShaper\EncryptBundle\Encryptors\OpenSslEncryptor;
+use SpecShaper\EncryptBundle\SpecShaperEncryptBundle;
 
 /**
  * This class utilizes the package:
@@ -55,4 +56,17 @@ class EncryptionService
         return $this->openSslEncryptor->decrypt($stringToDecrypt);
     }
 
+    /**
+     * Will check if the decryption key is valid
+     * Logic extracted directly from @see SpecShaperEncryptBundle
+     *
+     * @throws Exception
+     */
+    public function isEncryptionKeyValid(string $key): bool
+    {
+        $decodedKey     = base64_decode($key);
+        $keyLengthOctet = mb_strlen($decodedKey, '8bit');
+
+        return ($keyLengthOctet === 32);
+    }
 }

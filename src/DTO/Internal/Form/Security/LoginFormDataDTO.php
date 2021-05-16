@@ -26,12 +26,19 @@ class LoginFormDataDTO
     private ?string $password = "";
 
     /**
+     * @var ?string $key
+     */
+    #[NotBlank]
+    private ?string $key = "";
+
+    /**
      * LoginFormDataDTO constructor.
      */
     public function __construct()
     {
         $this->username = "";
         $this->password = "";
+        $this->key      = "";
     }
 
     /**
@@ -64,6 +71,22 @@ class LoginFormDataDTO
     public function setPassword(?string $password): void
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getKey(): ?string
+    {
+        return $this->key;
+    }
+
+    /**
+     * @param string|null $key
+     */
+    public function setKey(?string $key): void
+    {
+        $this->key = $key;
     }
 
 }

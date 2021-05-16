@@ -6,7 +6,7 @@
 
 # https://github.com/mogilvie/EncryptBundle
 parameters:
-    encrypt_key: "1aQjpLnuUGSuN27tPTJjxwO9o/HnMvgusOYjLBK8InI=" # See Kernel.php (random key - not used - needs to be set to suppress the encryption bundle error)
+    encrypt_key: "0000000000000000000000000000000000000000000" # (random key - not used - needs to be set to suppress the encryption bundle error)
     path_to_encryption_file_with_key: "%kernel.project_dir%/data/encryption_key"
     max_inactivity_time: 10 #in minutes
 

@@ -25,6 +25,7 @@
                              :placeholder="trans('pages.security.login.form.inputs.username.placeholder')"
                              ref="usernameInput"
                              @keypress.enter="loginFormSubmitted"
+                             required
                       >
                     </div>
                     <div class="mb-3">
@@ -35,6 +36,19 @@
                              :placeholder="trans('pages.security.login.form.inputs.password.placeholder')"
                              ref="passwordInput"
                              @keypress.enter="loginFormSubmitted"
+                             required
+                      >
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">{{ trans('pages.security.login.form.inputs.key.label') }}</label>
+                      <input class="form-control form-control-lg"
+                             type="password"
+                             name="key"
+                             :placeholder="trans('pages.security.login.form.inputs.key.placeholder')"
+                             ref="keyInput"
+                             @keypress.enter="loginFormSubmitted"
+                             required
                       >
                     </div>
 
@@ -75,6 +89,7 @@ export default {
       let data = {
         username : this.$refs.usernameInput.value ?? "",
         password : this.$refs.passwordInput.value ?? "",
+        key      : this.$refs.keyInput.value      ?? "",
       }
 
       SpinnerService.showSpinner();
