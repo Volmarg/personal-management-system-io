@@ -1,0 +1,5 @@
+tooltip:
+  right:
+    settings:
+      header: Settings
+      description: Pick theme color

@@ -10,6 +10,8 @@ framework:
         handler_id: null
         cookie_secure: auto
         cookie_samesite: lax
+        cookie_lifetime: "%max_inactivity_time%"
+        gc_maxlifetime: "%max_inactivity_time%"
 
     #esi: true
     #fragments: true
