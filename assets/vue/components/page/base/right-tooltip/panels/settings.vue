@@ -13,10 +13,10 @@
           <small class="d-block text-uppercase font-weight-bold text-muted mb-2">{{ trans('tooltip.right.settings.description' )}}</small>
           <div class="d-flex justify-content-around">
             <div class="form-check form-switch mb-1">
-              <input type="radio" class="form-check-input theme-color theme-color-dark square-checkbox bd" value="dark" checked>
+              <input type="radio" class="form-check-input theme-color theme-color-dark square-checkbox bd" value="dark" checked @click="changeThemeColor($event)">
             </div>
             <div class="form-check form-switch mb-1">
-              <input type="radio" class="form-check-input theme-color theme-color-light square-checkbox bd" value="light">
+              <input type="radio" class="form-check-input theme-color theme-color-light square-checkbox bd" value="light" @click="changeThemeColor($event)">
             </div>
           </div>
         </div>
@@ -29,6 +29,8 @@
 
 <!-- Script -->
 <script>
+import JsCookie from "../../../../../../scripts/libs/js-cookie/JsCookie";
+
 export default {
   data(){
     return {
@@ -36,8 +38,27 @@ export default {
     }
   },
   methods: {
+    /**
+     * @description handles closing the panel
+     */
     closeSettingsPanelClick(){
       this.isPanelVisible = false;
+    },
+    /**
+     * @description handles changing theme color
+     *              dom element MUST be manipulated directly as it's outside of Vue.app scope
+     */
+    changeThemeColor(event){
+      let clickedElement = event.currentTarget;
+      let selectedTheme  = clickedElement.value;
+
+      console.log(selectedTheme);
+      JsCookie.setJsSettingsSelectedTheme(selectedTheme);
+
+      let htmlElements       = document.getElementsByTagName('body');
+      let bodyHtmlDomElement = htmlElements[0]
+      bodyHtmlDomElement.removeAttribute('data-theme');
+      bodyHtmlDomElement.setAttribute('data-theme', selectedTheme);
     }
   }
 }

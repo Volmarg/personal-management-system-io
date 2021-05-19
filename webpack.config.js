@@ -26,6 +26,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('bootstrap', './assets/bootstrap.js')
     .addEntry('adminkit', './assets/adminkit.js')
+    .addEntry("right-tooltip",'./assets/right-tooltip.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

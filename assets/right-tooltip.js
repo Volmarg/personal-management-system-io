@@ -1,0 +1,1 @@
+require("./styles/components/right-tooltip.scss");

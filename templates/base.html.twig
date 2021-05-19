@@ -10,11 +10,14 @@
         {% block stylesheets %}
 
         {% endblock %}
-        {{ encore_entry_link_tags('adminkit') }} {# must always be last#}
+        {{ encore_entry_link_tags('adminkit') }} {# should be always last#}
+
+        {# eventually add this here styles which must overwrite the adminKit #}
+        {{ encore_entry_link_tags('right-tooltip') }}
 
     </head>
     {# See: https://demo.adminkit.io/ #}
-    <body data-theme="dark"> <!-- todo: make it switch-able -->
+    <body data-theme="dark"> <!-- todo: load from cookie the previously set / dark by default -->
         <span class="toast-notification-wrapper"></span>
         <section id="{{ vueId }}"></section>
     </body>

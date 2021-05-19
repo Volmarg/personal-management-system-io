@@ -19,6 +19,9 @@ export default {
     "panels" : PanelsComponent,
   },
   methods: {
+    /**
+     * @description handles clicking on the settings icon "cog"
+     */
     rightTooltipSettingsIconClick() {
       this.$refs.panels.$refs.settingsPanel.$data.isPanelVisible = true;
     }
