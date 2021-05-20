@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <right-tooltip/>
+  <right-tooltip v-if="isRightTooltipVisible"/>
 </template>
 
 <!-- Script -->
@@ -30,8 +30,14 @@ import PageComponent         from './single-page';
 import FooterComponent       from './footer';
 import SpinnerComponent      from "./../../spinner/spinner";
 import RightTooltipComponent from "./right-tooltip/right-tooltip";
+import SymfonyRoutes         from "../../../../scripts/core/symfony/SymfonyRoutes";
 
 export default {
+  data(){
+    return {
+      isRightTooltipVisible: true,
+    }
+  },
   props: {
     includeBaseComponents: {
       type     : Boolean,
@@ -46,6 +52,11 @@ export default {
     "footer-bar"    : FooterComponent,
     "spinner"       : SpinnerComponent,
     "right-tooltip" : RightTooltipComponent,
+  },
+  watch: {
+    $route(currRoute){
+      this.isRightTooltipVisible = (currRoute.name !== SymfonyRoutes.ROUTE_NAME_LOGIN);
+    }
   }
 }
 </script>

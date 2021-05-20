@@ -7,7 +7,7 @@
       <router-link :to="{ name: routeNameHash}"
                    class="sidebar-brand logo-link"
       >
-        <div class="align-middle logo-wrapper position-relative" style="height: 60px;">
+        <div class="align-middle logo-wrapper position-relative mb-3" style="height: 60px;">
           <logo/>
         </div>
       </router-link>
