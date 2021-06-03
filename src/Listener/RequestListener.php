@@ -12,6 +12,7 @@ use App\Controller\Core\Services;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
 use App\Service\Attribute\AttributeReaderService;
+use App\Service\CookiesService;
 use DateTime;
 use Exception;
 use ReflectionException;
@@ -92,20 +93,22 @@ class RequestListener implements EventSubscriberInterface
      */
     public function onRequest(RequestEvent $requestEvent): void
     {
-        if(
-            !empty($this->tokenStorage->getToken())
-        &&  !file_exists($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath())
-        ){
-            $unauthorizedMessage = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
-            $this->services->getLoggerService()->getLogger()->info("User was still logged in but the encryption key has been invalidated");
-
-            $this->userController->invalidateUser();
-
-            $response = BaseApiDTO::buildUnauthorizedResponse($unauthorizedMessage)->toJsonResponse();
-            $requestEvent->setResponse($response);
+        $continueHandlingRequest = $this->handleRequestForLoggedInUserWithoutEncryptionKeyFile($requestEvent);
+        if(!$continueHandlingRequest){
             return;
         }
 
+        $this->validateRequest($requestEvent);
+        $this->updateUserActivity();
+    }
+
+    /**
+     * Will validate request in one or more ways
+     *
+     * @throws ReflectionException
+     */
+    private function validateRequest(RequestEvent $requestEvent): void
+    {
         $request = $requestEvent->getRequest();
         if( $this->attributeReaderService->hasUriAttribute($request->getUri(), ExternalActionAttribute::class) ){
 
@@ -117,7 +120,37 @@ class RequestListener implements EventSubscriberInterface
             $this->validateCsrfToken($requestEvent);
         }
 
-        $this->updateUserActivity();
+        // just a safety check where for some reason file still remains but the request without session cookie was made
+        if( !CookiesService::isUserSessionCookieSet($request) ){
+            $this->services->getFilesService()->removeEncryptionFile();
+        }
+    }
+
+    /**
+     * Will handle case where user is logged in but the encryption key is missing (cron might've removed it by accident)
+     * Return the information (bool) if request should continue or not
+     *
+     * @param RequestEvent $requestEvent
+     * @return bool
+     */
+    private function handleRequestForLoggedInUserWithoutEncryptionKeyFile(RequestEvent $requestEvent): bool
+    {
+
+        if(
+                !empty($this->tokenStorage->getToken())
+            &&  !file_exists($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath())
+        ){
+            $unauthorizedMessage = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
+            $this->services->getLoggerService()->getLogger()->info("User was still logged in but the encryption key has been invalidated");
+
+            $this->userController->invalidateUser();
+
+            $response = BaseApiDTO::buildUnauthorizedResponse($unauthorizedMessage)->toJsonResponse();
+            $requestEvent->setResponse($response);
+            return false;
+        }
+
+        return true;
     }
 
     /**

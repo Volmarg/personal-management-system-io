@@ -5,6 +5,7 @@ namespace App\Controller\Core;
 
 
 use App\Service\Attribute\AttributeReaderService;
+use App\Service\CookiesService;
 use App\Service\Database\DatabaseService;
 use App\Service\Files\FilesService;
 use App\Service\Form\FormService;
@@ -78,6 +79,11 @@ class Services
      * @var FilesService $filesService
      */
     private FilesService $filesService;
+
+    /**
+     * @var CookiesService $cookiesService
+     */
+    private CookiesService $cookiesService;
 
     /**
      * @return AttributeReaderService
@@ -253,6 +259,22 @@ class Services
     public function setFilesService(FilesService $filesService): void
     {
         $this->filesService = $filesService;
+    }
+
+    /**
+     * @return CookiesService
+     */
+    public function getCookiesService(): CookiesService
+    {
+        return $this->cookiesService;
+    }
+
+    /**
+     * @param CookiesService $cookiesService
+     */
+    public function setCookiesService(CookiesService $cookiesService): void
+    {
+        $this->cookiesService = $cookiesService;
     }
 
 }

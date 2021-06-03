@@ -61,6 +61,11 @@ class Kernel extends BaseKernel
      */
     private function setEncryptionKey(ContainerConfigurator $container)
     {
+        // prevent accessing container (throwing exception) when kernel is not yet booted
+        if(!$this->booted){
+            return;
+        }
+
         $pathToFileWithKey = $this->getContainer()->getParameter("path_to_encryption_file_with_key");
         if( file_exists($pathToFileWithKey) ){
             $key = trim(file_get_contents($pathToFileWithKey));
