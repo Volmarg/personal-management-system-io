@@ -3,7 +3,8 @@
 namespace App\Listener\Security;
 
 use App\Controller\Core\ConfigLoader;
-use SpecShaper\EncryptBundle\Event\BeforeCreateServiceEvent;
+use SpecShaper\EncryptBundle\Event\EncryptKeyEvent;
+use SpecShaper\EncryptBundle\Event\EncryptKeyEvents;
 use SpecShaper\EncryptBundle\SpecShaperEncryptBundle;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -28,9 +29,9 @@ class BeforeCreateEncryptionServiceListener implements EventSubscriberInterface
     /**
      * Will set the proper encryption key on each call - as long as the encryption key file exist
      *
-     * @param BeforeCreateServiceEvent $event
+     * @param EncryptKeyEvent $event
      */
-    public function onBeforeCreateService(BeforeCreateServiceEvent $event): void
+    public function onEncryptionLoadKey(EncryptKeyEvent $event): void
     {
         $encryptionKey = null;
         if( file_exists($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath()) ){
@@ -49,7 +50,7 @@ class BeforeCreateEncryptionServiceListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            BeforeCreateServiceEvent::NAME => "onBeforeCreateService",
+            EncryptKeyEvents::LOAD_KEY => "onEncryptionLoadKey",
         ];
     }
 }

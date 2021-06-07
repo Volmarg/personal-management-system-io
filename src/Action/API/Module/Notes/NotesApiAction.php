@@ -13,6 +13,7 @@ use App\DTO\BaseApiDTO;
 use App\DTO\Request\Modules\Notes\InsertNotesCategoriesRequestDTO;
 use App\DTO\Request\Modules\Notes\InsertNotesRequestDTO;
 use App\Entity\Modules\Notes\MyNote;
+use App\Entity\Modules\Notes\MyNoteCategory;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,7 +74,7 @@ class NotesApiAction extends ApiAction
             try{
                 foreach($insertRequest->getNotesCategoriesJsons() as $noteCategoryJson){
 
-                    $noteCategoryEntity = MyNote::fromJson($noteCategoryJson);
+                    $noteCategoryEntity = MyNoteCategory::fromJson($noteCategoryJson);
                     $validationDto      = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($noteCategoryEntity);
 
                     if( !$validationDto->isSuccess() ){
@@ -90,8 +91,8 @@ class NotesApiAction extends ApiAction
                         $this->services->getDatabaseService()->rollbackTransaction();
                         return $response->toJsonResponse();
                     }
-
-                    $this->notesController->save($noteCategoryEntity);
+                    // Bug: missing save to category
+                    $this->notesCategoriesController->save($noteCategoryEntity);
                 }
 
             }catch(Exception|TypeError $e){

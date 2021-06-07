@@ -7,6 +7,7 @@ use App\Controller\System\PmsConfigController;
 use Exception;
 use SpecShaper\EncryptBundle\Encryptors\OpenSslEncryptor;
 use SpecShaper\EncryptBundle\SpecShaperEncryptBundle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This class utilizes the package:
@@ -23,11 +24,18 @@ class EncryptionService
     private PmsConfigController $pmsConfigController;
 
     /**
+     * @var EventDispatcherInterface $eventDispatcher
+     */
+    private EventDispatcherInterface $eventDispatcher;
+
+    /**
      * EncryptionService constructor.
      * @param PmsConfigController $pmsConfigController
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(PmsConfigController $pmsConfigController)
+    public function __construct(PmsConfigController $pmsConfigController, EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher     = $eventDispatcher;
         $this->pmsConfigController = $pmsConfigController;
     }
 
@@ -44,7 +52,7 @@ class EncryptionService
     public function initialize()
     {
         $pmsConfigEncryptKey    = $this->pmsConfigController->getEncryptionKey();
-        $this->openSslEncryptor = new OpenSslEncryptor($pmsConfigEncryptKey->getValue());
+        $this->openSslEncryptor = new OpenSslEncryptor($this->eventDispatcher, $pmsConfigEncryptKey->getValue());
     }
 
     /**
