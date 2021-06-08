@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6761c5e2f9de6b455cbcb3204e500635",
+    "content-hash": "796012d62eeced32de779c8fe13a63a1",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2531,16 +2531,16 @@
         },
         {
             "name": "specshaper/encrypt-bundle",
-            "version": "v2.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mogilvie/EncryptBundle.git",
-                "reference": "83cc319d2143ce2863f785a63f159656da077966"
+                "reference": "c403f68a7468955b1cf58257c6f91c9a1335fd3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mogilvie/EncryptBundle/zipball/83cc319d2143ce2863f785a63f159656da077966",
-                "reference": "83cc319d2143ce2863f785a63f159656da077966",
+                "url": "https://api.github.com/repos/mogilvie/EncryptBundle/zipball/c403f68a7468955b1cf58257c6f91c9a1335fd3a",
+                "reference": "c403f68a7468955b1cf58257c6f91c9a1335fd3a",
                 "shasum": ""
             },
             "require": {
@@ -2554,6 +2554,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^7"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -2577,7 +2578,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mogilvie/EncryptBundle/issues",
-                "source": "https://github.com/mogilvie/EncryptBundle/tree/v2.0.1"
+                "source": "https://github.com/mogilvie/EncryptBundle/tree/master"
             },
             "funding": [
                 {
@@ -2585,7 +2586,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-02-22T14:42:53+00:00"
+            "time": "2021-06-04T13:39:33+00:00"
         },
         {
             "name": "symfony/asset",
@@ -8399,7 +8400,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "specshaper/encrypt-bundle": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
