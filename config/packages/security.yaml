@@ -2,11 +2,17 @@ security:
     encoders:
         App\Entity\User:
             algorithm: auto
+        App\Entity\ApiUser:
+            algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
+            entity:
+                class: App\Entity\ApiUser
+                property: username
+        api_user_provider:
             entity:
                 class: App\Entity\User
                 property: username
@@ -14,6 +20,13 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+            pattern: ^\/api
+            lazy: true
+            provider: api_user_provider
+            guard:
+                authenticators:
+                    - App\Service\Security\ExternalApiLoginAuthenticator
         main:
             lazy: true
             provider: app_user_provider
@@ -33,4 +46,5 @@ security:
          - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }                        # login page
          - { path: ^/system/get-csrf-token, roles: IS_AUTHENTICATED_ANONYMOUSLY }        # required as the login form needs csrf token as well
          - { path: ^/user/get-logged-in-user-data, roles: IS_AUTHENTICATED_ANONYMOUSLY } # required as the login form needs that call
+         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }                                # API calls
          - { path: ^/.*, roles: ROLE_ADMIN }                                             # any other pages

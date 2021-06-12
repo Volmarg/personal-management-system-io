@@ -70,10 +70,15 @@ class PasswordsApiAction extends ApiAction
     #[ExternalActionAttribute]
     public function insertPasswordGroups(Request $request): JsonResponse
     {
-        $insertRequest = InsertPasswordsGroupsRequestDTO::fromRequest($request);
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $insertRequest = InsertPasswordsGroupsRequestDTO::fromRequest($request);
+                if( is_null($insertRequest) ){
+                    $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
+                    return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
+                }
+
                 foreach($insertRequest->getPasswordsGroupsJsons() as $passwordGroupJson){
 
                     $passwordGroupEntity = PasswordGroup::fromJson($passwordGroupJson);
@@ -121,10 +126,15 @@ class PasswordsApiAction extends ApiAction
     #[ExternalActionAttribute]
     public function insertPasswords(Request $request): JsonResponse
     {
-        $insertRequest = InsertPasswordsRequestDTO::fromRequest($request);
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $insertRequest = InsertPasswordsRequestDTO::fromRequest($request);
+                if( is_null($insertRequest) ){
+                    $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
+                    return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
+                }
+
                 foreach($insertRequest->getPasswordsJsons() as $passwordJson){
 
                     $passwordEntity = Password::fromJson($passwordJson);

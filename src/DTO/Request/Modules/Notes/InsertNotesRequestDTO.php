@@ -37,12 +37,16 @@ class InsertNotesRequestDTO
      * Will build the request Dto from the foundation request
      *
      * @param Request $request
-     * @return InsertNotesRequestDTO
+     * @return InsertNotesRequestDTO|null
      */
-    public static function fromRequest(Request $request): InsertNotesRequestDTO
+    public static function fromRequest(Request $request): ?InsertNotesRequestDTO
     {
         $requestContent = $request->getContent();
-        $noteJsonsArray = json_decode($requestContent);
+        $noteJsonsArray = json_decode($requestContent, true);
+
+        if( JSON_ERROR_NONE !== json_last_error() ){
+            return null;
+        }
 
         $insertNotesRequest = new InsertNotesRequestDTO();
         $insertNotesRequest->setNotesJsons($noteJsonsArray);

@@ -37,12 +37,16 @@ class InsertPasswordsRequestDTO
      * Will build the request Dto from the foundation request
      *
      * @param Request $request
-     * @return InsertPasswordsRequestDTO
+     * @return InsertPasswordsRequestDTO|null
      */
-    public static function fromRequest(Request $request): InsertPasswordsRequestDTO
+    public static function fromRequest(Request $request): ?InsertPasswordsRequestDTO
     {
         $requestContent      = $request->getContent();
-        $passwordsJsonsArray = json_decode($requestContent);
+        $passwordsJsonsArray = json_decode($requestContent, true);
+
+        if( JSON_ERROR_NONE !== json_last_error() ){
+            return null;
+        }
 
         $insertPasswordsGroupsRequest = new InsertPasswordsRequestDTO();
         $insertPasswordsGroupsRequest->setPasswordsJsons($passwordsJsonsArray);

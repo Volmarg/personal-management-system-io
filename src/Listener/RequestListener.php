@@ -7,10 +7,12 @@ namespace App\Listener;
 use App\Attribute\Action\ExternalActionAttribute;
 use App\Attribute\Security\ValidateCsrfTokenAttribute;
 use App\Controller\API\ApiController;
+use App\Controller\ApiUserController;
 use App\Controller\Core\ConfigLoader;
 use App\Controller\Core\Services;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
+use App\Entity\User;
 use App\Service\Attribute\AttributeReaderService;
 use App\Service\CookiesService;
 use DateTime;
@@ -60,6 +62,11 @@ class RequestListener implements EventSubscriberInterface
     private ConfigLoader $configLoader;
 
     /**
+     * @var ApiUserController $apiUserController
+     */
+    private ApiUserController $apiUserController;
+
+    /**
      * RequestListener constructor.
      *
      * @param AttributeReaderService $attributeReaderService
@@ -67,6 +74,8 @@ class RequestListener implements EventSubscriberInterface
      * @param Services $services
      * @param TokenStorageInterface $tokenStorage
      * @param UserController $userController
+     * @param ConfigLoader $configLoader
+     * @param ApiUserController $apiUserController
      */
     public function __construct(
         AttributeReaderService  $attributeReaderService,
@@ -74,7 +83,8 @@ class RequestListener implements EventSubscriberInterface
         Services                $services,
         TokenStorageInterface   $tokenStorage,
         UserController          $userController,
-        ConfigLoader            $configLoader
+        ConfigLoader            $configLoader,
+        ApiUserController       $apiUserController
     )
     {
         $this->services               = $services;
@@ -83,6 +93,7 @@ class RequestListener implements EventSubscriberInterface
         $this->apiController          = $apiController;
         $this->userController         = $userController;
         $this->attributeReaderService = $attributeReaderService;
+        $this->apiUserController      = $apiUserController;
     }
 
     /**
@@ -111,8 +122,7 @@ class RequestListener implements EventSubscriberInterface
     {
         $request = $requestEvent->getRequest();
         if( $this->attributeReaderService->hasUriAttribute($request->getUri(), ExternalActionAttribute::class) ){
-
-            $this->preValidateExternalActionRequest($requestEvent);
+            return; // Security authenticator will handle this
         }elseif(
                 Request::METHOD_POST == $request->getMethod()
             &&  $this->attributeReaderService->hasUriAttribute($request->getUri(), ValidateCsrfTokenAttribute::class)
@@ -132,6 +142,7 @@ class RequestListener implements EventSubscriberInterface
      *
      * @param RequestEvent $requestEvent
      * @return bool
+     * @throws ReflectionException
      */
     private function handleRequestForLoggedInUserWithoutEncryptionKeyFile(RequestEvent $requestEvent): bool
     {
@@ -139,6 +150,7 @@ class RequestListener implements EventSubscriberInterface
         if(
                 !empty($this->tokenStorage->getToken())
             &&  !file_exists($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath())
+            &&  !$this->services->getAttributeReader()->hasUriAttribute($requestEvent->getRequest()->getRequestUri(), ExternalActionAttribute::class)
         ){
             $unauthorizedMessage = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
             $this->services->getLoggerService()->getLogger()->info("User was still logged in but the encryption key has been invalidated");
@@ -151,28 +163,6 @@ class RequestListener implements EventSubscriberInterface
         }
 
         return true;
-    }
-
-    /**
-     * Handles pre validating external action request
-     *
-     * @param RequestEvent $requestEvent
-     */
-    private function preValidateExternalActionRequest(RequestEvent $requestEvent): void
-    {
-        $request = $requestEvent->getRequest();
-        $json    = $request->getContent();
-
-        $isJsonValid = $this->apiController->validateJson($json);
-        if(!$isJsonValid){
-            $this->services->getLoggerService()->getLogger()->warning("Provided json in request is not valid");
-            $jsonResponse = BaseApiDTO::buildInvalidJsonResponse()->toJsonResponse();
-            $requestEvent->setResponse($jsonResponse);
-            $requestEvent->stopPropagation();
-
-            return;
-        }
-
     }
 
     /**
@@ -218,15 +208,21 @@ class RequestListener implements EventSubscriberInterface
     {
         if( !empty($this->tokenStorage->getToken()?->getUser()) )
         {
-            $user     = $this->tokenStorage->getToken()->getUser();
-            $realUser = $this->userController->getOneByUsername($user->getUsername());
+            $user = $this->tokenStorage->getToken()->getUser();
+            if( $user instanceof User ){
+                $realUser       = $this->userController->getOneByUsername($user->getUsername());
+                $userController = $this->userController;
+            }else{
+                $realUser       = $this->apiUserController->getOneByUsername($user->getUsername());
+                $userController = $this->apiUserController;
+            }
 
             if( empty($realUser) ){
                 throw new Exception("No real user has been found for username: {$user->getUsername()}");
             }
 
             $realUser->setLastActivity(new DateTime());
-            $this->userController->save($realUser);
+            $userController->save($realUser);
         }
     }
 

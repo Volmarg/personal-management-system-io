@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -39,11 +40,11 @@ class UserRepository extends ServiceEntityRepository
     /**
      * Will either create new record in db or update existing one
      *
-     * @param User $user
+     * @param UserInterface $user
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(User $user): void
+    public function save(UserInterface $user): void
     {
         $this->_em->persist($user);
         $this->_em->flush();

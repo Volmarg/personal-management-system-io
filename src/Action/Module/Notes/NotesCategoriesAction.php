@@ -8,6 +8,7 @@ use App\DTO\Internal\Module\Notes\ParentsChildrenCategoriesHierarchyDTO;
 use App\DTO\ParentChildDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -30,6 +31,12 @@ class NotesCategoriesAction extends AbstractController
         $this->notesCategoriesController = $notesCategoriesController;
     }
 
+    /**
+     * Will return notes categories hierarchical structure where one element is nested inside another
+     * - that represents the parent/child hierarchy (category and it's parent category)
+     *
+     * @return JsonResponse
+     */
     #[Route("get-parents-children-categories-hierarchy", name: "get_parents_children_categories_hierarchy", methods: ["GET"])]
     #[InternalActionAttribute]
     public function getParentsChildrenCategoriesHierarchy(): JsonResponse
@@ -48,4 +55,16 @@ class NotesCategoriesAction extends AbstractController
         return $apiResponse->toJsonResponse();
     }
 
+//    /**
+//     * Will return all categories without the hierarchy (no relation between parent-child, only categories themselves)
+//     *
+//     * @return JsonResponse
+//     */
+//    #[Route("/get-all", name: "get_all", methods: [Request::METHOD_GET])]
+//    #[InternalActionAttribute]
+//    public function getAllCategories(): JsonResponse
+//    {
+//
+//        return ""; // todo
+//    }
 }

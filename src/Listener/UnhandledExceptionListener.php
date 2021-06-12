@@ -62,6 +62,7 @@ class UnhandledExceptionListener implements EventSubscriberInterface
             $this->services->getLoggerService()->getLogger()->critical("Unhandled Exception was thrown", [
                 "message" => $event->getThrowable()->getMessage(),
                 "code"    => $event->getThrowable()->getCode(),
+                "trace"   => $event->getThrowable()->getTrace(),
             ]);
 
             $message      = $this->services->getTranslator()->trans("general.responseCodes.500");

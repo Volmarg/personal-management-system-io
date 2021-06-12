@@ -68,10 +68,15 @@ class NotesApiAction extends ApiAction
     #[ExternalActionAttribute]
     public function insertNotesCategories(Request $request): JsonResponse
     {
-        $insertRequest = InsertNotesCategoriesRequestDTO::fromRequest($request);
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $insertRequest = InsertNotesCategoriesRequestDTO::fromRequest($request);
+                if( is_null($insertRequest) ){
+                    $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
+                    return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
+                }
+
                 foreach($insertRequest->getNotesCategoriesJsons() as $noteCategoryJson){
 
                     $noteCategoryEntity = MyNoteCategory::fromJson($noteCategoryJson);
@@ -119,10 +124,15 @@ class NotesApiAction extends ApiAction
     #[ExternalActionAttribute]
     public function insertNotes(Request $request): JsonResponse
     {
-        $insertRequest = InsertNotesRequestDTO::fromRequest($request);
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $insertRequest = InsertNotesRequestDTO::fromRequest($request);
+                if( is_null($insertRequest) ){
+                    $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
+                    return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
+                }
+
                 foreach($insertRequest->getNotesJsons() as $noteJson){
 
                     $noteEntity = MyNote::fromJson($noteJson);

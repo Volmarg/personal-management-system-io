@@ -10,12 +10,13 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class UserController
  * @package App\Controller
  */
-class UserController extends AbstractController
+class UserController extends AbstractController implements UserControllerInterface
 {
 
     /**
@@ -75,11 +76,11 @@ class UserController extends AbstractController
     /**
      * Will either create new record in db or update existing one
      *
-     * @param User $user
+     * @param UserInterface $user
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(User $user): void
+    public function save(UserInterface $user): void
     {
         $this->userRepository->save($user);
     }
