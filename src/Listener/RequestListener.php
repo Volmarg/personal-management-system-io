@@ -121,11 +121,11 @@ class RequestListener implements EventSubscriberInterface
     private function validateRequest(RequestEvent $requestEvent): void
     {
         $request = $requestEvent->getRequest();
-        if( $this->attributeReaderService->hasUriAttribute($request->getUri(), ExternalActionAttribute::class) ){
+        if( $this->attributeReaderService->hasUriAttribute($request->getRequestUri(), ExternalActionAttribute::class) ){
             return; // Security authenticator will handle this
         }elseif(
                 Request::METHOD_POST == $request->getMethod()
-            &&  $this->attributeReaderService->hasUriAttribute($request->getUri(), ValidateCsrfTokenAttribute::class)
+            &&  $this->attributeReaderService->hasUriAttribute($request->getRequestUri(), ValidateCsrfTokenAttribute::class)
         ){
             $this->validateCsrfToken($requestEvent);
         }
