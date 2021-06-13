@@ -71,15 +71,18 @@ class NotesApiAction extends ApiAction
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $this->notesController->removeAll();
+                $this->notesCategoriesController->removeAll();
+
                 $insertRequest = InsertNotesCategoriesRequestDTO::fromRequest($request);
                 if( is_null($insertRequest) ){
                     $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
                     return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
                 }
 
-                foreach($insertRequest->getNotesCategoriesJsons() as $noteCategoryJson){
+                foreach($insertRequest->getNotesCategoriesArrays() as $noteCategoryArray){
 
-                    $noteCategoryEntity = MyNoteCategory::fromJson($noteCategoryJson);
+                    $noteCategoryEntity = MyNoteCategory::fromArray($noteCategoryArray);
                     $validationDto      = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($noteCategoryEntity);
 
                     if( !$validationDto->isSuccess() ){
@@ -89,14 +92,14 @@ class NotesApiAction extends ApiAction
                         $message = "One of the categories entity is invalid";
 
                         $this->services->getLoggerService()->getLogger()->critical($message, [
-                            "jsonUsedForEntity" => $noteCategoryJson,
-                            "violations"        => $validationDto->getViolationsWithMessages(),
+                            "arrayUsedForEntity" => $noteCategoryArray,
+                            "violations"         => $validationDto->getViolationsWithMessages(),
                         ]);
 
                         $this->services->getDatabaseService()->rollbackTransaction();
                         return $response->toJsonResponse();
                     }
-                    // Bug: missing save to category
+
                     $this->notesCategoriesController->save($noteCategoryEntity);
                 }
 
@@ -127,15 +130,17 @@ class NotesApiAction extends ApiAction
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $this->notesController->removeAll();
+
                 $insertRequest = InsertNotesRequestDTO::fromRequest($request);
                 if( is_null($insertRequest) ){
                     $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
                     return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
                 }
 
-                foreach($insertRequest->getNotesJsons() as $noteJson){
+                foreach($insertRequest->getNotesArrays() as $noteArray){
 
-                    $noteEntity = MyNote::fromJson($noteJson);
+                    $noteEntity = MyNote::fromArray($noteArray);
                     $categoryId = $noteEntity->getDataBag()->get(MyNote::KEY_CATEGORY_ID);
 
                     try{
@@ -159,8 +164,8 @@ class NotesApiAction extends ApiAction
                         $message = "One of the note entity is invalid";
 
                         $this->services->getLoggerService()->getLogger()->critical($message, [
-                            "jsonUsedForEntity" => $noteJson,
-                            "violations"        => $validationDto->getViolationsWithMessages(),
+                            "arrayUsedForEntity" => $noteArray,
+                            "violations"         => $validationDto->getViolationsWithMessages(),
                         ]);
 
                         $this->services->getDatabaseService()->rollbackTransaction();

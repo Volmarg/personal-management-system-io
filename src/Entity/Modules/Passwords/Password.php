@@ -166,12 +166,10 @@ class Password
     }
 
     /**
-     * Will create entity from json string
+     * Will create entity from array
      */
-    public static function fromJson(string $json): Password
+    public static function fromJson(array $dataArray): Password
     {
-        $dataArray = json_decode($json, true);
-
         $login       = AbstractDTO::checkAndGetKey($dataArray, self::KEY_LOGIN);
         $password    = AbstractDTO::checkAndGetKey($dataArray, self::KEY_PASSWORD);
         $url         = AbstractDTO::checkAndGetKey($dataArray, self::KEY_URL);

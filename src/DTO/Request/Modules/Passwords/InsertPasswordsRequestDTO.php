@@ -13,24 +13,24 @@ use Symfony\Component\HttpFoundation\Request;
 class InsertPasswordsRequestDTO
 {
     /**
-     * @var string[]
+     * @var array
      */
-    private array $passwordsJsons = [];
+    private array $passwordsArrays = [];
 
     /**
-     * @return string[]
+     * @return array
      */
-    public function getPasswordsJsons(): array
+    public function getPasswordsArrays(): array
     {
-        return $this->passwordsJsons;
+        return $this->passwordsArrays;
     }
 
     /**
-     * @param string[] $passwordsJsons
+     * @param array $passwordsArrays
      */
-    public function setPasswordsJsons(array $passwordsJsons): void
+    public function setPasswordsArrays(array $passwordsArrays): void
     {
-        $this->passwordsJsons = $passwordsJsons;
+        $this->passwordsArrays = $passwordsArrays;
     }
 
     /**
@@ -41,15 +41,15 @@ class InsertPasswordsRequestDTO
      */
     public static function fromRequest(Request $request): ?InsertPasswordsRequestDTO
     {
-        $requestContent      = $request->getContent();
-        $passwordsJsonsArray = json_decode($requestContent, true);
+        $requestContent  = $request->getContent();
+        $passwordsArrays = json_decode($requestContent, true);
 
         if( JSON_ERROR_NONE !== json_last_error() ){
             return null;
         }
 
         $insertPasswordsGroupsRequest = new InsertPasswordsRequestDTO();
-        $insertPasswordsGroupsRequest->setPasswordsJsons($passwordsJsonsArray);
+        $insertPasswordsGroupsRequest->setPasswordsArrays($passwordsArrays);
 
         return $insertPasswordsGroupsRequest;
     }

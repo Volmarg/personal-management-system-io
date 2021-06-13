@@ -7,6 +7,9 @@ namespace App\Controller\Modules\Notes;
 use App\DTO\ParentChildDTO;
 use App\Entity\Modules\Notes\MyNoteCategory;
 use App\Repository\Modules\Notes\NoteCategoryRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 
 class NotesCategoriesController
 {
@@ -138,6 +141,27 @@ class NotesCategoriesController
         $parentChildDto->setChildren($parentChildDtos);
 
         return $parentChildDto;
+    }
+
+    /**
+     * Will save the new entity or update the state of already existing one
+     *
+     * @param MyNoteCategory $myNoteCategory
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(MyNoteCategory $myNoteCategory): void
+    {
+        $this->noteCategoryRepository->save($myNoteCategory);
+    }
+
+    /**
+     * Will remove all entries from DB
+     * @throws Exception
+     */
+    public function removeAll(): void
+    {
+        $this->noteCategoryRepository->removeAll();
     }
 
 }

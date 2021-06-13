@@ -29,7 +29,7 @@ use TypeError;
  */
 class ExternalApiLoginAuthenticator extends AbstractGuardAuthenticator
 {
-    const KEY_ACCESS_DATA = "accessData"; // todo: add this to bridge also, + handle creating authentication data there wrapped in JWT
+    const KEY_ACCESS_DATA = "accessData";
     const ALG_HS256       = "HS256";
 
     const KEY_PROPERTY_LOGIN    = "login";

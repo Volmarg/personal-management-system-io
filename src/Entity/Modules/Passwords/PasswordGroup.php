@@ -19,7 +19,6 @@ class PasswordGroup
 
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private int $id;
@@ -39,6 +38,14 @@ class PasswordGroup
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getName(): string
@@ -88,15 +95,16 @@ class PasswordGroup
     /**
      * Returns the entity created from json
      *
-     * @param string $json
+     * @param array $dataArray
      * @return PasswordGroup
      */
-    public static function fromJson(string $json): PasswordGroup
+    public static function fromArray(array $dataArray): PasswordGroup
     {
-        $dataArray = json_decode($json, true);
-        $name      = AbstractDTO::checkAndGetKey($dataArray, self::KEY_NAME, "");
+        $id   = AbstractDTO::checkAndGetKey($dataArray, self::KEY_ID, null);
+        $name = AbstractDTO::checkAndGetKey($dataArray, self::KEY_NAME, "");
 
         $entity = new PasswordGroup();
+        $entity->setId($id ?: null);
         $entity->setName($name);
 
         return $entity;

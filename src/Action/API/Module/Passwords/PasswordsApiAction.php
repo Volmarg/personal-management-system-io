@@ -73,15 +73,17 @@ class PasswordsApiAction extends ApiAction
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $this->passwordController->removeAll();
+                $this->passwordGroupController->removeAll();
+
                 $insertRequest = InsertPasswordsGroupsRequestDTO::fromRequest($request);
                 if( is_null($insertRequest) ){
                     $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
                     return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
                 }
 
-                foreach($insertRequest->getPasswordsGroupsJsons() as $passwordGroupJson){
-
-                    $passwordGroupEntity = PasswordGroup::fromJson($passwordGroupJson);
+                foreach($insertRequest->getPasswordsGroupsArrays() as $passwordGroupArray){
+                    $passwordGroupEntity = PasswordGroup::fromArray($passwordGroupArray);
                     $validationDto       = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($passwordGroupEntity);
 
                     if( !$validationDto->isSuccess() ){
@@ -91,8 +93,8 @@ class PasswordsApiAction extends ApiAction
                         $message = "One of the groups entity is invalid";
 
                         $this->services->getLoggerService()->getLogger()->critical($message, [
-                            "jsonUsedForEntity" => $passwordGroupJson,
-                            "violations"        => $validationDto->getViolationsWithMessages(),
+                            "arrayUsedForEntity" => $passwordGroupArray,
+                            "violations"         => $validationDto->getViolationsWithMessages(),
                         ]);
 
                         $this->services->getDatabaseService()->rollbackTransaction();
@@ -129,20 +131,21 @@ class PasswordsApiAction extends ApiAction
         $this->services->getDatabaseService()->beginTransaction();
         {
             try{
+                $this->passwordController->removeAll();
+
                 $insertRequest = InsertPasswordsRequestDTO::fromRequest($request);
                 if( is_null($insertRequest) ){
                     $this->services->getLoggerService()->getLogger()->warning("Could not build the insert request, maybe provided json in request is invalid");
                     return BaseApiDTO::buildBadRequestErrorResponse()->toJsonResponse();
                 }
 
-                foreach($insertRequest->getPasswordsJsons() as $passwordJson){
+                foreach($insertRequest->getPasswordsArrays() as $passwordArray){
+                    $passwordEntity      = Password::fromJson($passwordArray);
+                    $passwordGroupEntity = $this->passwordGroupController->getOneForId($passwordEntity->getGroupId());
 
-                    $passwordEntity = Password::fromJson($passwordJson);
-                    $validationDto  = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($passwordEntity);
-
-                    $passwordGroupEntity = $this->passwordGroupController->getOneForId($passwordEntity->getId());
                     $passwordEntity->setGroup($passwordGroupEntity);
 
+                    $validationDto = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($passwordEntity);
                     if( !$validationDto->isSuccess() ){
                         $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();
                         $response->setInvalidFields($validationDto->getViolationsWithMessages());
@@ -150,8 +153,8 @@ class PasswordsApiAction extends ApiAction
                         $message = "One of the password entity is invalid";
 
                         $this->services->getLoggerService()->getLogger()->critical($message, [
-                            "jsonUsedForEntity" => $passwordJson,
-                            "violations"        => $validationDto->getViolationsWithMessages(),
+                            "arrayUsedForEntity" => $passwordArray,
+                            "violations"         => $validationDto->getViolationsWithMessages(),
                         ]);
 
                         $this->services->getDatabaseService()->rollbackTransaction();

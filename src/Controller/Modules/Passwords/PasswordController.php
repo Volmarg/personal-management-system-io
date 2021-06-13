@@ -6,6 +6,7 @@ namespace App\Controller\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\Password;
 use App\Repository\Modules\Passwords\PasswordRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -46,6 +47,15 @@ class PasswordController extends AbstractController
     public function save(Password $password): void
     {
         $this->passwordRepository->save($password);
+    }
+
+    /**
+     * Will remove all entries from DB
+     * @throws Exception
+     */
+    public function removeAll(): void
+    {
+        $this->passwordRepository->removeAll();
     }
 
 }

@@ -6,6 +6,7 @@ namespace App\Controller\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\PasswordGroup;
 use App\Repository\Modules\Passwords\PasswordGroupRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -52,6 +53,15 @@ class PasswordGroupController extends AbstractController
     public function save(PasswordGroup $passwordGroup): void
     {
         $this->passwordGroupRepository->save($passwordGroup);
+    }
+
+    /**
+     * Will remove all entries from DB
+     * @throws Exception
+     */
+    public function removeAll(): void
+    {
+        $this->passwordGroupRepository->removeAll();
     }
 
 }

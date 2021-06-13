@@ -4,6 +4,7 @@ namespace App\Repository\Modules\Notes;
 
 use App\Entity\Modules\Notes\MyNote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -50,6 +51,21 @@ class NoteRepository extends ServiceEntityRepository {
 
         $results = $qb->getQuery()->getResult();
         return $results;
+    }
+
+    /**
+     * Will remove all entries from DB
+     * @throws Exception
+     */
+    public function removeAll(): void
+    {
+        $connection = $this->_em->getConnection();
+
+        $sql = "
+            DELETE FROM `my_note`
+        ";
+
+        $connection->executeQuery($sql);
     }
 
 }

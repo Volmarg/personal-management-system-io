@@ -97,15 +97,13 @@ class MyNote extends AbstractEntity
     }
 
     /**
-     * Creates entity from json
+     * Creates entity from array
      *
-     * @param string $json
+     * @param array $dataArray
      * @return MyNote
      */
-    public static function fromJson(string $json): MyNote
+    public static function fromArray(array $dataArray): MyNote
     {
-        $dataArray  = json_decode($json, true);
-
         $categoryId = ArrayService::getArrayValueForKey($dataArray, self::KEY_CATEGORY_ID);
         $title      = ArrayService::getArrayValueForKey($dataArray, self::KEY_TITLE, "");
         $body       = ArrayService::getArrayValueForKey($dataArray, self::KEY_BODY, "");

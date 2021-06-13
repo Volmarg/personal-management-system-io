@@ -4,6 +4,7 @@ namespace App\Repository\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\PasswordGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -50,6 +51,21 @@ class PasswordGroupRepository extends ServiceEntityRepository {
     {
         $this->_em->persist($passwordGroup);;
         $this->_em->flush();
+    }
+
+    /**
+     * Will remove all entries from DB
+     * @throws Exception
+     */
+    public function removeAll(): void
+    {
+        $connection = $this->_em->getConnection();
+
+        $sql = "
+            DELETE FROM `password_group`
+        ";
+
+        $connection->executeQuery($sql);
     }
 
 }

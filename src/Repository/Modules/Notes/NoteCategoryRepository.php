@@ -4,6 +4,9 @@ namespace App\Repository\Modules\Notes;
 
 use App\Entity\Modules\Notes\MyNoteCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -72,6 +75,34 @@ class NoteCategoryRepository extends ServiceEntityRepository {
         $results = $query->execute();
 
         return $results;
+    }
+
+    /**
+     * Will save the new entity or update the state of already existing one
+     *
+     * @param MyNoteCategory $myNoteCategory
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(MyNoteCategory $myNoteCategory): void
+    {
+        $this->_em->persist($myNoteCategory);
+        $this->_em->flush();
+    }
+
+    /**
+     * Will remove all entries from DB
+     * @throws Exception
+     */
+    public function removeAll(): void
+    {
+        $connection = $this->_em->getConnection();
+
+        $sql = "
+            DELETE FROM `my_note_category`
+        ";
+
+        $connection->executeQuery($sql);
     }
 
 }

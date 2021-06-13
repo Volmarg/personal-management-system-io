@@ -13,24 +13,24 @@ use Symfony\Component\HttpFoundation\Request;
 class InsertNotesCategoriesRequestDTO
 {
     /**
-     * @var string[]
+     * @var array
      */
-    private array $notesCategoriesJsons = [];
+    private array $notesCategoriesArrays = [];
 
     /**
-     * @return string[]
+     * @return array
      */
-    public function getNotesCategoriesJsons(): array
+    public function getNotesCategoriesArrays(): array
     {
-        return $this->notesCategoriesJsons;
+        return $this->notesCategoriesArrays;
     }
 
     /**
-     * @param string[] $notesCategoriesJsons
+     * @param array $notesCategoriesArrays
      */
-    public function setNotesCategoriesJsons(array $notesCategoriesJsons): void
+    public function setNotesCategoriesArrays(array $notesCategoriesArrays): void
     {
-        $this->notesCategoriesJsons = $notesCategoriesJsons;
+        $this->notesCategoriesArrays = $notesCategoriesArrays;
     }
 
     /**
@@ -41,15 +41,15 @@ class InsertNotesCategoriesRequestDTO
      */
     public static function fromRequest(Request $request): ?InsertNotesCategoriesRequestDTO
     {
-        $requestContent           = $request->getContent();
-        $noteCategoriesJsonsArray = json_decode($requestContent, true);
+        $requestContent       = $request->getContent();
+        $noteCategoriesArrays = json_decode($requestContent, true);
 
         if( JSON_ERROR_NONE !== json_last_error() ){
             return null;
         }
 
         $insertNotesCategoriesRequest = new InsertNotesCategoriesRequestDTO();
-        $insertNotesCategoriesRequest->setNotesCategoriesJsons($noteCategoriesJsonsArray);
+        $insertNotesCategoriesRequest->setNotesCategoriesArrays($noteCategoriesArrays);
 
         return $insertNotesCategoriesRequest;
     }

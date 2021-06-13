@@ -13,24 +13,24 @@ use Symfony\Component\HttpFoundation\Request;
 class InsertNotesRequestDTO
 {
     /**
-     * @var string[]
+     * @var array $notesArrays
      */
-    private array $notesJsons = [];
+    private array $notesArrays = [];
 
     /**
-     * @return string[]
+     * @return array
      */
-    public function getNotesJsons(): array
+    public function getNotesArrays(): array
     {
-        return $this->notesJsons;
+        return $this->notesArrays;
     }
 
     /**
-     * @param string[] $notesJsons
+     * @param array $notesArrays
      */
-    public function setNotesJsons(array $notesJsons): void
+    public function setNotesArrays(array $notesArrays): void
     {
-        $this->notesJsons = $notesJsons;
+        $this->notesArrays = $notesArrays;
     }
 
     /**
@@ -42,14 +42,14 @@ class InsertNotesRequestDTO
     public static function fromRequest(Request $request): ?InsertNotesRequestDTO
     {
         $requestContent = $request->getContent();
-        $noteJsonsArray = json_decode($requestContent, true);
+        $noteArrays = json_decode($requestContent, true);
 
         if( JSON_ERROR_NONE !== json_last_error() ){
             return null;
         }
 
         $insertNotesRequest = new InsertNotesRequestDTO();
-        $insertNotesRequest->setNotesJsons($noteJsonsArray);
+        $insertNotesRequest->setNotesArrays($noteArrays);
 
         return $insertNotesRequest;
     }

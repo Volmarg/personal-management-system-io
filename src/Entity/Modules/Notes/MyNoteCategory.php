@@ -25,6 +25,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class MyNoteCategory
 {
 
+    const KEY_ID        = "id";
     const KEY_ICON      = "icon";
     const KEY_NAME      = "name";
     const KEY_COLOR     = "color";
@@ -32,10 +33,9 @@ class MyNoteCategory
 
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -80,7 +80,7 @@ class MyNoteCategory
     public function setParentId(?string $parentId): void {
         if (
                 $this->id == $parentId
-            &&  !is_null($parentId)
+            &&  !empty($parentId)
         ) {
             throw new Exception('You cannot be children and parent at the same time!');
         }
@@ -98,8 +98,7 @@ class MyNoteCategory
         return $this->id;
     }
     
-    
-    public function setId(int $id): self{
+    public function setId(?int $id): self{
          $this->id = $id;
          return $this;
     }
@@ -163,23 +162,22 @@ class MyNoteCategory
     }
 
     /**
-     * Creates entity from json
+     * Creates entity from array
      *
-     * @param string $json
+     * @param array $dataArray
      * @return MyNoteCategory
      * @throws Exception
      */
-    public static function fromJson(string $json): MyNoteCategory
+    public static function fromArray(array $dataArray): MyNoteCategory
     {
-        $dataArray  = json_decode($json, true);
-
+        $id       = ArrayService::getArrayValueForKey($dataArray, self::KEY_ID, null);
         $icon     = ArrayService::getArrayValueForKey($dataArray, self::KEY_ICON, "");
         $name     = ArrayService::getArrayValueForKey($dataArray, self::KEY_NAME, "");
         $color    = ArrayService::getArrayValueForKey($dataArray, self::KEY_COLOR, "");
-        $parentId = ArrayService::getArrayValueForKey($dataArray, self::KEY_PARENT_ID);
+        $parentId = ArrayService::getArrayValueForKey($dataArray, self::KEY_PARENT_ID, null);
 
         $myNoteCategory = new MyNoteCategory();
-
+        $myNoteCategory->setId($id);
         $myNoteCategory->setIcon($icon);
         $myNoteCategory->setName($name);
         $myNoteCategory->setColor($color);

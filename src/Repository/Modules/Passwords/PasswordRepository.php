@@ -4,6 +4,7 @@ namespace App\Repository\Modules\Passwords;
 
 use App\Entity\Modules\Passwords\Password;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -49,6 +50,21 @@ class PasswordRepository extends ServiceEntityRepository {
 
         $results = $qb->getQuery()->getResult();
         return $results;
+    }
+
+    /**
+     * Will remove all entries from DB
+     * @throws Exception
+     */
+    public function removeAll(): void
+    {
+        $connection = $this->_em->getConnection();
+
+        $sql = "
+            DELETE FROM `password`
+        ";
+
+        $connection->executeQuery($sql);
     }
 
 }
