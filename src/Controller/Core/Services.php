@@ -7,6 +7,7 @@ namespace App\Controller\Core;
 use App\Service\Attribute\AttributeReaderService;
 use App\Service\CookiesService;
 use App\Service\Database\DatabaseService;
+use App\Service\External\IpInfoService;
 use App\Service\Files\FilesService;
 use App\Service\Form\FormService;
 use App\Service\Logger\LoggerService;
@@ -84,6 +85,11 @@ class Services
      * @var CookiesService $cookiesService
      */
     private CookiesService $cookiesService;
+
+    /**
+     * @var IpInfoService $ipInfoService
+     */
+    private IpInfoService $ipInfoService;
 
     /**
      * @return AttributeReaderService
@@ -275,6 +281,22 @@ class Services
     public function setCookiesService(CookiesService $cookiesService): void
     {
         $this->cookiesService = $cookiesService;
+    }
+
+    /**
+     * @return IpInfoService
+     */
+    public function getIpInfoService(): IpInfoService
+    {
+        return $this->ipInfoService;
+    }
+
+    /**
+     * @param IpInfoService $ipInfoService
+     */
+    public function setIpInfoService(IpInfoService $ipInfoService): void
+    {
+        $this->ipInfoService = $ipInfoService;
     }
 
 }

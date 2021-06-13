@@ -10,19 +10,26 @@ use App\Controller\API\ApiController;
 use App\Controller\ApiUserController;
 use App\Controller\Core\ConfigLoader;
 use App\Controller\Core\Services;
+use App\Controller\System\IncomingRequestController;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
+use App\Entity\System\IncomingRequest;
 use App\Entity\User;
 use App\Service\Attribute\AttributeReaderService;
 use App\Service\CookiesService;
+use App\Service\External\IpInfoService;
 use DateTime;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Exception;
+use ipinfo\ipinfo\IPinfoException;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use TypeError;
 
 /**
  * Class RequestListener
@@ -30,6 +37,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class RequestListener implements EventSubscriberInterface
 {
+
+    const ALLOWED_COUNTRIES_IP_ACCESS = [
+      IpInfoService::COUNTRY_POLAND_SHORTNAME,
+      IpInfoService::COUNTRY_GERMANY_SHORTNAME,
+    ];
 
     /**
      * @var AttributeReaderService $attributeReaderService
@@ -67,6 +79,11 @@ class RequestListener implements EventSubscriberInterface
     private ApiUserController $apiUserController;
 
     /**
+     * @var IncomingRequestController $incomingRequestController
+     */
+    private IncomingRequestController $incomingRequestController;
+
+    /**
      * RequestListener constructor.
      *
      * @param AttributeReaderService $attributeReaderService
@@ -76,24 +93,27 @@ class RequestListener implements EventSubscriberInterface
      * @param UserController $userController
      * @param ConfigLoader $configLoader
      * @param ApiUserController $apiUserController
+     * @param IncomingRequestController $incomingRequestController
      */
     public function __construct(
-        AttributeReaderService  $attributeReaderService,
-        ApiController           $apiController,
-        Services                $services,
-        TokenStorageInterface   $tokenStorage,
-        UserController          $userController,
-        ConfigLoader            $configLoader,
-        ApiUserController       $apiUserController
+        AttributeReaderService    $attributeReaderService,
+        ApiController             $apiController,
+        Services                  $services,
+        TokenStorageInterface     $tokenStorage,
+        UserController            $userController,
+        ConfigLoader              $configLoader,
+        ApiUserController         $apiUserController,
+        IncomingRequestController $incomingRequestController
     )
     {
-        $this->services               = $services;
-        $this->configLoader           = $configLoader;
-        $this->tokenStorage           = $tokenStorage;
-        $this->apiController          = $apiController;
-        $this->userController         = $userController;
-        $this->attributeReaderService = $attributeReaderService;
-        $this->apiUserController      = $apiUserController;
+        $this->services                  = $services;
+        $this->configLoader              = $configLoader;
+        $this->tokenStorage              = $tokenStorage;
+        $this->apiController             = $apiController;
+        $this->userController            = $userController;
+        $this->attributeReaderService    = $attributeReaderService;
+        $this->apiUserController         = $apiUserController;
+        $this->incomingRequestController = $incomingRequestController;
     }
 
     /**
@@ -117,10 +137,18 @@ class RequestListener implements EventSubscriberInterface
      * Will validate request in one or more ways
      *
      * @throws ReflectionException
+     * @throws IPinfoException
      */
     private function validateRequest(RequestEvent $requestEvent): void
     {
         $request = $requestEvent->getRequest();
+        if( !$this->validateCountryForIp($request) ){
+            $unauthorizedMessage = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
+            $response = BaseApiDTO::buildUnauthorizedResponse($unauthorizedMessage)->toJsonResponse();
+            $requestEvent->setResponse($response);
+            return;
+        }
+
         if( $this->attributeReaderService->hasUriAttribute($request->getRequestUri(), ExternalActionAttribute::class) ){
             return; // Security authenticator will handle this
         }elseif(
@@ -224,6 +252,58 @@ class RequestListener implements EventSubscriberInterface
             $realUser->setLastActivity(new DateTime());
             $userController->save($realUser);
         }
+    }
+
+    /**
+     * Will save incoming request data in DB
+     *
+     * @param Request $request
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function saveIncomingRequest(Request $request): void
+    {
+        $incomingRequest = new IncomingRequest();
+        $incomingRequest->setIp($request->getClientIp());
+
+        $this->incomingRequestController->save($incomingRequest);
+    }
+
+    /**
+     * Will check if call was made from given country only - cannot apply IP access to network changes
+     *
+     * @param Request $request
+     * @return bool
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    private function validateCountryForIp(Request $request): bool
+    {
+        if( in_array($request->getClientIp(), IpInfoService::POSSIBLE_LOCALHOST_IPS) ){
+            return true;
+        }
+
+        $this->saveIncomingRequest($request);
+
+        try{
+            $countryShortName = $this->services->getIpInfoService()->getCountryShortNameForIp($request->getClientIp());
+            if( !in_array($countryShortName, self::ALLOWED_COUNTRIES_IP_ACCESS) ){
+                $this->services->getLoggerService()->getLogger()->warning("Tried to access the project from blocked country", [
+                    "allowedCountries" => self::ALLOWED_COUNTRIES_IP_ACCESS,
+                    "countryShortName" => $countryShortName,
+                    "ip"               => $request->getClientIp(),
+                ]);
+                return false;
+            }
+        }catch(Exception | TypeError $e){
+                $this->services->getLoggerService()->logException($e, [
+                    "info" => "Exception was thrown while trying to validate country for ip, probably the api could not resolve ip",
+                    "ip"   => $request->getClientIp(),
+                ]);
+            return false;
+        }
+
+        return true;
     }
 
     /**

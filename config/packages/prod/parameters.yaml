@@ -1,0 +1,2 @@
+parameters:
+  max_inactivity_time: 600 #in seconds - bigger jus to keep the dev system alive
