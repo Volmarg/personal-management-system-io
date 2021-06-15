@@ -185,4 +185,22 @@ class MyNoteCategory
 
         return $myNoteCategory;
     }
+
+    /**
+     * Will return string (json) representation of the entity
+     *
+     * @return string
+     */
+    public function toJson(): string
+    {
+        $dataArray = [
+            self::KEY_ID        => $this->getId(),
+            self::KEY_ICON      => $this->getIcon(),
+            self::KEY_NAME      => $this->getName(),
+            self::KEY_COLOR     => $this->getColor(),
+            self::KEY_PARENT_ID => $this->getParentId(),
+        ];
+
+        return json_encode($dataArray);
+    }
 }

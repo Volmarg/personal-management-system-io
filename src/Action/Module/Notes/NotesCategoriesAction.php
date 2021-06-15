@@ -4,6 +4,7 @@ namespace App\Action\Module\Notes;
 
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Modules\Notes\NotesCategoriesController;
+use App\DTO\Internal\Module\Notes\AllNotesCategoriesDTO;
 use App\DTO\Internal\Module\Notes\ParentsChildrenCategoriesHierarchyDTO;
 use App\DTO\ParentChildDTO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,16 +56,24 @@ class NotesCategoriesAction extends AbstractController
         return $apiResponse->toJsonResponse();
     }
 
-//    /**
-//     * Will return all categories without the hierarchy (no relation between parent-child, only categories themselves)
-//     *
-//     * @return JsonResponse
-//     */
-//    #[Route("/get-all", name: "get_all", methods: [Request::METHOD_GET])]
-//    #[InternalActionAttribute]
-//    public function getAllCategories(): JsonResponse
-//    {
-//
-//        return ""; // todo
-//    }
+    /**
+     * Will return all categories without the hierarchy (no relation between parent-child, only categories themselves)
+     *
+     * @return JsonResponse
+     */
+    #[Route("/get-all", name: "get_all", methods: [Request::METHOD_GET])]
+    #[InternalActionAttribute]
+    public function getAllCategories(): JsonResponse
+    {
+        $allCategoriesResponse = new AllNotesCategoriesDTO();
+
+        $allCategories   = $this->notesCategoriesController->getAll();
+        $categoriesJsons = [];
+        foreach($allCategories as $category){
+            $categoriesJsons[] = $category->toJson();
+        }
+
+        $allCategoriesResponse->setNotesJsons($categoriesJsons);
+        return $allCategoriesResponse->toJsonResponse();
+    }
 }

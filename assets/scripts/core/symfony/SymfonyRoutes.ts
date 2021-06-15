@@ -23,6 +23,11 @@ export default class SymfonyRoutes {
     static readonly ROUTE_NAME_GET_NOTES_CATEGORIES_HIERARCHY = 'module_notes_categories_get_parents_children_categories_hierarchy';
 
     /**
+     * @description route used to fetch the notes (categories without hierarchy)
+     */
+    static readonly ROUTE_NAME_GET_NOTES_CATEGORIES = 'module_notes_categories_get_all';
+
+    /**
      * @description displays note category page
      */
     static readonly ROUTE_NAME_MODULE_NOTES_CATEGORY          = "modules_notes_category";

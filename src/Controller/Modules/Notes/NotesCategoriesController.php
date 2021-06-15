@@ -164,4 +164,13 @@ class NotesCategoriesController
         $this->noteCategoryRepository->removeAll();
     }
 
+    /**
+     * Will return all note categories
+     *
+     * @return MyNoteCategory[]
+     */
+    public function getAll(): array
+    {
+        return $this->noteCategoryRepository->findAll();
+    }
 }

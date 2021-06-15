@@ -7,6 +7,7 @@
     <div aria-labelledby="swal2-title"
          aria-describedby="swal2-content"
          class="swal2-popup swal2-modal swal2-icon-warning swal2-show d-flex"
+         :class="fullWidthClass"
          tabindex="-1"
          role="dialog"
          aria-live="assertive"
@@ -29,6 +30,7 @@
              ref="dialogContentWrapper"
         >
           <div v-html="dialogContent"></div>
+          <slot name="additionalDialogContent"></slot>
         </div>
       </div>
 
@@ -80,7 +82,12 @@ export default {
     },
     dialogContent: {
       type     : String,
-      required : true,
+      required : false,
+      default  : "",
+    },
+    isFullWidthOnMobile: {
+      type    : Boolean,
+      default : false,
     }
   },
   methods: {
@@ -115,6 +122,16 @@ export default {
       }
     }
   },
+  computed: {
+    /**
+     * @description return the full width class name
+     */
+    fullWidthClass() {
+      return {
+        'full-width' : this.isFullWidthOnMobile,
+      }
+    }
+  },
   mounted(){
     //todo: handle code highlight - some notes contain it but prismjs is not working with Vue.js
   }
@@ -134,6 +151,10 @@ export default {
 
 .swal2-popup {
   width: auto;
+}
+
+.full-width {
+  width: 100%;
 }
 
 </style>
