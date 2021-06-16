@@ -10,12 +10,16 @@
       >
         <template #alertDialogContent>
 
-          <div class="tile is-ancestor">
-            <single-module-block
-                v-for="categoryDto in allCategories"
-                :text="categoryDto.name"
-                :target-url="buildNoteCategoryUrl(categoryDto.id)"
-            />
+          <search-input @search-input-changed="filterNotesCategoriesForSearchInput" />
+
+          <div v-for="categoriesInGroup in groupedShownNotesCategories">
+            <div class="tile is-ancestor">
+              <single-module-block
+                  v-for="categoryDto in categoriesInGroup"
+                  :text="categoryDto.name"
+                  :target-url="buildNoteCategoryUrl(categoryDto.id)"
+              />
+            </div>
           </div>
 
         </template>
@@ -27,12 +31,16 @@
       >
         <template #alertDialogContent>
 
-          <div class="tile is-ancestor">
-            <single-module-block
-                v-for="passwordGroupDto in passwordsGroups"
-                :text="passwordGroupDto.name"
-                :target-url="buildPasswordGroupUrl(passwordGroupDto.id)"
-            />
+          <search-input @search-input-changed="filterPasswordsGroupsForSearchInput" />
+
+          <div v-for="passwordGroupDtos in groupedShownPasswordsGroups">
+            <div class="tile is-ancestor">
+              <single-module-block
+                  v-for="passwordGroupDto in passwordGroupDtos"
+                  :text="passwordGroupDto.name"
+                  :target-url="buildNoteCategoryUrl(passwordGroupDto.id)"
+              />
+            </div>
           </div>
 
         </template>
@@ -47,6 +55,7 @@
 <script type="ts">
 import PageCardComponent          from '../../../components/page/base/page-elements/card';
 import SingleModuleBlockComponent from './components/single-module-block';
+import SearchInputComponent       from '../../../components/page/base/page-elements/search-input';
 
 import SymfonyRoutes         from "../../../../scripts/core/symfony/SymfonyRoutes";
 import AllNotesCategoriesDto from "../../../../scripts/core/dto/module/notes/AllNotesCategoriesDto";
@@ -54,16 +63,24 @@ import NoteCategoryDto       from "../../../../scripts/core/dto/module/notes/Not
 import PasswordGroupsDto     from "../../../../scripts/core/dto/module/passwords/PasswordGroupsDto";
 import PasswordGroupDto      from "../../../../scripts/core/dto/module/passwords/PasswordGroupDto";
 
+import StringUtils from "../../../../scripts/core/utils/StringUtils";
+
 export default {
   data(){
     return {
-      allCategories   : [],
-      passwordsGroups : [],
+      allPasswordsGroups          : [],
+      groupedShownPasswordsGroups : [],
+
+      allNotesCategories          : [],
+      groupedShownNotesCategories : [],
+
+      maxElementsInGroup : 6,
     }
   },
   components: {
     'page-card'           : PageCardComponent,
     'single-module-block' : SingleModuleBlockComponent,
+    'search-input'        : SearchInputComponent,
   },
   methods: {
     /**
@@ -72,8 +89,9 @@ export default {
     getAllNotesCategories(){
       let calledUrl = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_NOTES_CATEGORIES);
       this.axios.get(calledUrl).then((response) => {
-        let responseDto    = AllNotesCategoriesDto.fromAxiosResponse(response);
-        this.allCategories = responseDto.notesCategoriesJsons.map( json => NoteCategoryDto.fromJson(json) );
+        let responseDto                  = AllNotesCategoriesDto.fromAxiosResponse(response);
+        this.allNotesCategories          = responseDto.notesCategoriesJsons.map( json => NoteCategoryDto.fromJson(json) );
+        this.groupedShownNotesCategories = this.groupElements(this.maxElementsInGroup, this.allNotesCategories);
       })
     },
     /**
@@ -93,8 +111,9 @@ export default {
      */
     getAllPasswordsGroups(){
       this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_ALL_PASSWORDS_GROUPS)).then( (response) => {
-        let passwordGroupsDto = PasswordGroupsDto.fromAxiosResponse(response);
-        this.passwordsGroups  = passwordGroupsDto.passwordsGroupsJsons.map( (json) => PasswordGroupDto.fromJson(json) );
+        let passwordGroupsDto            = PasswordGroupsDto.fromAxiosResponse(response);
+        this.allPasswordsGroups          = passwordGroupsDto.passwordsGroupsJsons.map( (json) => PasswordGroupDto.fromJson(json) );
+        this.groupedShownPasswordsGroups = this.groupElements(this.maxElementsInGroup, this.allPasswordsGroups);
       })
     },
     /**
@@ -109,6 +128,58 @@ export default {
       )
       return path;
     },
+    /**
+     * @description will filter the visible notes categories
+     */
+    filterNotesCategoriesForSearchInput(searchedString){
+      if( StringUtils.isEmptyString(searchedString) ){
+        this.groupedShownNotesCategories = this.groupElements(this.maxElementsInGroup,  this.allNotesCategories);
+        return;
+      }
+
+      let filteredCategories = this.allNotesCategories.filter( (noteCategoryDto) => {
+        return noteCategoryDto.name.toLowerCase().includes(searchedString.toLowerCase());
+      })
+
+      this.groupedShownNotesCategories = this.groupElements(this.maxElementsInGroup, filteredCategories);
+    },
+    /**
+     * @description will filter the visible password groups
+     */
+    filterPasswordsGroupsForSearchInput(searchedString){
+      if( StringUtils.isEmptyString(searchedString) ){
+        this.groupedShownPasswordsGroups = this.groupElements(this.maxElementsInGroup, this.allPasswordsGroups);
+        return;
+      }
+
+      let filteredPasswordGroups = this.allPasswordsGroups.filter( (passwordGroupDto) => {
+        return passwordGroupDto.name.toLowerCase().includes(searchedString.toLowerCase());
+      })
+
+      this.groupedShownPasswordsGroups = this.groupElements(this.maxElementsInGroup, filteredPasswordGroups);
+    },
+    /**
+     * @description will groups the elements by groups of given size
+     */
+    groupElements(groupSize, elementsToGroup){
+      let groupedElements = [];
+      let groupToAdd      = [];
+
+      for(let indexOfElement in elementsToGroup){
+        let element = elementsToGroup[indexOfElement];
+        groupToAdd.push(element);
+
+        let isGroupSizeOfDesiredSize = (groupToAdd.length == groupSize);
+        let isLastElementToHandle    = (elementsToGroup.length - 1 == indexOfElement); // required due to not full group with leftover elements
+
+        if( isGroupSizeOfDesiredSize || isLastElementToHandle ){
+          groupedElements.push(groupToAdd);
+          groupToAdd = [];
+        }
+      }
+
+      return groupedElements;
+    }
   },
   beforeMount() {
     this.getAllNotesCategories();

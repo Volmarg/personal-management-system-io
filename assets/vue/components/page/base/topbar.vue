@@ -11,6 +11,12 @@
       <i class="align-middle" data-feather="search"></i>
     </router-link>
 
+    <router-link class="home-icon-wrapper"
+                 :to="{name: dashboardRouteName}"
+    >
+      <i class="align-middle" data-feather="home"></i>
+    </router-link>
+
     <div class="navbar-collapse collapse">
       <ul class="navbar-nav navbar-align">
         <li class="nav-item dropdown">
@@ -46,6 +52,7 @@ export default {
     return{
       loggedInUserDto     : LocalStorageService.getLoggedInUser(),
       searchPageRouteName : SymfonyRoutes.ROUTE_NAME_MODULE_SEARCH_SEARCH_OVERVIEW,
+      dashboardRouteName  : SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW,
     }
   },
   methods: {
@@ -76,8 +83,12 @@ export default {
 
 <!-- Style -->
 <style scoped>
-.search-icon-wrapper svg {
+.search-icon-wrapper svg, .home-icon-wrapper  svg {
   height: 25px;
   width: 25px;
+}
+
+.home-icon-wrapper {
+  margin-left: 10px;
 }
 </style>

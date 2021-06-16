@@ -1,16 +1,22 @@
 <!-- Template -->
 <template>
-
-  <div class="base-component position-absolute logo">
-    <img src="/logo.svg" style=""/>
-  </div>
-
+  <router-link :to="{ name: dashboardRouteName }"
+               class="base-component position-absolute logo"
+    >
+      <img src="/logo.svg" style=""/>
+  </router-link>
 </template>
 
 <!-- Script -->
 <script>
-export default {
+import SymfonyRoutes from "../../../../../scripts/core/symfony/SymfonyRoutes";
 
+export default {
+  data(){
+    return {
+      dashboardRouteName: SymfonyRoutes.ROUTE_NAME_MODULE_DASHBOARD_OVERVIEW,
+    }
+  }
 }
 </script>
 
