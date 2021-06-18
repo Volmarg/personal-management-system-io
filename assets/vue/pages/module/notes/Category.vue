@@ -1,17 +1,17 @@
 <!-- Template -->
 <template>
 
-  <page-header :shown-text="trans('pages.notes.category.header', {'{{noteCategoryName}}' : categoryName})"/>
-  <search-input @search-input-changed="filterNotesForSearchInput" />
-  <shown-notes :notes="shownNotes"/>
+  <PageHeader :shown-text="trans('pages.notes.category.header', {'{{noteCategoryName}}' : categoryName})"/>
+  <SearchInput @search-input-changed="filterNotesForSearchInput" />
+  <ShownNotes :notes="shownNotes"/>
 
 </template>
 
 <!-- Script -->
 <script type="ts">
-import PageHeaderComponent  from '../../../components/page/base/page-elements/header';
-import SearchInputComponent from "../../../components/page/base/page-elements/search-input";
-import ShownNotesComponent  from "./components/shown-notes";
+import PageHeaderComponent  from '../../../components/page/base/page-elements/Header';
+import SearchInputComponent from "../../../components/page/base/page-elements/SearchInput";
+import ShownNotesComponent  from "./components/ShownNotes";
 
 import SymfonyRoutes      from "../../../../scripts/core/symfony/SymfonyRoutes";
 import NotesInCategoryDto from "../../../../scripts/core/dto/module/notes/NotesInCategoryDto";
@@ -28,9 +28,9 @@ export default {
     }
   },
   components: {
-    "page-header"  : PageHeaderComponent,
-    "search-input" : SearchInputComponent,
-    "shown-notes"  : ShownNotesComponent
+    "PageHeader"  : PageHeaderComponent,
+    "SearchInput" : SearchInputComponent,
+    "ShownNotes"  : ShownNotesComponent
   },
   methods: {
     /**

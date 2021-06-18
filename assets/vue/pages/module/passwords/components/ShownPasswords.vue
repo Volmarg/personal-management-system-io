@@ -2,22 +2,20 @@
 <template>
   <div class="row">
 
-    <password-card v-for="password in passwords"
+    <PasswordCard v-for="password in passwords"
                    :description="password.description"
                    :url="password.url"
                    :login="password.login"
                    :id="password.id"
     >
 
-    </password-card>
+    </PasswordCard>
   </div>
 </template>
 
 <!-- Script -->
 <script>
-
-import PageCardComponent     from "../../../../components/page/base/page-elements/card";
-import PasswordCardComponent from "./password-card";
+import PasswordCardComponent from "./PasswordCard";
 
 export default {
   props: {
@@ -27,8 +25,7 @@ export default {
     }
   },
   components: {
-    'page-card'       : PageCardComponent,
-    'password-card'   : PasswordCardComponent,
+    'PasswordCard' : PasswordCardComponent,
   }
 }
 </script>

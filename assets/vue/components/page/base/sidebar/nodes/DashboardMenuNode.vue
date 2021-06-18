@@ -1,6 +1,6 @@
 <!-- Template -->
 <template>
-  <single-menu-node
+  <SingleMenuNode
       :shown-text="trans('sidebar.menuNodes.dashboard.label')"
       feathers-icon-name="sliders"
       :to-path-name="routeNameModuleDashboardOverview"
@@ -10,7 +10,7 @@
 <!-- Script -->
 <script type="ts">
 import SymfonyRoutes           from "../../../../../../scripts/core/symfony/SymfonyRoutes";
-import SingleMenuNodeComponent from "../single-menu-node.vue";
+import SingleMenuNodeComponent from "../SingleMenuNode.vue";
 
 export default {
   data(){
@@ -19,7 +19,7 @@ export default {
     }
   },
   components: {
-    "single-menu-node" : SingleMenuNodeComponent,
+    "SingleMenuNode" : SingleMenuNodeComponent,
   }
 }
 </script>

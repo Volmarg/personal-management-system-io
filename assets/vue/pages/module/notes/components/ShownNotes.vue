@@ -1,15 +1,15 @@
 <!-- Template -->
 <template>
 
-  <page-card>
-    <note-card
+  <PageCard>
+    <NoteCard
         v-for="note in notes"
         @click="callDialog(note.id)"
         :title="note.title"
     />
-  </page-card>
+  </PageCard>
 
-  <sweet-alert
+  <SweetAlert
       v-for="note in notes"
       :cancel-button-string="trans('dialogs.buttons.default.close')"
       :header-string="note.title"
@@ -20,15 +20,15 @@
     <template #body-content>
       {{ note.body }}
     </template>
-  </sweet-alert>
+  </SweetAlert>
 
 </template>
 
 <!-- Script -->
 <script type="ts">
-import PageCardComponent   from "../../../../components/page/base/page-elements/card.vue";
-import NoteCardComponent   from "./note-card.vue";
-import SweetAlertComponent from "../../../../components/dialog/sweet-alert/sweet-alert.vue";
+import PageCardComponent   from "../../../../components/page/base/page-elements/PageCard.vue";
+import NoteCardComponent   from "./NoteCard.vue";
+import SweetAlertComponent from "../../../../components/dialog/sweet-alert/SweetAlert.vue";
 
 export default {
   props: {
@@ -38,9 +38,9 @@ export default {
     }
   },
   components: {
-    "page-card"    : PageCardComponent,
-    "note-card"    : NoteCardComponent,
-    "sweet-alert"  : SweetAlertComponent,
+    "PageCard"   : PageCardComponent,
+    "NoteCard"   : NoteCardComponent,
+    "SweetAlert" : SweetAlertComponent,
   },
   methods: {
     /**

@@ -8,7 +8,7 @@
                    class="sidebar-brand logo-link"
       >
         <div class="align-middle logo-wrapper position-relative mb-3" style="height: 60px;">
-          <logo/>
+          <Logo/>
         </div>
       </router-link>
 
@@ -16,9 +16,9 @@
       <ul class="sidebar-nav">
         <li class="sidebar-header"></li>
 
-        <dashboard-menu-node/>
-        <password-menu-node/>
-        <notes-menu-node/>
+        <DashboardMenuNode/>
+        <PasswordsMenuNode/>
+        <NotesMenuNode/>
 
       </ul>
     </div>
@@ -27,10 +27,10 @@
 
 <!-- Script -->
 <script type="ts">
-import DashboardMenuNodeComponent from "./sidebar/nodes/dashboard-menu-node";
-import NotesMenuNodeComponent     from "./sidebar/nodes/notes-menu-node";
-import PasswordsMenuNodeComponent from "./sidebar/nodes/passwords-menu-node";
-import LogoComponent              from "./sidebar/logo";
+import DashboardMenuNodeComponent from "./sidebar/nodes/DashboardMenuNode";
+import NotesMenuNodeComponent     from "./sidebar/nodes/NotesMenuNode";
+import PasswordsMenuNodeComponent from "./sidebar/nodes/PasswordsMenuNode";
+import LogoComponent              from "./sidebar/Logo";
 
 import Router from "../../../../scripts/libs/vue/Router";
 
@@ -41,10 +41,10 @@ export default {
     }
   },
   components: {
-    "logo"                : LogoComponent,
-    "dashboard-menu-node" : DashboardMenuNodeComponent,
-    "notes-menu-node"     : NotesMenuNodeComponent,
-    "password-menu-node"  : PasswordsMenuNodeComponent,
+    "Logo"              : LogoComponent,
+    "DashboardMenuNode" : DashboardMenuNodeComponent,
+    "NotesMenuNode"     : NotesMenuNodeComponent,
+    "PasswordsMenuNode" : PasswordsMenuNodeComponent,
   }
 }
 </script>

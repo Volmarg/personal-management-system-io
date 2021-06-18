@@ -81,10 +81,10 @@ class NotesApiAction extends ApiAction
                 }
 
                 foreach($insertRequest->getNotesCategoriesArrays() as $noteCategoryArray){
-
                     $noteCategoryEntity = MyNoteCategory::fromArray($noteCategoryArray);
                     $validationDto      = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($noteCategoryEntity);
 
+                    $this->services->getLoggerService()->getLogger()->info("Inserting single note category with id: {$noteCategoryEntity->getId()}");
                     if( !$validationDto->isSuccess() ){
                         $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();
                         $response->setInvalidFields($validationDto->getViolationsWithMessages());
@@ -143,6 +143,7 @@ class NotesApiAction extends ApiAction
                     $noteEntity = MyNote::fromArray($noteArray);
                     $categoryId = $noteEntity->getDataBag()->get(MyNote::KEY_CATEGORY_ID);
 
+                    $this->services->getLoggerService()->getLogger()->info("Inserting note");
                     try{
                         $category = $this->notesCategoriesController->getOneForId($categoryId);
                     }catch(Exception | TypeError $e){

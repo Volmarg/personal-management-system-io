@@ -39,7 +39,7 @@
 import SymfonyRoutes from "../../../../../scripts/core/symfony/SymfonyRoutes";
 
 import DecryptedPasswordDto  from "../../../../../scripts/core/dto/module/passwords/DecryptedPasswordDto";
-import SweetAlert            from "../../../../components/dialog/sweet-alert/sweet-alert.vue";
+import SweetAlertComponent   from "../../../../components/dialog/sweet-alert/SweetAlert.vue";
 
 export default {
   data(){
@@ -68,7 +68,7 @@ export default {
     }
   },
   components: {
-    "sweet-alert": SweetAlert
+    "SweetAlert": SweetAlertComponent
   },
   methods: {
     /**

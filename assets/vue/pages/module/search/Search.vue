@@ -7,7 +7,7 @@
       <!-- search input -->
       <div class="mb-2">
         <div class="input-group input-group-navbar">
-          <input-component
+          <Input
             type="text"
             placeholder="Search…"
             ref="searchInput"
@@ -26,7 +26,7 @@
 
       <!-- select list -->
       <div class="mb-2">
-        <select-component
+        <Select
             :options="options"
             :is-valid="isSelectModuleValid"
             ref="moduleSelect"
@@ -44,19 +44,19 @@
 
   <!-- results -->
   <section class="results-wrapper" v-if="showResults.length !== 0">
-    <shown-notes :notes="showResults" v-if="selectedModule === supportedModuleNameNotes"/>
-    <shown-passwords :passwords="showResults" v-if="selectedModule === supportedModuleNamePasswords"/>
+    <ShownNotes :notes="showResults" v-if="selectedModule === supportedModuleNameNotes"/>
+    <ShownPasswords :passwords="showResults" v-if="selectedModule === supportedModuleNamePasswords"/>
   </section>
 
 </template>
 
 <!-- Script -->
 <script type="ts">
-import PageCardComponent       from "../../../components/page/base/page-elements/card";
-import SelectComponent         from "../../../components/page/base/page-elements/select";
-import InputComponent          from "../../../components/page/base/page-elements/input";
-import ShownNotesComponent     from "../notes/components/shown-notes.vue";
-import ShownPasswordsComponent from "../passwords/components/shown-passwords";
+import PageCardComponent       from "../../../components/page/base/page-elements/PageCard";
+import SelectComponent         from "../../../components/page/base/page-elements/Select";
+import InputComponent          from "../../../components/page/base/page-elements/Input";
+import ShownNotesComponent     from "../notes/components/ShownNotes.vue";
+import ShownPasswordsComponent from "../passwords/components/ShownPasswords";
 
 
 import SymfonyRoutes       from "../../../../scripts/core/symfony/SymfonyRoutes";
@@ -81,11 +81,11 @@ export default {
     }
   },
   components: {
-    "shown-notes"      : ShownNotesComponent,
-    "shown-passwords"  : ShownPasswordsComponent,
-    "page-card"        : PageCardComponent,
-    "select-component" : SelectComponent,
-    "input-component"  : InputComponent,
+    "ShownNotes"     : ShownNotesComponent,
+    "ShownPasswords" : ShownPasswordsComponent,
+    "page-card"      : PageCardComponent,
+    "Select"         : SelectComponent,
+    "Input"          : InputComponent,
   },
   methods: {
     /**

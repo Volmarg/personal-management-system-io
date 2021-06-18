@@ -1,20 +1,20 @@
 <!-- Template -->
 <template>
 
-  <page-card>
+  <PageCard>
     <div class="tile is-ancestor">
 
-      <single-module-block
+      <SingleModuleBlock
         :text="trans('sidebar.menuNodes.notes.label')"
         icon="book"
       >
         <template #alertDialogContent>
 
-          <search-input @search-input-changed="filterNotesCategoriesForSearchInput" />
+          <SearchInput @search-input-changed="filterNotesCategoriesForSearchInput" />
 
           <div v-for="categoriesInGroup in groupedShownNotesCategories">
             <div class="tile is-ancestor">
-              <single-module-block
+              <SingleModuleBlock
                   v-for="categoryDto in categoriesInGroup"
                   :text="categoryDto.name"
                   :target-url="buildNoteCategoryUrl(categoryDto.id)"
@@ -23,19 +23,19 @@
           </div>
 
         </template>
-      </single-module-block>
+      </SingleModuleBlock>
 
-      <single-module-block
+      <SingleModuleBlock
           :text="trans('sidebar.menuNodes.passwords.label')"
           icon="key"
       >
         <template #alertDialogContent>
 
-          <search-input @search-input-changed="filterPasswordsGroupsForSearchInput" />
+          <SearchInput @search-input-changed="filterPasswordsGroupsForSearchInput" />
 
           <div v-for="passwordGroupDtos in groupedShownPasswordsGroups">
             <div class="tile is-ancestor">
-              <single-module-block
+              <SingleModuleBlock
                   v-for="passwordGroupDto in passwordGroupDtos"
                   :text="passwordGroupDto.name"
                   :target-url="buildNoteCategoryUrl(passwordGroupDto.id)"
@@ -44,18 +44,18 @@
           </div>
 
         </template>
-      </single-module-block>
+      </SingleModuleBlock>
 
     </div>
-  </page-card>
+  </PageCard>
 
 </template>
 
 <!-- Script -->
 <script type="ts">
-import PageCardComponent          from '../../../components/page/base/page-elements/card';
-import SingleModuleBlockComponent from './components/single-module-block';
-import SearchInputComponent       from '../../../components/page/base/page-elements/search-input';
+import PageCardComponent          from '../../../components/page/base/page-elements/PageCard';
+import SingleModuleBlockComponent from './components/SingleModuleBlock';
+import SearchInputComponent       from '../../../components/page/base/page-elements/SearchInput';
 
 import SymfonyRoutes         from "../../../../scripts/core/symfony/SymfonyRoutes";
 import AllNotesCategoriesDto from "../../../../scripts/core/dto/module/notes/AllNotesCategoriesDto";
@@ -78,9 +78,9 @@ export default {
     }
   },
   components: {
-    'page-card'           : PageCardComponent,
-    'single-module-block' : SingleModuleBlockComponent,
-    'search-input'        : SearchInputComponent,
+    'PageCard'          : PageCardComponent,
+    'SingleModuleBlock' : SingleModuleBlockComponent,
+    'SearchInput'       : SearchInputComponent,
   },
   methods: {
     /**

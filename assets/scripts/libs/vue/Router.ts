@@ -1,9 +1,9 @@
 import {createRouter, createWebHistory, RouteRecordRaw, RouterOptions} from 'vue-router';
-import NoteCategoryComponent      from '../../../vue/pages/module/notes/category.vue';
-import DashboardOverviewComponent from '../../../vue/pages/module/dashboard/overview.vue';
-import PasswordsOverviewComponent from '../../../vue/pages/module/passwords/passwords.vue';
-import LoginPageComponent         from "../../../vue/pages/module/secuirty/login.vue";
-import SearchPageComponent        from "../../../vue/pages/module/search/search.vue";
+import NoteCategoryComponent      from '../../../vue/pages/module/notes/Category.vue';
+import DashboardOverviewComponent from '../../../vue/pages/module/dashboard/Overview.vue';
+import PasswordsOverviewComponent from '../../../vue/pages/module/passwords/Passwords.vue';
+import LoginPageComponent         from "../../../vue/pages/module/security/Login.vue";
+import SearchPageComponent        from "../../../vue/pages/module/search/Search.vue";
 import SymfonyRoutes              from "../../core/symfony/SymfonyRoutes";
 
 /**

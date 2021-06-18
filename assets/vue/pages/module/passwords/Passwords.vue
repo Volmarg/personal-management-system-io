@@ -1,16 +1,15 @@
 <!-- Template -->
 <template>
-  <page-header :shown-text="trans('pages.passwords.group.header', {'{{passwordGroupName}}' : currentGroupName})"/>
-  <search-input @search-input-changed="filterPasswordsForSearchInput" />
-  <shown-passwords :passwords="shownPasswords"/>
+  <PageHeader :shown-text="trans('pages.passwords.group.header', {'{{passwordGroupName}}' : currentGroupName})"/>
+  <SearchInput @search-input-changed="filterPasswordsForSearchInput" />
+  <ShownPasswords :passwords="shownPasswords"/>
 </template>
 
 <!-- Script -->
 <script>
-import PageCardComponent        from "../../../components/page/base/page-elements/card";
-import PageHeaderComponent      from "../../../components/page/base/page-elements/header";
-import ShownPasswordsComponents from "./components/shown-passwords"
-import SearchInputComponent     from "../../../components/page/base/page-elements/search-input";
+import PageHeaderComponent      from "../../../components/page/base/page-elements/Header";
+import ShownPasswordsComponents from "./components/ShownPasswords"
+import SearchInputComponent     from "../../../components/page/base/page-elements/SearchInput";
 
 import SymfonyRoutes                 from "../../../../scripts/core/symfony/SymfonyRoutes";
 import PasswordGroupWithPasswordsDto from "../../../../scripts/core/dto/module/passwords/PasswordGroupWithPasswordsDto";
@@ -27,10 +26,9 @@ export default {
     }
   },
   components: {
-    'shown-passwords' : ShownPasswordsComponents,
-    'page-card'       : PageCardComponent,
-    'page-header'     : PageHeaderComponent,
-    'search-input'    : SearchInputComponent,
+    'ShownPasswords' : ShownPasswordsComponents,
+    'PageHeader'     : PageHeaderComponent,
+    'SearchInput'    : SearchInputComponent,
   },
   methods: {
     /**

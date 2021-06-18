@@ -86,6 +86,7 @@ class PasswordsApiAction extends ApiAction
                     $passwordGroupEntity = PasswordGroup::fromArray($passwordGroupArray);
                     $validationDto       = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($passwordGroupEntity);
 
+                    $this->services->getLoggerService()->getLogger()->info("Inserting group password with id: {$passwordGroupEntity->getId()}");
                     if( !$validationDto->isSuccess() ){
                         $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();
                         $response->setInvalidFields($validationDto->getViolationsWithMessages());
@@ -145,6 +146,7 @@ class PasswordsApiAction extends ApiAction
 
                     $passwordEntity->setGroup($passwordGroupEntity);
 
+                    $this->services->getLoggerService()->getLogger()->info("Inserting password");
                     $validationDto = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($passwordEntity);
                     if( !$validationDto->isSuccess() ){
                         $response = BaseApiDTO::buildInvalidFieldsRequestErrorResponse();

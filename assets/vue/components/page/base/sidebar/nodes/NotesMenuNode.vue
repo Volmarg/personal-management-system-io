@@ -1,19 +1,19 @@
 <!-- Template -->
 <template>
-  <single-menu-node
+  <SingleMenuNode
       :shown-text="trans('sidebar.menuNodes.notes.label')"
       feathers-icon-name="book"
       :submenu-id="'multi-' + notesCategoriesMenuNodeId"
       :show-collapse="parentChildDtoArray.length !== 0"
   >
     <template #submenu>
-      <nested-menu-node :nodes="parentChildDtoArray"
+      <NestedMenuNode :nodes="parentChildDtoArray"
                         :node-identifier="notesCategoriesMenuNodeId"
                         :to-path-name="routeNameModuleNotesCategory"
                         :to-id-param-name="routeNameModuleNotesCategoryIdParam"
       />
     </template>
-  </single-menu-node>
+  </SingleMenuNode>
 </template>
 
 <!-- Script -->
@@ -21,8 +21,8 @@
 
 import SymfonyRoutes from "../../../../../../scripts/core/symfony/SymfonyRoutes";
 
-import NestedMenuNodeComponent from "../nested-menu-node.vue";
-import SingleMenuNodeComponent from "../single-menu-node.vue";
+import NestedMenuNodeComponent from "../NestedMenuNode.vue";
+import SingleMenuNodeComponent from "../SingleMenuNode.vue";
 
 import ParentsChildrenCategoriesHierarchyDto from "../../../../../../scripts/core/dto/module/notes/ParentsChildrenCategoriesHierarchyDto";
 import ParentChildDto                        from "../../../../../../scripts/core/dto/ParentChildDto";
@@ -37,8 +37,8 @@ export default {
     }
   },
   components: {
-    "nested-menu-node" : NestedMenuNodeComponent,
-    "single-menu-node" : SingleMenuNodeComponent,
+    "NestedMenuNode" : NestedMenuNodeComponent,
+    "SingleMenuNode" : SingleMenuNodeComponent,
   },
   methods: {
     /**

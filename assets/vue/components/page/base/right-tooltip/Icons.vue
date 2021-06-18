@@ -1,20 +1,20 @@
 <!-- Template -->
 <template>
   <div class="settings-icons">
-    <settings-icon @click="$emit('rightTooltipSettingsIconClick')"/>
+    <SettingsIcon @click="$emit('rightTooltipSettingsIconClick')"/>
   </div>
 </template>
 
 <!-- Script -->
 <script>
-import SettingsIconComponent from "./icons/settings";
+import SettingsIconComponent from "./icons/SettingsIcon";
 
 export default {
   emits: [
     'rightTooltipSettingsIconClick'
   ],
   components: {
-    "settings-icon": SettingsIconComponent
+    "SettingsIcon": SettingsIconComponent
   }
 }
 </script>

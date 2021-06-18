@@ -9,7 +9,7 @@
         class="sidebar-item"
     >
       <span class="d-flex justify-content-start">
-        <router-link class="sidebar-link collapsed"
+        <RouterLink class="sidebar-link collapsed"
                      :to="
                       {
                         name   : toPathName,
@@ -19,7 +19,7 @@
                       }"
         >
           {{ node.name }}
-        </router-link>
+        </RouterLink>
 
         <span
             v-if="hasNodeChildren(node)"
@@ -34,18 +34,18 @@
         >
         </span>
       </span>
-      <nested-menu-node :nodes="node.children"
+      <NestedMenuNode :nodes="node.children"
                         :node-identifier="node.id"
                         :to-path-name="toPathName"
                         :to-id-param-name="toIdParamName"
-      ></nested-menu-node>
+      ></NestedMenuNode>
     </li>
   </ul>
 </template>
 
 <!-- Script -->
 <script type="ts">
-import NestedMenuNode from "./nested-menu-node";
+import NestedMenuNodeComponent from "./NestedMenuNode";
 
 export default {
   props: {
@@ -72,7 +72,7 @@ export default {
     }
   },
   components: {
-    'nested-menu-node': NestedMenuNode
+    'NestedMenuNode': NestedMenuNodeComponent
   },
   methods: {
     /**

@@ -5,16 +5,16 @@
     <div class="tile is-parent small-tile">
 
       <!-- block with link -->
-      <router-link v-if="isUrlSet"
+      <RouterLink v-if="isUrlSet"
                    :to="targetUrl"
                    :class="'router-link-tile'">
         <section class="single-block-wrapper">
-          <single-block
+          <SingleBlock
               :icon="icon"
               :text="text"
           />
         </section>
-      </router-link>
+      </RouterLink>
 
       <!-- block without link - with alert -->
       <section v-else class="single-block-wrapper">
@@ -29,7 +29,7 @@
   </div>
 
   <!-- alert for block without link, must be outside to keep alert centered -->
-  <sweet-alert
+  <SweetAlert
                v-if="!isUrlSet"
                :cancel-button-string="'OK'"
                :id="'singleBlockAlert_' + uuidForSingleBlockWithoutTargetUrl"
@@ -39,23 +39,19 @@
     <template #additionalDialogContent>
       <slot name="alertDialogContent"></slot>
     </template>
-  </sweet-alert>
+  </SweetAlert>
 
 </template>
 
 <!-- Script -->
 <script>
 
-import SingleBlockComponent from "./single-block";
-import SweetAlertComponent  from "../../../../components/dialog/sweet-alert/sweet-alert"
+import SingleBlockComponent from "./SingleBlock";
+import SweetAlertComponent  from "../../../../components/dialog/sweet-alert/SweetAlert"
 
 import StringUtils          from "../../../../../scripts/core/utils/StringUtils";
-import SymfonyRoutes        from "../../../../../scripts/core/symfony/SymfonyRoutes";
 
 import { v4 as uuidv4 }     from 'uuid';
-
-import ParentsChildrenCategoriesHierarchyDto from "../../../../../scripts/core/dto/module/notes/ParentsChildrenCategoriesHierarchyDto";
-import ParentChildDto                        from "../../../../../scripts/core/dto/ParentChildDto";
 
 export default {
   props: {
@@ -87,8 +83,8 @@ export default {
     }
   },
   components: {
-    'single-block' : SingleBlockComponent,
-    'sweet-alert'  : SweetAlertComponent,
+    'SingleBlock' : SingleBlockComponent,
+    'SweetAlert'  : SweetAlertComponent,
   },
   methods: {
     /**

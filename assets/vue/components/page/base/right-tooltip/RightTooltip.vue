@@ -2,21 +2,21 @@
 <template>
   <div class="settings js-settings">
 
-    <icons @right-tooltip-settings-icon-click="rightTooltipSettingsIconClick()" />
-    <panels ref="panels" />
+    <Icons @right-tooltip-settings-icon-click="rightTooltipSettingsIconClick()" />
+    <Panels ref="panels" />
 
   </div>
 </template>
 
 <!-- Script -->
 <script type="ts">
-import IconsComponent  from "./icons";
-import PanelsComponent from "./panels";
+import IconsComponent  from "./Icons";
+import PanelsComponent from "./Panels";
 
 export default {
   components: {
-    "icons"  : IconsComponent,
-    "panels" : PanelsComponent,
+    "Icons"  : IconsComponent,
+    "Panels" : PanelsComponent,
   },
   methods: {
     /**

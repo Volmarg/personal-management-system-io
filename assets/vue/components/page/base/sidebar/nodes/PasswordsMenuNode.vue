@@ -1,6 +1,6 @@
 <!-- Template -->
 <template>
-  <single-menu-node
+  <SingleMenuNode
       :shown-text="trans('sidebar.menuNodes.passwords.label')"
       :show-collapse="true"
       :submenu-id="passwordsMenuId"
@@ -16,7 +16,7 @@
             v-for="passwordGroup in passwordsGroups"
         >
           <span class="d-flex justify-content-start">
-              <router-link :to="{
+              <RouterLink :to="{
                 name: routeNameModulePasswordsGroup,
                 params: {
                   [routeNameModulePasswordsGroupParamId]: passwordGroup.id
@@ -25,20 +25,20 @@
                            class="sidebar-link"
               >
             {{ passwordGroup.name }}
-          </router-link>
+          </RouterLink>
           </span>
 
         </li>
       </ul>
 
     </template>
-  </single-menu-node>
+  </SingleMenuNode>
 </template>
 
 <!-- Script -->
 <script type="ts">
 
-import SingleMenuNodeComponent from "../single-menu-node.vue";
+import SingleMenuNodeComponent from "../SingleMenuNode.vue";
 
 import SymfonyRoutes from "../../../../../../scripts/core/symfony/SymfonyRoutes";
 
@@ -55,7 +55,7 @@ export default {
     }
   },
   components: {
-    "single-menu-node" : SingleMenuNodeComponent,
+    "SingleMenuNode" : SingleMenuNodeComponent,
 
   },
   methods: {
