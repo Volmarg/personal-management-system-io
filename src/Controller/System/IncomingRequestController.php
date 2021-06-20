@@ -4,16 +4,13 @@
 namespace App\Controller\System;
 
 use App\Entity\System\IncomingRequest;
-use App\Entity\System\PmsConfig;
 use App\Repository\System\IncomingRequestRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 
 /**
- * @see PmsConfig for more information
- *
- * Class PmsConfigController
+ * Class IncomingRequestController
  * @package App\Controller\System
  */
 class IncomingRequestController

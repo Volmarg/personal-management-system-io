@@ -6,7 +6,7 @@ use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\Controller\Modules\Notes\NotesCategoriesController;
 use App\DTO\Internal\Module\Notes\NotesInCategoryDTO;
-use App\Entity\Modules\Notes\MyNote;
+use App\Entity\Modules\Notes\Note;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,7 +57,7 @@ class NotesAction extends AbstractController
         }
 
         $notesJsons = array_map(
-            fn(MyNote $note) => $note->toJson(),
+            fn(Note $note) => $note->toJson(),
             $noteCategory->getNote()->getValues()
         );
 

@@ -3,9 +3,8 @@
 
 namespace App\Service\Security;
 
-use App\Controller\System\PmsConfigController;
 use Exception;
-use SpecShaper\EncryptBundle\Encryptors\OpenSslEncryptor;
+use SpecShaper\EncryptBundle\Encryptors\EncryptorInterface;
 use SpecShaper\EncryptBundle\SpecShaperEncryptBundle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -19,49 +18,35 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class EncryptionService
 {
     /**
-     * @var PmsConfigController $pmsConfigController
-     */
-    private PmsConfigController $pmsConfigController;
-
-    /**
      * @var EventDispatcherInterface $eventDispatcher
      */
     private EventDispatcherInterface $eventDispatcher;
 
     /**
+     * @var EncryptorInterface $encryptor
+     */
+    private EncryptorInterface $encryptor;
+
+    /**
      * EncryptionService constructor.
-     * @param PmsConfigController $pmsConfigController
+     *
      * @param EventDispatcherInterface $eventDispatcher
+     * @param EncryptorInterface $encryptor
      */
-    public function __construct(PmsConfigController $pmsConfigController, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, EncryptorInterface $encryptor)
     {
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->pmsConfigController = $pmsConfigController;
-    }
-
-    /**
-     * @var OpenSslEncryptor $openSslEncryptor
-     */
-    private OpenSslEncryptor $openSslEncryptor;
-
-    /**
-     * Will initialize the state of the service,
-     * This cannot be set in the constructor as the logic is way to broad,
-     * @throws Exception
-     */
-    public function initialize()
-    {
-        $pmsConfigEncryptKey    = $this->pmsConfigController->getEncryptionKey();
-        $this->openSslEncryptor = new OpenSslEncryptor($this->eventDispatcher, $pmsConfigEncryptKey->getValue());
+        $this->encryptor       = $encryptor;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * Will decrypt the string
+     *
      * @throws Exception
      */
     public function decryptString(string $stringToDecrypt): string
     {
-        return $this->openSslEncryptor->decrypt($stringToDecrypt);
+        return $this->encryptor->decrypt($stringToDecrypt);
     }
 
     /**

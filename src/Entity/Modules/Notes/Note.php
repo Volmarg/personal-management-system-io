@@ -9,10 +9,10 @@ use SpecShaper\EncryptBundle\Annotations\Encrypted;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="PasswordRepository")
- * @ORM\Table(name="my_note")
+ * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\NoteRepository")
+ * @ORM\Table(name="note")
  */
-class MyNote extends AbstractEntity
+class Note extends AbstractEntity
 {
     const KEY_ID          = "id";
     const KEY_TITLE       = "title";
@@ -40,11 +40,11 @@ class MyNote extends AbstractEntity
     private ?string $body;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MyNoteCategory", inversedBy="note")
+     * @ORM\ManyToOne(targetEntity="NoteCategory", inversedBy="note")
      * @ORM\JoinColumn(nullable=false)
      */
     #[Assert\NotNull]
-    private MyNoteCategory $category;
+    private NoteCategory $category;
 
     public function getId(): ?int {
         return $this->id;
@@ -70,11 +70,11 @@ class MyNote extends AbstractEntity
         return $this;
     }
 
-    public function getCategory(): MyNoteCategory {
+    public function getCategory(): NoteCategory {
         return $this->category;
     }
 
-    public function setCategory(MyNoteCategory $category): self {
+    public function setCategory(NoteCategory $category): self {
         $this->category = $category;
 
         return $this;
@@ -100,15 +100,15 @@ class MyNote extends AbstractEntity
      * Creates entity from array
      *
      * @param array $dataArray
-     * @return MyNote
+     * @return Note
      */
-    public static function fromArray(array $dataArray): MyNote
+    public static function fromArray(array $dataArray): Note
     {
         $categoryId = ArrayService::getArrayValueForKey($dataArray, self::KEY_CATEGORY_ID);
         $title      = ArrayService::getArrayValueForKey($dataArray, self::KEY_TITLE, "");
         $body       = ArrayService::getArrayValueForKey($dataArray, self::KEY_BODY, "");
 
-        $myNote = new MyNote();
+        $myNote = new Note();
 
         $myNote->setBody($body);
         $myNote->setTitle($title);

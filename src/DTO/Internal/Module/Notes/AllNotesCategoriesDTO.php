@@ -4,7 +4,7 @@
 namespace App\DTO\Internal\Module\Notes;
 
 use App\DTO\BaseApiDTO;
-use App\Entity\Modules\Notes\MyNote;
+use App\Entity\Modules\Notes\Note;
 
 /**
  * Class AllNotesCategoriesDTO
@@ -16,7 +16,7 @@ class AllNotesCategoriesDTO extends BaseApiDTO
     const KEY_NAME                   = "name";
 
     /**
-     * Contains jsons representations of the @see MyNote
+     * Contains jsons representations of the @see Note
      *
      * @var string[]
      */

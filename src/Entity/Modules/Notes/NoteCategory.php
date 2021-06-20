@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\NoteCategoryRepository")
- * @ORM\Table(name="my_note_category",
+ * @ORM\Table(name="note_category",
  *    indexes={
  *       @Index(
  *          name="my_note_category_index",
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * )
  *
  */
-class MyNoteCategory
+class NoteCategory
 {
 
     const KEY_ID        = "id";
@@ -43,7 +43,7 @@ class MyNoteCategory
     private string $icon;
 
     /**
-     * @ORM\OneToMany(targetEntity="MyNote", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Note", mappedBy="category")
      */
     private Collection $note;
 
@@ -97,7 +97,7 @@ class MyNoteCategory
     public function getId(): ?int {
         return $this->id;
     }
-    
+
     public function setId(?int $id): self{
          $this->id = $id;
          return $this;
@@ -114,13 +114,13 @@ class MyNoteCategory
     }
 
     /**
-     * @return Collection|MyNote[]
+     * @return Collection|Note[]
      */
     public function getNote(): Collection {
         return $this->note;
     }
 
-    public function addNote(MyNote $note): self {
+    public function addNote(Note $note): self {
         if (!$this->note->contains($note)) {
             $this->note[] = $note;
             $note->setCategory($this);
@@ -129,7 +129,7 @@ class MyNoteCategory
         return $this;
     }
 
-    public function removeNote(MyNote $note): self {
+    public function removeNote(Note $note): self {
         if ($this->note->contains($note)) {
             $this->note->removeElement($note);
             // set the owning side to null (unless already changed)
@@ -165,10 +165,10 @@ class MyNoteCategory
      * Creates entity from array
      *
      * @param array $dataArray
-     * @return MyNoteCategory
+     * @return NoteCategory
      * @throws Exception
      */
-    public static function fromArray(array $dataArray): MyNoteCategory
+    public static function fromArray(array $dataArray): NoteCategory
     {
         $id       = ArrayService::getArrayValueForKey($dataArray, self::KEY_ID, null);
         $icon     = ArrayService::getArrayValueForKey($dataArray, self::KEY_ICON, "");
@@ -176,7 +176,7 @@ class MyNoteCategory
         $color    = ArrayService::getArrayValueForKey($dataArray, self::KEY_COLOR, "");
         $parentId = ArrayService::getArrayValueForKey($dataArray, self::KEY_PARENT_ID, null);
 
-        $myNoteCategory = new MyNoteCategory();
+        $myNoteCategory = new NoteCategory();
         $myNoteCategory->setId($id);
         $myNoteCategory->setIcon($icon);
         $myNoteCategory->setName($name);

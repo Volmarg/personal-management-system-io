@@ -12,8 +12,8 @@ use App\Controller\Modules\Notes\NotesController;
 use App\DTO\BaseApiDTO;
 use App\DTO\Request\Modules\Notes\InsertNotesCategoriesRequestDTO;
 use App\DTO\Request\Modules\Notes\InsertNotesRequestDTO;
-use App\Entity\Modules\Notes\MyNote;
-use App\Entity\Modules\Notes\MyNoteCategory;
+use App\Entity\Modules\Notes\Note;
+use App\Entity\Modules\Notes\NoteCategory;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,7 +81,7 @@ class NotesApiAction extends ApiAction
                 }
 
                 foreach($insertRequest->getNotesCategoriesArrays() as $noteCategoryArray){
-                    $noteCategoryEntity = MyNoteCategory::fromArray($noteCategoryArray);
+                    $noteCategoryEntity = NoteCategory::fromArray($noteCategoryArray);
                     $validationDto      = $this->services->getValidationService()->validateAndReturnArrayOfInvalidFieldsWithMessages($noteCategoryEntity);
 
                     $this->services->getLoggerService()->getLogger()->info("Inserting single note category with id: {$noteCategoryEntity->getId()}");
@@ -140,8 +140,8 @@ class NotesApiAction extends ApiAction
 
                 foreach($insertRequest->getNotesArrays() as $noteArray){
 
-                    $noteEntity = MyNote::fromArray($noteArray);
-                    $categoryId = $noteEntity->getDataBag()->get(MyNote::KEY_CATEGORY_ID);
+                    $noteEntity = Note::fromArray($noteArray);
+                    $categoryId = $noteEntity->getDataBag()->get(Note::KEY_CATEGORY_ID);
 
                     $this->services->getLoggerService()->getLogger()->info("Inserting note");
                     try{

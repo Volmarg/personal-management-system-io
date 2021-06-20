@@ -7,7 +7,7 @@ namespace App\Controller\Modules\Search;
 use App\Controller\Core\Services;
 use App\Controller\Modules\ModulesController;
 use App\DTO\Internal\Module\Search\SearchParametersDTO;
-use App\Entity\Modules\Notes\MyNote;
+use App\Entity\Modules\Notes\Note;
 use App\Entity\Modules\Passwords\Password;
 use App\Repository\Modules\Notes\NoteRepository;
 use App\Repository\Modules\Passwords\PasswordRepository;
@@ -59,7 +59,7 @@ class SearchController extends AbstractController
             {
                 $results      = $this->noteRepository->getNotesContainingStringInTitle($searchParametersDto->getSearchedString());
                 $resultsJsons = array_map(
-                    fn(MyNote $myNote) => $myNote->toJson(),
+                    fn(Note $myNote) => $myNote->toJson(),
                     $results
                 );
 

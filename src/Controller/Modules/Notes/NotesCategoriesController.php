@@ -5,7 +5,7 @@ namespace App\Controller\Modules\Notes;
 
 
 use App\DTO\ParentChildDTO;
-use App\Entity\Modules\Notes\MyNoteCategory;
+use App\Entity\Modules\Notes\NoteCategory;
 use App\Repository\Modules\Notes\NoteCategoryRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\OptimisticLockException;
@@ -65,9 +65,9 @@ class NotesCategoriesController
      * Will find one note category for id or null if nothing is found
      *
      * @param int $id
-     * @return MyNoteCategory|null
+     * @return NoteCategory|null
      */
-    public function getOneForId(int $id): ?MyNoteCategory
+    public function getOneForId(int $id): ?NoteCategory
     {
         return $this->noteCategoryRepository->getOneForId($id);
     }
@@ -110,12 +110,12 @@ class NotesCategoriesController
     /**
      * Recursive call must be used here as category can have children and these children can also have children and so on.
      *
-     * @param MyNoteCategory $category
+     * @param NoteCategory $category
      * @param int $depth
      * @param bool $returnChildrenAsPlainArrays
      * @return ParentChildDTO
      */
-    private function buildParentChildDtoForHierarchy(MyNoteCategory $category, int $depth, bool $returnChildrenAsPlainArrays = false): ParentChildDTO
+    private function buildParentChildDtoForHierarchy(NoteCategory $category, int $depth, bool $returnChildrenAsPlainArrays = false): ParentChildDTO
     {
         $parentChildDtos = [];
 
@@ -146,11 +146,11 @@ class NotesCategoriesController
     /**
      * Will save the new entity or update the state of already existing one
      *
-     * @param MyNoteCategory $myNoteCategory
+     * @param NoteCategory $myNoteCategory
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(MyNoteCategory $myNoteCategory): void
+    public function save(NoteCategory $myNoteCategory): void
     {
         $this->noteCategoryRepository->save($myNoteCategory);
     }
@@ -167,7 +167,7 @@ class NotesCategoriesController
     /**
      * Will return all note categories
      *
-     * @return MyNoteCategory[]
+     * @return NoteCategory[]
      */
     public function getAll(): array
     {
