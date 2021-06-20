@@ -6,8 +6,10 @@ use App\Attribute\Action\ExternalActionAttribute;
 use App\Attribute\Action\InternalActionAttribute;
 use App\Controller\Core\Services;
 use App\DTO\BaseApiDTO;
+use App\Exception\CouldNotUnsetEncryptionKeyException;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -52,6 +54,16 @@ class UnhandledExceptionListener implements EventSubscriberInterface
             return;
         }
 
+        if( $event->getThrowable() instanceof CouldNotUnsetEncryptionKeyException ){
+            $this->services->getLoggerService()->getLogger()->emergency("Could not remove the encryption key", [
+                "exceptionMessage" => $event->getThrowable()->getMessage(),
+                "exceptionCode"    => $event->getThrowable()->getCode(),
+            ]);
+
+            $event->setResponse($this->buildApiInternalServerErrorResponse());
+            return;
+        }
+
         $calledUri = $event->getRequest()->getRequestUri();
         $this->services->getLoggerService()->logException($event->getThrowable());
 
@@ -65,11 +77,7 @@ class UnhandledExceptionListener implements EventSubscriberInterface
                 "trace"   => $event->getThrowable()->getTrace(),
             ]);
 
-            $message      = $this->services->getTranslator()->trans("general.responseCodes.500");
-            $baseResponse = BaseApiDTO::buildInternalServerErrorResponse();
-            $baseResponse->setMessage($message);
-
-            $event->setResponse($baseResponse->toJsonResponse());
+            $event->setResponse($this->buildApiInternalServerErrorResponse());
         }else{
 
             $this->services->getLoggerService()->getLogger()->warning("Missing handler for exception", [
@@ -88,6 +96,20 @@ class UnhandledExceptionListener implements EventSubscriberInterface
         return [
             KernelEvents::EXCEPTION => "handleException"
         ];
+    }
+
+    /**
+     * Will return the response returned in case of HTTP 500
+     *
+     * @return JsonResponse
+     */
+    private function buildApiInternalServerErrorResponse(): JsonResponse
+    {
+        $message      = $this->services->getTranslator()->trans("general.responseCodes.500");
+        $baseResponse = BaseApiDTO::buildInternalServerErrorResponse();
+        $baseResponse->setMessage($message);
+
+        return $baseResponse->toJsonResponse();
     }
 
 }

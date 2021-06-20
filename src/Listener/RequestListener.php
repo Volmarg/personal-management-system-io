@@ -15,9 +15,11 @@ use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
 use App\Entity\System\IncomingRequest;
 use App\Entity\User;
+use App\Exception\CouldNotUnsetEncryptionKeyException;
 use App\Service\Attribute\AttributeReaderService;
 use App\Service\CookiesService;
 use App\Service\External\IpInfoService;
+use App\Service\SessionService;
 use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -69,11 +71,6 @@ class RequestListener implements EventSubscriberInterface
     private UserController $userController;
 
     /**
-     * @var ConfigLoader $configLoader
-     */
-    private ConfigLoader $configLoader;
-
-    /**
      * @var ApiUserController $apiUserController
      */
     private ApiUserController $apiUserController;
@@ -91,7 +88,6 @@ class RequestListener implements EventSubscriberInterface
      * @param Services $services
      * @param TokenStorageInterface $tokenStorage
      * @param UserController $userController
-     * @param ConfigLoader $configLoader
      * @param ApiUserController $apiUserController
      * @param IncomingRequestController $incomingRequestController
      */
@@ -101,13 +97,11 @@ class RequestListener implements EventSubscriberInterface
         Services                  $services,
         TokenStorageInterface     $tokenStorage,
         UserController            $userController,
-        ConfigLoader              $configLoader,
         ApiUserController         $apiUserController,
         IncomingRequestController $incomingRequestController
     )
     {
         $this->services                  = $services;
-        $this->configLoader              = $configLoader;
         $this->tokenStorage              = $tokenStorage;
         $this->apiController             = $apiController;
         $this->userController            = $userController;
@@ -136,8 +130,11 @@ class RequestListener implements EventSubscriberInterface
     /**
      * Will validate request in one or more ways
      *
+     * @param RequestEvent $requestEvent
+     * @throws CouldNotUnsetEncryptionKeyException
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @throws ReflectionException
-     * @throws IPinfoException
      */
     private function validateRequest(RequestEvent $requestEvent): void
     {
@@ -160,7 +157,7 @@ class RequestListener implements EventSubscriberInterface
 
         // just a safety check where for some reason file still remains but the request without session cookie was made
         if( !CookiesService::isUserSessionCookieSet($request) ){
-            $this->services->getFilesService()->removeEncryptionFile();
+            SessionService::removeEncryptionKeyFromSession();
         }
     }
 
@@ -177,7 +174,7 @@ class RequestListener implements EventSubscriberInterface
 
         if(
                 !empty($this->tokenStorage->getToken())
-            &&  !file_exists($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath())
+            &&  !SessionService::isValidEncryptionKeyInSession()
             &&  !$this->services->getAttributeReader()->hasUriAttribute($requestEvent->getRequest()->getRequestUri(), ExternalActionAttribute::class)
         ){
             $unauthorizedMessage = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');

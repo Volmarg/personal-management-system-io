@@ -27,11 +27,6 @@ class ConfigLoaderPaths
     private string $routingFrontendFilePath = "";
 
     /**
-     * @var string $encryptionFilePath
-     */
-    private string $encryptionFilePath = "";
-
-    /**
      * @return string
      */
     public function getTranslationBackendFolder(): string
@@ -77,22 +72,6 @@ class ConfigLoaderPaths
     public function setRoutingFrontendFilePath(string $routingFrontendFilePath): void
     {
         $this->routingFrontendFilePath = $routingFrontendFilePath;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEncryptionFilePath(): string
-    {
-        return $this->encryptionFilePath;
-    }
-
-    /**
-     * @param string $encryptionFilePath
-     */
-    public function setEncryptionFilePath(string $encryptionFilePath): void
-    {
-        $this->encryptionFilePath = $encryptionFilePath;
     }
 
 }

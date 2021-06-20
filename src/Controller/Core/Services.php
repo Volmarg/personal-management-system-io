@@ -8,7 +8,6 @@ use App\Service\Attribute\AttributeReaderService;
 use App\Service\CookiesService;
 use App\Service\Database\DatabaseService;
 use App\Service\External\IpInfoService;
-use App\Service\Files\FilesService;
 use App\Service\Form\FormService;
 use App\Service\Logger\LoggerService;
 use App\Service\Routing\UrlMatcherService;
@@ -75,11 +74,6 @@ class Services
      * @var CsrfTokenValidatorService $csrfTokenValidatorService
      */
     private CsrfTokenValidatorService $csrfTokenValidatorService;
-
-    /**
-     * @var FilesService $filesService
-     */
-    private FilesService $filesService;
 
     /**
      * @var CookiesService $cookiesService
@@ -249,22 +243,6 @@ class Services
     public function setCsrfTokenValidatorService(CsrfTokenValidatorService $csrfTokenValidatorService): void
     {
         $this->csrfTokenValidatorService = $csrfTokenValidatorService;
-    }
-
-    /**
-     * @return FilesService
-     */
-    public function getFilesService(): FilesService
-    {
-        return $this->filesService;
-    }
-
-    /**
-     * @param FilesService $filesService
-     */
-    public function setFilesService(FilesService $filesService): void
-    {
-        $this->filesService = $filesService;
     }
 
     /**

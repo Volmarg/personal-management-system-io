@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Service\SessionService;
 use SpecShaper\EncryptBundle\SpecShaperEncryptBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -66,12 +67,9 @@ class Kernel extends BaseKernel
             return;
         }
 
-        $pathToFileWithKey = $this->getContainer()->getParameter("path_to_encryption_file_with_key");
-        if( file_exists($pathToFileWithKey) ){
-            $key = trim(file_get_contents($pathToFileWithKey));
-            if( !empty($key) ){
-                $container->parameters()->set("encrypt_key", $key);
-            }
+        if( SessionService::isValidEncryptionKeyInSession() ){
+            $encryptionKey = SessionService::getEncryptionKeyInSession();
+            $container->parameters()->set("encrypt_key", $encryptionKey);
         }
     }
 }

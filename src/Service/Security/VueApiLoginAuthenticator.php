@@ -7,6 +7,7 @@ use App\Controller\Core\Services;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
 use App\DTO\Internal\Form\Security\LoginFormDataDTO;
+use App\Service\SessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -204,7 +205,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
             return false;
         }
 
-        $this->services->getFilesService()->setEncryptionFileContent($credentials->getKey());
+        SessionService::setEncryptionKeyInSession($credentials->getKey());
 
         // Return `true` to cause authentication success
         return true;

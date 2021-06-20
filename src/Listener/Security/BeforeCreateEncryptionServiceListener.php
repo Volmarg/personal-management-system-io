@@ -3,6 +3,7 @@
 namespace App\Listener\Security;
 
 use App\Controller\Core\ConfigLoader;
+use App\Service\SessionService;
 use SpecShaper\EncryptBundle\Event\EncryptKeyEvent;
 use SpecShaper\EncryptBundle\Event\EncryptKeyEvents;
 use SpecShaper\EncryptBundle\SpecShaperEncryptBundle;
@@ -18,15 +19,6 @@ class BeforeCreateEncryptionServiceListener implements EventSubscriberInterface
 {
 
     /**
-     * @var ConfigLoader $configLoader
-     */
-    private ConfigLoader $configLoader;
-
-    public function __construct(ConfigLoader $configLoader){
-        $this->configLoader = $configLoader;
-    }
-
-    /**
      * Will set the proper encryption key on each call - as long as the encryption key file exist
      *
      * @param EncryptKeyEvent $event
@@ -34,8 +26,8 @@ class BeforeCreateEncryptionServiceListener implements EventSubscriberInterface
     public function onEncryptionLoadKey(EncryptKeyEvent $event): void
     {
         $encryptionKey = null;
-        if( file_exists($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath()) ){
-            $encryptionKey = file_get_contents($this->configLoader->getConfigLoaderPaths()->getEncryptionFilePath());
+        if( SessionService::isValidEncryptionKeyInSession() ){
+            $encryptionKey = SessionService::getEncryptionKeyInSession();
         }
 
         if( !is_null($encryptionKey) ){

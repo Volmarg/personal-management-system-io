@@ -7,6 +7,7 @@ use App\Controller\Core\Services;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
 use App\DTO\Internal\LoggedInUserDataDTO;
+use App\Service\SessionService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,12 +81,7 @@ class UserAction extends AbstractController
     {
         try{
             $this->userController->invalidateUser();
-
-            $isRemoved = $this->services->getFilesService()->removeEncryptionFile();
-            if(!$isRemoved){
-                throw new Exception("Could not remove the encryption file!");
-            }
-
+            SessionService::removeEncryptionKeyFromSession();
         }catch(Exception $e){
             $this->services->getLoggerService()->logException($e);
             return BaseApiDTO::buildInternalServerErrorResponse()->toJsonResponse();
