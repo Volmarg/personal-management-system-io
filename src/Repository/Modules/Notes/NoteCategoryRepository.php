@@ -99,7 +99,7 @@ class NoteCategoryRepository extends ServiceEntityRepository {
         $connection = $this->_em->getConnection();
 
         $sql = "
-            DELETE FROM `my_note_category`
+            DELETE FROM `note_category`
         ";
 
         $connection->executeQuery($sql);
