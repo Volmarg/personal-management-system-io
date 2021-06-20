@@ -3,6 +3,7 @@
 
 namespace App\Service\Security;
 
+use App\Entity\ApiUser;
 use App\Entity\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -45,13 +46,24 @@ class UserSecurityService
      * @param string $plainPassword
      * @return string
      */
-    public function encodeRawPassword(string $plainPassword): string
+    public function encodeRawPasswordForUserEntity(string $plainPassword): string
     {
         // it's required to use even blank user entity to fetch the encoder from it
         $user = new User();
+        return $this->encodePasswordForUserInterface($user, $plainPassword);
+    }
 
-        $encodedPassword = $this->userPasswordEncoder->encodePassword($user, $plainPassword);
-        return $encodedPassword;
+    /**
+     * Will encode plain password for API login user interface
+     *
+     * @param string $plainPassword
+     * @return string
+     */
+    public function encodeRawPasswordForApiUserEntity(string $plainPassword): string
+    {
+        // it's required to use even blank user entity to fetch the encoder from it
+        $user = new ApiUser();
+        return $this->encodePasswordForUserInterface($user, $plainPassword);
     }
 
     /**
@@ -63,5 +75,18 @@ class UserSecurityService
     {
         $isPasswordValid = $this->userPasswordEncoder->isPasswordValid($user, $plainPassword);
         return $isPasswordValid;
+    }
+
+    /**
+     * Will encode plain password for user interface
+     *
+     * @param UserInterface $user
+     * @param string $plainPassword
+     * @return string
+     */
+    private function encodePasswordForUserInterface(UserInterface $user, string $plainPassword): string
+    {
+        $encodedPassword = $this->userPasswordEncoder->encodePassword($user, $plainPassword);
+        return $encodedPassword;
     }
 }
