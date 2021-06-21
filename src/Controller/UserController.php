@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Controller\Core\ConfigLoader;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -29,10 +30,16 @@ class UserController extends AbstractController implements UserControllerInterfa
      */
     private TokenStorageInterface $tokenStorage;
 
-    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage)
+    /**
+     * @var ConfigLoader $configLoader
+     */
+    private ConfigLoader $configLoader;
+
+    public function __construct(UserRepository $userRepository, TokenStorageInterface $tokenStorage, ConfigLoader $configLoader)
     {
         $this->tokenStorage   = $tokenStorage;
         $this->userRepository = $userRepository;
+        $this->configLoader   = $configLoader;
     }
 
     /**
@@ -93,5 +100,28 @@ class UserController extends AbstractController implements UserControllerInterfa
     public function getAllUsers(): array
     {
         return $this->userRepository->getAllUsers();
+    }
+
+    /**
+     * Will return information if any user is still logged in
+     *
+     * @return bool
+     */
+    public function isAnyUserActive(): bool
+    {
+        $maxInactivityTime          = $this->configLoader->getConfigLoaderSystemData()->getMaxInactivityTime();
+        $activityExpirationDateTime = (new \DateTime())->modify("-{$maxInactivityTime} MINUTES");
+
+        $isAnyUserStillActive = false;
+        $allUsers             = $this->getAllUsers();
+
+        foreach($allUsers as $user){
+            if( $user->getLastActivity() > $activityExpirationDateTime ){
+                $isAnyUserStillActive = true;
+                break;
+            }
+        }
+
+        return $isAnyUserStillActive;
     }
 }

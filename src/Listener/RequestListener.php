@@ -8,9 +8,9 @@ use App\Attribute\Action\ExternalActionAttribute;
 use App\Attribute\Security\ValidateCsrfTokenAttribute;
 use App\Controller\API\ApiController;
 use App\Controller\ApiUserController;
-use App\Controller\Core\ConfigLoader;
 use App\Controller\Core\Services;
 use App\Controller\System\IncomingRequestController;
+use App\Controller\System\SettingController;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
 use App\Entity\System\IncomingRequest;
@@ -24,7 +24,6 @@ use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Exception;
-use ipinfo\ipinfo\IPinfoException;
 use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,6 +80,11 @@ class RequestListener implements EventSubscriberInterface
     private IncomingRequestController $incomingRequestController;
 
     /**
+     * @var SettingController $settingController
+     */
+    private SettingController $settingController;
+
+    /**
      * RequestListener constructor.
      *
      * @param AttributeReaderService $attributeReaderService
@@ -90,6 +94,7 @@ class RequestListener implements EventSubscriberInterface
      * @param UserController $userController
      * @param ApiUserController $apiUserController
      * @param IncomingRequestController $incomingRequestController
+     * @param SettingController $settingController
      */
     public function __construct(
         AttributeReaderService    $attributeReaderService,
@@ -98,7 +103,8 @@ class RequestListener implements EventSubscriberInterface
         TokenStorageInterface     $tokenStorage,
         UserController            $userController,
         ApiUserController         $apiUserController,
-        IncomingRequestController $incomingRequestController
+        IncomingRequestController $incomingRequestController,
+        SettingController         $settingController
     )
     {
         $this->services                  = $services;
@@ -108,6 +114,7 @@ class RequestListener implements EventSubscriberInterface
         $this->attributeReaderService    = $attributeReaderService;
         $this->apiUserController         = $apiUserController;
         $this->incomingRequestController = $incomingRequestController;
+        $this->settingController         = $settingController;
     }
 
     /**
@@ -135,6 +142,7 @@ class RequestListener implements EventSubscriberInterface
      * @throws ORMException
      * @throws OptimisticLockException
      * @throws ReflectionException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function validateRequest(RequestEvent $requestEvent): void
     {
@@ -147,6 +155,7 @@ class RequestListener implements EventSubscriberInterface
         }
 
         if( $this->attributeReaderService->hasUriAttribute($request->getRequestUri(), ExternalActionAttribute::class) ){
+            $this->handleExternalActions($requestEvent);
             return; // Security authenticator will handle this
         }elseif(
                 Request::METHOD_POST == $request->getMethod()
@@ -301,6 +310,35 @@ class RequestListener implements EventSubscriberInterface
         }
 
         return true;
+    }
+
+    /**
+     * Handles external actions
+     *
+     * @throws \Doctrine\DBAL\Exception
+     * @throws ReflectionException
+     */
+    private function handleExternalActions(RequestEvent $requestEvent): void
+    {
+        // todo: add params to attribute [Type: Insertions] -> then check here and move method from ApiAction here
+
+        $hasAttributeWithValueOfProperty = $this->attributeReaderService->hasAttributeWithValueOfProperty(
+            $requestEvent->getRequest()->getRequestUri(),
+            ExternalActionAttribute::class,
+            ExternalActionAttribute::PROPERTY_NAME_TYPE,
+            ExternalActionAttribute::TYPE_INSERTION
+        );
+
+        if(
+                $hasAttributeWithValueOfProperty
+            &&  !($this->settingController->isAllowedToInsertData())
+        ){
+            $dto = BaseApiDTO::buildOkResponse();
+            $dto->setMessage("Not allowed to insert data!");
+            $requestEvent->setResponse($dto->toJsonResponse());
+            return;
+        }
+
     }
 
     /**

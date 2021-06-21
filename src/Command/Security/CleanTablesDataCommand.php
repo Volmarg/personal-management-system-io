@@ -10,6 +10,8 @@ use App\Controller\Modules\Notes\NotesCategoriesController;
 use App\Controller\Modules\Notes\NotesController;
 use App\Controller\Modules\Passwords\PasswordController;
 use App\Controller\Modules\Passwords\PasswordGroupController;
+use App\Controller\System\SettingController;
+use App\Controller\UserController;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -63,8 +65,20 @@ class CleanTablesDataCommand extends Command
     private PasswordController $passwordController;
 
     /**
+     * @var SettingController $settingController
+     */
+    private SettingController $settingController;
+
+    /**
+     * @var UserController $userController
+     */
+    private UserController $userController;
+
+    /**
      * GenerateApiUserCommand constructor.
      * @param NotesCategoriesController $notesCategoriesController
+     * @param SettingController $settingController
+     * @param UserController $userController
      * @param NotesController $notesController
      * @param PasswordGroupController $passwordGroupController
      * @param PasswordController $passwordController
@@ -73,6 +87,8 @@ class CleanTablesDataCommand extends Command
      */
     public function __construct(
         NotesCategoriesController $notesCategoriesController,
+        SettingController         $settingController,
+        UserController            $userController,
         NotesController           $notesController,
         PasswordGroupController   $passwordGroupController,
         PasswordController        $passwordController,
@@ -82,6 +98,8 @@ class CleanTablesDataCommand extends Command
     {
         parent::__construct($name);
         $this->notesCategoriesController = $notesCategoriesController;
+        $this->settingController         = $settingController;
+        $this->userController            = $userController;
         $this->notesController           = $notesController;
         $this->passwordGroupController   = $passwordGroupController;
         $this->passwordController        = $passwordController;
@@ -108,6 +126,12 @@ class CleanTablesDataCommand extends Command
         try{
             $this->io->info("Started removing data from tables");
             {
+                // denny doing anything if any user is still logged in
+                if( $this->userController->isAnyUserActive() ){
+                    $this->io->info("Someone is still logged in - not removing anything. Stopping here.");
+                    return self::SUCCESS;
+                }
+
                 // notes
                 $this->io->info("Handling notes");
 
@@ -119,6 +143,8 @@ class CleanTablesDataCommand extends Command
 
                 $this->passwordController->removeAll();
                 $this->notesCategoriesController->removeAll();
+
+                $this->settingController->denyDataInsertion();
             }
             $this->io->success("Done! All data has been removed from tables");
         }catch(Exception | TypeError $e){

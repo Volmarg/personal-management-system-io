@@ -67,7 +67,7 @@ class PasswordsApiAction extends ApiAction
      * @return JsonResponse
      */
     #[Route("/insert-groups", name: "insert_groups", methods: [Request::METHOD_POST])]
-    #[ExternalActionAttribute]
+    #[ExternalActionAttribute(type: ExternalActionAttribute::TYPE_INSERTION)]
     public function insertPasswordGroups(Request $request): JsonResponse
     {
         $this->services->getDatabaseService()->beginTransaction();
@@ -126,7 +126,7 @@ class PasswordsApiAction extends ApiAction
      * @return JsonResponse
      */
     #[Route("/insert-passwords", name: "insert_passwords", methods: [Request::METHOD_POST])]
-    #[ExternalActionAttribute]
+    #[ExternalActionAttribute(type: ExternalActionAttribute::TYPE_INSERTION)]
     public function insertPasswords(Request $request): JsonResponse
     {
         $this->services->getDatabaseService()->beginTransaction();

@@ -38,7 +38,7 @@
               <SingleModuleBlock
                   v-for="passwordGroupDto in passwordGroupDtos"
                   :text="passwordGroupDto.name"
-                  :target-url="buildNoteCategoryUrl(passwordGroupDto.id)"
+                  :target-url="buildPasswordGroupUrl(passwordGroupDto.id)"
               />
             </div>
           </div>

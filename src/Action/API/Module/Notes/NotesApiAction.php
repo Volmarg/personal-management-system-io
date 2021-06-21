@@ -65,7 +65,7 @@ class NotesApiAction extends ApiAction
      * @return JsonResponse
      */
     #[Route("/insert-categories", name: "insert_categories", methods: [Request::METHOD_POST])]
-    #[ExternalActionAttribute]
+    #[ExternalActionAttribute(type: ExternalActionAttribute::TYPE_INSERTION)]
     public function insertNotesCategories(Request $request): JsonResponse
     {
         $this->services->getDatabaseService()->beginTransaction();
@@ -124,7 +124,7 @@ class NotesApiAction extends ApiAction
      * @return JsonResponse
      */
     #[Route("/insert-notes", name: "insert_notes", methods: [Request::METHOD_POST])]
-    #[ExternalActionAttribute]
+    #[ExternalActionAttribute(type: ExternalActionAttribute::TYPE_INSERTION)]
     public function insertNotes(Request $request): JsonResponse
     {
         $this->services->getDatabaseService()->beginTransaction();
