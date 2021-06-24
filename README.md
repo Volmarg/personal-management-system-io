@@ -34,7 +34,6 @@ desktop - wherever it's possible.
 </p>
 
 <h2>Preview</h2>
-<hr>
 
 <img src="https://github.com/Volmarg/personal-management-system-io/blob/main/github/2.jpg?raw=true">
 
@@ -43,7 +42,6 @@ desktop - wherever it's possible.
 <img src="https://github.com/Volmarg/personal-management-system-io/blob/main/github/3.jpg?raw=true">
 
 <h2>Tech</h2>
-<hr>
 <p style="text-align:justify;">
    <b>Personal Management System - I/O</b> is a web application which can be ran either in Windows and Linux environment. 
 Everything is by default tested on Ubuntu 20.x.
