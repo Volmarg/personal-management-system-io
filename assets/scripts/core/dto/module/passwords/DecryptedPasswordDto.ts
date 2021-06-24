@@ -1,4 +1,5 @@
 import BaseApiDto from "../../BaseApiDto";
+import BaseDto    from "../../BaseDto";
 
 /**
  * @description fronted representation of the GetDecryptedPasswordResponseDTO
@@ -29,11 +30,7 @@ export default class DecryptedPasswordDto extends BaseApiDto
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: DecryptedPasswordDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('DecryptedPasswordDto', Exception, json);
         }
 
         dto.decryptedPassword = object.decryptedPassword;

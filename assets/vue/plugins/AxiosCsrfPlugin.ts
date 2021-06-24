@@ -2,6 +2,8 @@ import SymfonyRoutes    from "../../scripts/core/symfony/SymfonyRoutes";
 import CsrfTokenDto     from "../../scripts/core/dto/CsrfTokenDto";
 import BaseApiDto       from "../../scripts/core/dto/BaseApiDto";
 import Axios            from "../../scripts/libs/axios/Axios";
+import PmsError         from "../../scripts/core/error/PmsError";
+
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -46,17 +48,14 @@ export default class AxiosCsrfPlugin
 
             return handlePostCallPromise;
         }catch(Exception){
-            throw {
-                "info"      : "There were issues with POST request with CSRF token fetch",
-                "exception" : Exception,
-            }
+            throw new PmsError("There were issues with POST request with CSRF token fetch", Exception);
         }
     }
 
     /**
      * @description makes axios call for CSRF token
      */
-    private static callForCsrf(csrfTokenId): Promise<any>
+    public static callForCsrf(csrfTokenId): Promise<any>
     {
         let calledUrl = SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_CSRF_TOKEN, {
             [SymfonyRoutes.ROUTE_NAME_GET_CSRF_TOKEN_PARAM_TOKEN_ID] : csrfTokenId,
@@ -82,10 +81,7 @@ export default class AxiosCsrfPlugin
      */
     private static throwIssueObtainingCsrfTokenMessage(data: any): void
     {
-        throw {
-            "info" : "There were some issues with obtaining the csrf token",
-            "data" : data
-        }
+        throw new PmsError("There were some issues with obtaining the csrf token", data);
     }
 
 }

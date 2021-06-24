@@ -1,3 +1,5 @@
+import BaseDto from "../../BaseDto";
+
 /**
  * @description this a representation of the backend entity PasswordGroup
  *
@@ -35,11 +37,7 @@ export default class PasswordGroupDto {
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: PasswordGroupDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('PasswordGroupDto', Exception, json);
         }
 
         dto.id   = object.id;

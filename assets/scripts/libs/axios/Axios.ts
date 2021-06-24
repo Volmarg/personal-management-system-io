@@ -1,5 +1,6 @@
 import axios               from 'axios';
 import AuthenticationGuard from "../../core/security/AuthenticationGuard";
+import PmsError            from "../../core/error/PmsError";
 
 /**
  * @description axios with adjustments toward Symfony
@@ -46,10 +47,7 @@ export default class Axios
     private static async makeCall(method: string, url: string, data: object): Promise<any>
     {
         if( !Axios.ALL_SUPPORTED_METHODS.includes(method) ){
-            throw{
-                "info"   : "Unsupported method for axios guarded call",
-                "method" : method
-            }
+            throw new PmsError("Unsupported method for axios guarded call: " + method);
         }
         let axiosInstance = Axios.getAxiosInstanceForSymfonyCalls();
 

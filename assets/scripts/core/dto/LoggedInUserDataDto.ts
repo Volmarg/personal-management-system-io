@@ -1,4 +1,5 @@
 import BaseApiDto from "./BaseApiDto";
+import BaseDto    from "./BaseDto";
 
 /**
  * @description representation of currently logged in user data
@@ -57,10 +58,7 @@ export default class LoggedInUserDataDto extends BaseApiDto{
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse json to object for LoggedInUserDataDto",
-                "exception" : Exception
-            }
+            BaseDto.throwJsonParsingError('LoggedInUserDataDto', Exception, json);
         }
 
         loggedInUserDataDto.avatar    = object.avatar;

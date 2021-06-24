@@ -3,6 +3,7 @@
  *              - the returned password is encoded
  */
 import BaseApiDto from "../../BaseApiDto";
+import BaseDto    from "../../BaseDto";
 
 export default class PasswordGroupWithPasswordsDto extends BaseApiDto
 {
@@ -45,11 +46,7 @@ export default class PasswordGroupWithPasswordsDto extends BaseApiDto
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: PasswordGroupWithPasswordsDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('PasswordGroupWithPasswordsDto', Exception, json);
         }
 
         dto.passwordsJsons    = object.passwordsJsons;

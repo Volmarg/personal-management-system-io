@@ -10,7 +10,7 @@ use App\Controller\API\ApiController;
 use App\Controller\ApiUserController;
 use App\Controller\Core\Services;
 use App\Controller\System\IncomingRequestController;
-use App\Controller\System\SettingController;
+use App\Controller\System\SystemStateController;
 use App\Controller\UserController;
 use App\DTO\BaseApiDTO;
 use App\Entity\System\IncomingRequest;
@@ -80,9 +80,9 @@ class RequestListener implements EventSubscriberInterface
     private IncomingRequestController $incomingRequestController;
 
     /**
-     * @var SettingController $settingController
+     * @var SystemStateController $settingController
      */
-    private SettingController $settingController;
+    private SystemStateController $settingController;
 
     /**
      * RequestListener constructor.
@@ -94,7 +94,7 @@ class RequestListener implements EventSubscriberInterface
      * @param UserController $userController
      * @param ApiUserController $apiUserController
      * @param IncomingRequestController $incomingRequestController
-     * @param SettingController $settingController
+     * @param SystemStateController $settingController
      */
     public function __construct(
         AttributeReaderService    $attributeReaderService,
@@ -104,7 +104,7 @@ class RequestListener implements EventSubscriberInterface
         UserController            $userController,
         ApiUserController         $apiUserController,
         IncomingRequestController $incomingRequestController,
-        SettingController         $settingController
+        SystemStateController         $settingController
     )
     {
         $this->services                  = $services;

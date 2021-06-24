@@ -1,4 +1,5 @@
 import BaseApiDto from "./BaseApiDto";
+import BaseDto    from "./BaseDto";
 
 /**
  * @description response used to fetch the csrf token for form submission
@@ -26,10 +27,7 @@ export default class CsrfTokenDto extends BaseApiDto
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse json to object for CsrfTokenDto",
-                "exception" : Exception
-            }
+            BaseDto.throwJsonParsingError('CsrfTokenDto', Exception, json);
         }
 
         loggedInUserDataDto.csrToken = object.csrToken;

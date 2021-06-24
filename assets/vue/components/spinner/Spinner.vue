@@ -1,13 +1,24 @@
 <!-- Template -->
 <template>
-  <section class="spinner-wrapper w-100 h-100 d-none" id="spinnerWrapper">
-    <div class="semipolar-spinner">
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-    </div>
+  <!-- This top wrapper must be never effected by vue else SpinnerService breaks -->
+  <section id="spinnerTopWrapper" class="d-none">
+    <section class="spinner-wrapper w-100 h-100"
+             id="spinnerWrapper"
+             :class="lowOpacityClass"
+    >
+
+      <div class="text-wrapper" v-if="text">
+        <h3 class="additional-text">{{ text }}</h3>
+      </div>
+
+      <div class="semipolar-spinner">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+    </section>
   </section>
 </template>
 
@@ -16,7 +27,22 @@
 /**
  * @see SpinnerService
  */
-export default {}
+export default {
+  props: {
+    text: {
+      type     : String,
+      required : false,
+      default  : "",
+    }
+  },
+  computed: {
+    lowOpacityClass(){
+      return {
+        "low-opacity": this.text
+      }
+    }
+  }
+}
 </script>
 
 <!-- Style -->
@@ -90,7 +116,33 @@ export default {}
   display: flex;
   justify-content: center;
 }
+
 .semipolar-spinner {
   align-self: center;
+  position: relative;
+}
+
+.text-wrapper {
+  align-self: center;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.additional-text {
+  text-align: center;
+
+  position: absolute;
+  display: inline-block;
+  bottom: 80px;
+
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 7px;
+  border-bottom: 3px solid #1ea1a5;
+}
+
+.low-opacity {
+  background-color: rgba(255, 255, 255, 0.85);
 }
 </style>

@@ -1,4 +1,6 @@
-import Swal from 'sweetalert2';
+import Swal     from 'sweetalert2';
+import PmsError from "../../core/error/PmsError";
+
 import '../../../../node_modules/sweetalert2/src/sweetalert2.scss';
 
 /**
@@ -22,9 +24,7 @@ export default class SweetAlert {
     {
         let dialogDomElement = document.getElementById(id);
         if( null === dialogDomElement ){
-            throw {
-                "message": `No DOM element was found for id ${id}`
-            }
+            throw new PmsError(`No DOM element was found for id ${id}`);
         }
 
         dialogDomElement.classList.remove("swal2-hide", "d-none");
@@ -37,9 +37,7 @@ export default class SweetAlert {
     {
         let dialogDomElement = document.getElementById(id);
         if( null === dialogDomElement ){
-            throw {
-                "message": `No DOM element was found for id ${id}`
-            }
+            throw new PmsError(`No DOM element was found for id ${id}`);
         }
 
         dialogDomElement.classList.add("swal2-hide");

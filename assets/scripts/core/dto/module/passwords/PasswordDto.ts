@@ -1,3 +1,5 @@
+import BaseDto from "../../BaseDto";
+
 /**
  * @description this class represents the password entity from backend
  */
@@ -68,11 +70,7 @@ export default class PasswordDto
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw {
-                "info"      : "Exception was thrown while parsing json to create Password Dto",
-                "json"      : json,
-                "exception" : Exception
-            }
+            BaseDto.throwJsonParsingError('DecryptedPasswordDto', Exception, json);
         }
 
         dto.login       = object.login;

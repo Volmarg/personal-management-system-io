@@ -1,4 +1,5 @@
 import BaseApiDto from "../../BaseApiDto";
+import BaseDto    from "../../BaseDto";
 
 /**
  * @description represents the same class present in the backend
@@ -28,11 +29,7 @@ export default class ParentsChildrenCategoriesHierarchyDto extends BaseApiDto {
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: ParentsChildrenCategoriesHierarchyDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('ParentsChildrenCategoriesHierarchyDto', Exception, json);
         }
 
         dto._hierarchy = object.hierarchy

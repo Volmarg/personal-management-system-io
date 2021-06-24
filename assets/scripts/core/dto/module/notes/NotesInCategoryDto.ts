@@ -2,6 +2,7 @@
  * @description this is a base dto used as a base for each internal api call response
  */
 import BaseApiDto from "../../BaseApiDto";
+import BaseDto    from "../../BaseDto";
 
 export default class NotesInCategoryDto extends BaseApiDto {
 
@@ -36,11 +37,7 @@ export default class NotesInCategoryDto extends BaseApiDto {
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: NotesInCategoryDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('NotesInCategoryDto', Exception, json);
         }
 
         dto.notesJsons = object.notesJsons;

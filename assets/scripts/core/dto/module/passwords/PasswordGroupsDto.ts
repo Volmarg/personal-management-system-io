@@ -2,6 +2,7 @@
  * @description this is a base dto used as a base for each internal api call response
  */
 import BaseApiDto from "../../BaseApiDto";
+import BaseDto    from "../../BaseDto";
 
 export default class PasswordGroupsDto extends BaseApiDto {
 
@@ -26,11 +27,7 @@ export default class PasswordGroupsDto extends BaseApiDto {
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: GetNotesForCategoryResponseDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('GetNotesForCategoryResponseDto', Exception, json);
         }
 
         dto.passwordsGroupsJsons = object.passwordsGroups;

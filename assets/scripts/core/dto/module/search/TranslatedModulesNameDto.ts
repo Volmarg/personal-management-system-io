@@ -1,4 +1,5 @@
 import BaseApiDto from "../../BaseApiDto";
+import BaseDto    from "../../BaseDto";
 
 export default class TranslatedModulesNameDto extends BaseApiDto
 {
@@ -23,10 +24,7 @@ export default class TranslatedModulesNameDto extends BaseApiDto
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse json to object for TranslatedModulesNameDto",
-                "exception" : Exception
-            }
+            BaseDto.throwJsonParsingError('TranslatedModulesNameDto', Exception, json);
         }
 
         translatedModulesNameDto.modulesNames = object.modulesNames;

@@ -77,6 +77,7 @@ import SpinnerService      from "../../../../scripts/core/service/SpinnerService
 
 import LoggedInUserDataDto from "../../../../scripts/core/dto/LoggedInUserDataDto";
 import LocalStorageService from "../../../../scripts/core/service/LocalStorageService";
+import BaseApiDto          from "../../../../scripts/core/dto/BaseApiDto";
 
 let translationService = new TranslationsService();
 
@@ -92,6 +93,60 @@ export default {
         key      : this.$refs.keyInput.value      ?? "",
       }
 
+      this.$emit("checking-if-data-is-available");
+      SpinnerService.showSpinner();
+
+      /**
+       * @description the timeout is necessary due to usage of sync call
+       *              (it block the flow of logic and wont show spinner)
+       *              this could be solved with sockets but not worth it
+       *              for such small thing - yes that's dirty!
+       */
+      setTimeout( () => {
+        this.awaitForDataInDatabase();
+        this.$emit("data-is-available");
+        this.processWithStandardLogin(data);
+      }, 100);
+
+    },
+    /**
+     * @description doing while loop as long as no data is present in DB
+     *              using vanilla ajax call as the fetch / axios do not support sync calls
+     *              sync call is also needed to block the while loop doing calls to fast
+     *              thx to this it must wait for each call to backend to be finished
+     */
+    awaitForDataInDatabase(){
+      let isDataAvailable = false;
+      let isFirstCall     = 1; // special flag sent to backend to make the first call quick - each next one is delayed
+
+      while (!isDataAvailable) {
+
+        var xhttp     = new XMLHttpRequest();
+        let calledUrl = SymfonyRoutes.getPathForName(
+            SymfonyRoutes.ROUTE_NAME_MODULE_IS_DATA_AVAILABLE,
+            {
+              [SymfonyRoutes.ROUTE_NAME_MODULE_IS_DATA_AVAILABLE_PARAM_IS_FIRST_CALL]: isFirstCall
+            }
+        )
+
+        xhttp.open("GET", calledUrl, false);
+        xhttp.send();
+
+        let responseDto = BaseApiDto.fromJson(xhttp.response);
+
+        if (
+                responseDto.code >= 200
+            &&  responseDto.code < 300
+        ) {
+          isDataAvailable = true
+        }
+        isFirstCall = 0;
+      }
+    },
+    /**
+     * @description - send request to login to the symfony backend
+     */
+    processWithStandardLogin(data){
       SpinnerService.showSpinner();
       this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( (baseApiResponse) => {
         SpinnerService.hideSpinner();

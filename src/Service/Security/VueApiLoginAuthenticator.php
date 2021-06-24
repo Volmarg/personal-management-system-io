@@ -104,7 +104,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
     {
         // check if is logged in, if yes then support = false
         if(
-                $request->getMethod() === Request::METHOD_POST
+                $request->getMethod()     === Request::METHOD_POST
             &&  $request->getRequestUri() === $this->urlGenerator->generate("login")
         ){
             $this->request = $request;
@@ -245,7 +245,7 @@ class VueApiLoginAuthenticator extends AbstractGuardAuthenticator
 
         $message  = $this->services->getTranslator()->trans('security.login.messages.UNAUTHORIZED');
         $response = BaseApiDTO::buildUnauthorizedResponse($message);
-        $response->setRedirectRoute("login");;
+        $response->setRedirectRoute("login");
         return $response->toJsonResponse();
     }
 

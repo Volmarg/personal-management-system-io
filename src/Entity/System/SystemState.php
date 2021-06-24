@@ -2,36 +2,41 @@
 
 namespace App\Entity\System;
 
-use App\Repository\System\SettingRepository;
+use App\Repository\System\SystemStateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SettingRepository::class)
+ * @ORM\Entity(repositoryClass=SystemStateRepository::class)
  */
-class Setting
+class SystemState
 {
     /**
      * This setting expects a bool value,
      * decides if data can be inserted in the project
      */
-    const SETTING_NAME_ALLOW_INSERT_DATA = "allowInsertData";
+    const STATE_NAME_ALLOW_INSERT_DATA = "allowInsertData";
+
+    /**
+     * Means that the data from external tool has been transferred
+     */
+    const STATE_NAME_IS_DATA_TRANSFERRED = "isDataTransferred";
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="boolean")
      */
-    private $value;
+    private bool $value;
 
     public function getId(): ?int
     {
@@ -50,15 +55,19 @@ class Setting
         return $this;
     }
 
-    public function getValue(): ?string
+    /**
+     * @return bool
+     */
+    public function isValue(): bool
     {
         return $this->value;
     }
 
-    public function setValue(string $value): self
+    /**
+     * @param bool $value
+     */
+    public function setValue(bool $value): void
     {
         $this->value = $value;
-
-        return $this;
     }
 }

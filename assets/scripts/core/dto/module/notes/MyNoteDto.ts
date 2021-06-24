@@ -1,7 +1,9 @@
+import BaseDto from "../../BaseDto";
+
 /**
  * @description frontend representation of the Note entity
  */
-export default class MyNoteDto {
+export default class MyNoteDto extends BaseDto {
     private _id          : number;
     private _title       : string;
     private _body        : string;
@@ -47,11 +49,7 @@ export default class MyNoteDto {
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw {
-                "message"   : "Could not extract data from json",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('MyNoteDto', Exception, json);
         }
 
         let dto         = new MyNoteDto();

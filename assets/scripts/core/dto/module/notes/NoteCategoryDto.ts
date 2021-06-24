@@ -1,3 +1,5 @@
+import BaseDto from "../../BaseDto";
+
 /**
  * @description Represents the note category entity from backend
  */
@@ -70,11 +72,7 @@ export default class NoteCategoryDto {
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: NoteCategoryDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('NoteCategoryDto', Exception, json);
         }
 
         dto.id       = object.id;

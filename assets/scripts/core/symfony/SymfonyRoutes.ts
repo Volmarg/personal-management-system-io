@@ -1,5 +1,6 @@
 import * as routes from '../../../../config/frontend/routes.json';
 import StringUtils from "../utils/StringUtils";
+import PmsError    from "../error/PmsError";
 
 /**
  * @description This class contains definitions of INTERNAL api routes defined on backend side
@@ -99,6 +100,12 @@ export default class SymfonyRoutes {
     static readonly ROUTE_NAME_MODULE_GET_ALL_TRANSLATED_MODULES_NAMES_FOR_SEARCH = "module_search_get_all_translated_modules_names";
 
     /**
+     * @description return information if there is any data to work with
+     */
+    static readonly ROUTE_NAME_MODULE_IS_DATA_AVAILABLE                     = "module_is_module_data_available";
+    static readonly ROUTE_NAME_MODULE_IS_DATA_AVAILABLE_PARAM_IS_FIRST_CALL = "isFirstCall";
+
+    /**
      * Will get url path for route name
      * Exception is thrown is none match is found
      *
@@ -112,10 +119,7 @@ export default class SymfonyRoutes {
         // get route
         let matchingRoutePath = routes[routeName];
         if( StringUtils.isEmptyString(matchingRoutePath) ){
-            throw {
-                "info"         : "No matching route was route was found for given name",
-                "searchedName" : routeName,
-            }
+            throw new PmsError("No matching route was route was found for given name: " + routeName);
         }
 
         // replace params

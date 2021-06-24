@@ -1,6 +1,8 @@
 /**
  * @description this is a base dto used as a base for each internal api call response
  */
+import BaseDto from "./BaseDto";
+
 export default class BaseApiDto {
 
     static readonly KEY_DATA_REDIRECT_ROUTE_NAME: string = "redirectRouteName"
@@ -89,11 +91,7 @@ export default class BaseApiDto {
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse the json for: BaseApiDto",
-                "exception" : Exception,
-                "json"      : json,
-            }
+            BaseDto.throwJsonParsingError('BaseApiDto', Exception, json);
         }
 
         this.success = object.success;

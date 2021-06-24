@@ -4,6 +4,7 @@ security:
       UNAUTHORIZED: Unauthorized
       OK: Login successful
       alreadyLoggedIn: You are already logged in!
+      checkingIfDataHasBeenDelivered: Checking if data has been delivered. Please wait.
   logout:
     messages:
       loggingOut: Logging out

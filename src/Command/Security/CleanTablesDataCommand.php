@@ -10,7 +10,7 @@ use App\Controller\Modules\Notes\NotesCategoriesController;
 use App\Controller\Modules\Notes\NotesController;
 use App\Controller\Modules\Passwords\PasswordController;
 use App\Controller\Modules\Passwords\PasswordGroupController;
-use App\Controller\System\SettingController;
+use App\Controller\System\SystemStateController;
 use App\Controller\UserController;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -65,9 +65,9 @@ class CleanTablesDataCommand extends Command
     private PasswordController $passwordController;
 
     /**
-     * @var SettingController $settingController
+     * @var SystemStateController $settingController
      */
-    private SettingController $settingController;
+    private SystemStateController $settingController;
 
     /**
      * @var UserController $userController
@@ -77,7 +77,7 @@ class CleanTablesDataCommand extends Command
     /**
      * GenerateApiUserCommand constructor.
      * @param NotesCategoriesController $notesCategoriesController
-     * @param SettingController $settingController
+     * @param SystemStateController $settingController
      * @param UserController $userController
      * @param NotesController $notesController
      * @param PasswordGroupController $passwordGroupController
@@ -87,7 +87,7 @@ class CleanTablesDataCommand extends Command
      */
     public function __construct(
         NotesCategoriesController $notesCategoriesController,
-        SettingController         $settingController,
+        SystemStateController         $settingController,
         UserController            $userController,
         NotesController           $notesController,
         PasswordGroupController   $passwordGroupController,
@@ -142,9 +142,11 @@ class CleanTablesDataCommand extends Command
                 $this->io->info("Handling passwords");
 
                 $this->passwordController->removeAll();
-                $this->notesCategoriesController->removeAll();
+                $this->passwordGroupController->removeAll();
 
+                // set system state
                 $this->settingController->denyDataInsertion();
+                $this->settingController->setDataIsNotTransferred();
             }
             $this->io->success("Done! All data has been removed from tables");
         }catch(Exception | TypeError $e){

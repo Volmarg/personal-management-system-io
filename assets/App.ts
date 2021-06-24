@@ -3,6 +3,7 @@ import ContainerComponent from "./vue/components/page/base/Container.vue";
 import Router             from './scripts/libs/vue/Router'
 import AxiosCsrfPlugin    from "./vue/plugins/AxiosCsrfPlugin";
 import TranslationPlugin  from "./vue/plugins/TranslationPlugin";
+import PmsError           from "./scripts/core/error/PmsError";
 
 var Vue = require('vue');
 
@@ -45,10 +46,7 @@ export default class App {
             ContainerComponent.props.includeBaseComponents = false;
             this.idUsedToMount = `#${App.MOUNTED_ELEMENT_ID_NAME_BLANK_BASE_PAGE}`;
         }else{
-            throw {
-                "info"           : "None of the supported id names has been found in dome",
-                "additionalInfo" : "Maybe the selector is invalid or dom element does not exist",
-            }
+            throw new PmsError("None of the supported id names has been found in DOM. Maybe the selector is invalid or dom element does not exist");
         }
 
         this.mountVueInstance();

@@ -1,7 +1,7 @@
 <!-- Template -->
 <template>
 
-  <Spinner/>
+  <Spinner :text="spinnerText"/>
   <div class="wrapper" v-if="includeBaseComponents">
     <Sidebar/>
 
@@ -15,7 +15,10 @@
 
   <div class="wrapper" v-else>
     <div class="main">
-      <RouterView></RouterView>
+      <RouterView
+          @checking-if-data-is-available="setSpinnerTextCheckingIfDataIsAvailable"
+          @data-is-available="cleanSpinnerText"
+      ></RouterView>
     </div>
   </div>
 
@@ -35,7 +38,8 @@ import SymfonyRoutes         from "../../../../scripts/core/symfony/SymfonyRoute
 export default {
   data(){
     return {
-      isRightTooltipVisible: true,
+      isRightTooltipVisible : true,
+      spinnerText           : "",
     }
   },
   props: {
@@ -56,6 +60,20 @@ export default {
   watch: {
     $route(currRoute){
       this.isRightTooltipVisible = (currRoute.name !== SymfonyRoutes.ROUTE_NAME_LOGIN);
+    }
+  },
+  methods: {
+    /**
+     * @description Will set the text for spinner when no data delivery is available
+     */
+    setSpinnerTextCheckingIfDataIsAvailable(){
+      this.spinnerText = this.trans('security.login.messages.checkingIfDataHasBeenDelivered')
+    },
+    /**
+     * @description will unset text for spinner
+     */
+    cleanSpinnerText(){
+      this.spinnerText = "";
     }
   }
 }

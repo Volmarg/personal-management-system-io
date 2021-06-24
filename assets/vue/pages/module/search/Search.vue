@@ -65,6 +65,7 @@ import PasswordDto         from "../../../../scripts/core/dto/module/passwords/P
 import TranslatedModulesNameDto from "../../../../scripts/core/dto/module/search/TranslatedModulesNameDto";
 import ToastifyService          from "../../../../scripts/libs/toastify/ToastifyService";
 import SearchModule             from "../../../../scripts/core/module/search/SearchModule";
+import PmsError                 from "../../../../scripts/core/error/PmsError";
 
 export default {
   data(){
@@ -166,10 +167,7 @@ export default {
           break;
 
         default:
-          throw {
-            "info"   : "Selected module is not supported for building search result",
-            "module" : this.selectedModule
-          }
+          throw new PmsError("Selected module is not supported for building search result: " + this.selectedModule);
       }
     },
     /**

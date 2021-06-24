@@ -1,4 +1,5 @@
 import BaseApiDto from "./BaseApiDto";
+import BaseDto    from "./BaseDto";
 
 /**
  * @description response used to fetch the .env APP_DEMO state
@@ -26,10 +27,7 @@ export default class DotenvIsDemoResponseDto extends BaseApiDto
         try{
             var object = JSON.parse(json);
         }catch(Exception){
-            throw{
-                "message"   : "Could not parse json to object for DotenvIsDemoDto",
-                "exception" : Exception
-            }
+            BaseDto.throwJsonParsingError('DotenvIsDemoDto', Exception, json);
         }
 
         loggedInUserDataDto.isDemo = object.isDemo;
