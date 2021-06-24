@@ -36,15 +36,11 @@ desktop - wherever it's possible.
 <h2>Preview</h2>
 <hr>
 
-<img src="https://github.com/Volmarg/notifier-proxy-logger/blob/main/github/1.jpg?raw=true">
+<img src="https://github.com/Volmarg/personal-management-system-io/blob/main/github/2.jpg?raw=true">
 
 <hr>	
 
-<img src="https://github.com/Volmarg/notifier-proxy-logger/blob/main/github/2.jpg?raw=true">
-
-<hr>	
-
-<img src="https://github.com/Volmarg/notifier-proxy-logger/blob/main/github/3.jpg?raw=true">
+<img src="https://github.com/Volmarg/personal-management-system-io/blob/main/github/3.jpg?raw=true">
 
 <h2>Tech</h2>
 <hr>
