@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([["bulma"],{tP6B:function(n,w,o){o("ZZfx")}},[["tP6B","runtime",4]]]);

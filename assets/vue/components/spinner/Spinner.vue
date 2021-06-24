@@ -8,7 +8,7 @@
     >
 
       <div class="text-wrapper" v-if="text">
-        <h3 class="additional-text">{{ text }}</h3>
+        <h3 class="additional-text text-center">{{ text }}</h3>
       </div>
 
       <div class="semipolar-spinner">

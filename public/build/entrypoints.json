@@ -1,0 +1,56 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.49790fad.js",
+        "/build/2.fadd3da9.js",
+        "/build/app.23231b06.js"
+      ],
+      "css": [
+        "/build/2.ad9c547b.css",
+        "/build/app.730b5701.css"
+      ]
+    },
+    "bootstrap": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/3.e3404214.js",
+        "/build/bootstrap.d25e85f6.js"
+      ],
+      "css": [
+        "/build/3.e6d52ac8.css"
+      ]
+    },
+    "bulma": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/4.fd07a5b5.js",
+        "/build/bulma.45ef126f.js"
+      ],
+      "css": [
+        "/build/4.7ce0b8a1.css"
+      ]
+    },
+    "adminkit": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.49790fad.js",
+        "/build/1.140155e7.js",
+        "/build/adminkit.892a96a1.js"
+      ],
+      "css": [
+        "/build/adminkit.3d5dab2d.css"
+      ]
+    },
+    "right-tooltip": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/right-tooltip.9430adf0.js"
+      ],
+      "css": [
+        "/build/right-tooltip.aca3b854.css"
+      ]
+    }
+  }
+}
