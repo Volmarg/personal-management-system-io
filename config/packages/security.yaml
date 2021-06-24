@@ -48,4 +48,4 @@ security:
          - { path: ^/user/get-logged-in-user-data, roles: IS_AUTHENTICATED_ANONYMOUSLY }    # required as the login form needs that call
          - { path: ^/module/is-module-data-available, roles: IS_AUTHENTICATED_ANONYMOUSLY } # check if data is available in system - this happens before log-in process
          - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }                                   # API calls
-         - { path: ^/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }                                                # any other pages
+         - { path: ^/.*, roles: ROLE_ADMIN }                                                # any other pages
