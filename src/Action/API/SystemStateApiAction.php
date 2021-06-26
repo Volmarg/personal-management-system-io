@@ -47,8 +47,7 @@ class SystemStateApiAction extends ApiAction
     public function markStateAsTransferred(): JsonResponse
     {
         // the transfer must have been allowed first to set the state
-        if( $this->systemStateController->isAllowedToInsertData() )
-        {
+        if( $this->systemStateController->isAllowedToInsertData() ){
             $this->systemStateController->setDataIsTransferred();
         }
 
