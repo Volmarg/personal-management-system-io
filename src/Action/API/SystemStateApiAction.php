@@ -46,7 +46,11 @@ class SystemStateApiAction extends ApiAction
     #[ExternalActionAttribute]
     public function markStateAsTransferred(): JsonResponse
     {
-        $this->systemStateController->setDataIsTransferred();
+        // the transfer must have been allowed first to set the state
+        if( $this->systemStateController->isAllowedToInsertData() )
+        {
+            $this->systemStateController->setDataIsTransferred();
+        }
 
         $responseDto = BaseApiDTO::buildOkResponse();
         $responseDto->prefillBaseFieldsForSuccessResponse();

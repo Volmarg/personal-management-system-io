@@ -104,7 +104,7 @@ class SystemStateRepository extends ServiceEntityRepository
             return false;
         }
 
-        return $settingValue;
+        return true;
     }
 
     /**
