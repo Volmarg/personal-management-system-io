@@ -141,7 +141,7 @@ class PasswordsApiAction extends ApiAction
                 }
 
                 foreach($insertRequest->getPasswordsArrays() as $passwordArray){
-                    $passwordEntity      = Password::fromJson($passwordArray);
+                    $passwordEntity      = Password::fromArray($passwordArray);
                     $passwordGroupEntity = $this->passwordGroupController->getOneForId($passwordEntity->getGroupId());
 
                     $passwordEntity->setGroup($passwordGroupEntity);
@@ -163,7 +163,7 @@ class PasswordsApiAction extends ApiAction
                         return $response->toJsonResponse();
                     }
 
-                    $this->passwordController->save($passwordEntity);
+                    $this->passwordController->createEntity($passwordEntity);
                 }
 
             }catch(Exception| TypeError $e){

@@ -42,11 +42,11 @@ class PasswordController extends AbstractController
      * Will save the new entity or update the state of already existing one
      *
      * @param Password $password
-     * @throws ORMException
+     * @throws Exception
      */
-    public function save(Password $password): void
+    public function createEntity(Password $password): void
     {
-        $this->passwordRepository->save($password);
+        $this->passwordRepository->createEntity($password);
     }
 
     /**

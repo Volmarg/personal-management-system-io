@@ -27,12 +27,11 @@ class NotesController extends AbstractController
      * Will save the new entity or update the state of already existing one
      *
      * @param Note $myNote
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws Exception
      */
-    public function save(Note $myNote): void
+    public function createEntity(Note $myNote): void
     {
-        $this->noteRepository->save($myNote);
+        $this->noteRepository->createEntity($myNote);
     }
 
     /**

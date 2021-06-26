@@ -36,6 +36,7 @@ class Password
 
     /**
      * @var string
+     * @Encrypted
      * @ORM\Column(type="string", length=255)
      */
     #[Assert\NotBlank]
@@ -168,7 +169,7 @@ class Password
     /**
      * Will create entity from array
      */
-    public static function fromJson(array $dataArray): Password
+    public static function fromArray(array $dataArray): Password
     {
         $login       = AbstractDTO::checkAndGetKey($dataArray, self::KEY_LOGIN);
         $password    = AbstractDTO::checkAndGetKey($dataArray, self::KEY_PASSWORD);
