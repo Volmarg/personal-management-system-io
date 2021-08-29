@@ -130,6 +130,9 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "psr/http-factory": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.1.1"
     },
