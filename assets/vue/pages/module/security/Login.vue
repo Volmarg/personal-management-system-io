@@ -93,6 +93,27 @@ export default {
   },
   methods: {
     /**
+     * @description will fetch logged in user data and store it in local storage to prevent call over and over again
+     */
+    getAndStoreLoggedInUserData(){
+      if( !LocalStorageService.isLoggedInUserSet() ){
+
+        this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_LOGGED_IN_USER_DATA)).then( (response) => {
+          let loggedInUserDataDto = LoggedInUserDataDto.fromAxiosResponse(response);
+          if(
+                  !loggedInUserDataDto.success
+              &&  401 !== loggedInUserDataDto.code
+          ){
+            SpinnerService.hideSpinner();
+            ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
+            return;
+          }
+          LocalStorageService.setLoggedInUser(loggedInUserDataDto);
+        })
+
+      }
+    },
+    /**
      * @description handles the login form submission
      */
     loginFormSubmitted(){
@@ -181,6 +202,7 @@ export default {
 
         if(baseApiResponse.success){
           ToastifyService.showGreenNotification(baseApiResponse.message)
+          this.getAndStoreLoggedInUserData();
 
           if( StringUtils.isEmptyString(baseApiResponse.data.redirectRouteName) ){
             ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
