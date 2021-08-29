@@ -78,10 +78,19 @@ import SpinnerService      from "../../../../scripts/core/service/SpinnerService
 import LoggedInUserDataDto from "../../../../scripts/core/dto/LoggedInUserDataDto";
 import LocalStorageService from "../../../../scripts/core/service/LocalStorageService";
 import BaseApiDto          from "../../../../scripts/core/dto/BaseApiDto";
+import {readonly}          from "vue";
+import moment              from 'moment';
 
 let translationService = new TranslationsService();
 
 export default {
+  data(){
+    return {
+      dataAwait : readonly({
+        maxSeconds: 130,
+      })
+    }
+  },
   methods: {
     /**
      * @description handles the login form submission
@@ -103,7 +112,13 @@ export default {
        *              for such small thing - yes that's dirty!
        */
       setTimeout( () => {
-        this.awaitForDataInDatabase();
+        let waitResult = this.awaitForDataInDatabase();
+        if(!waitResult){
+          ToastifyService.showOrangeNotification(translationService.getTranslationForString('general.system.state.isDataTransferred.no'), false);
+          SpinnerService.hideSpinner();
+          return;
+        }
+
         this.$emit("data-is-available");
         this.processWithStandardLogin(data);
       }, 100);
@@ -114,10 +129,14 @@ export default {
      *              using vanilla ajax call as the fetch / axios do not support sync calls
      *              sync call is also needed to block the while loop doing calls to fast
      *              thx to this it must wait for each call to backend to be finished
+     *
+     *              this could be solved with sockets but to much of effort for such a small project
      */
     awaitForDataInDatabase(){
       let isDataAvailable = false;
       let isFirstCall     = 1; // special flag sent to backend to make the first call quick - each next one is delayed
+
+      let startTime = moment();
 
       while (!isDataAvailable) {
 
@@ -141,7 +160,16 @@ export default {
           isDataAvailable = true
         }
         isFirstCall = 0;
+
+        let endTime              = moment();
+        let runDurationInSeconds = endTime.diff(startTime, 'second');
+        if(runDurationInSeconds >= this.dataAwait.maxSeconds){
+          return false;
+        }
+
       }
+
+      return true;
     },
     /**
      * @description - send request to login to the symfony backend

@@ -10,6 +10,7 @@ import "toastify-js/src/toastify.css"
 export default class ToastifyService
 {
     static readonly TOAST_NOTIFICATION_WRAPPER_CLASS_NAME = "toast-notification-wrapper";
+    private static readonly TOAST_NOTIFICATION_DEFAULT_DURATION = 2000;
 
     /**
      * Will show green notification
@@ -25,10 +26,11 @@ export default class ToastifyService
      * Will show orange notification
      *
      * @param message
+     * @param hideAfterTime
      */
-    public static showOrangeNotification(message: string)
+    public static showOrangeNotification(message: string, hideAfterTime:  boolean = true)
     {
-        this.buildToastifyInstance("orange", message);
+        this.buildToastifyInstance("orange", message, hideAfterTime);
     }
 
     /**
@@ -44,20 +46,26 @@ export default class ToastifyService
     /**
      * @description build tostify instance
      */
-    private static buildToastifyInstance(backgroundColor: string, message: string): void
+    private static buildToastifyInstance(backgroundColor: string, message: string, hideAfterTime: boolean = true): void
     {
         let targetWrapperToMountInto = document.querySelector(`.${ToastifyService.TOAST_NOTIFICATION_WRAPPER_CLASS_NAME}`);
 
        let toastInstance = Toastify({
             text            : message,
-            duration        : 2000,
             gravity         : "top",
             position        : "center",
             backgroundColor : backgroundColor,
             className       : "toastify-instance",
             stopOnFocus     : true,
-            selector        : targetWrapperToMountInto
-        }).showToast();
+            selector        : targetWrapperToMountInto,
+            duration        : ToastifyService.TOAST_NOTIFICATION_DEFAULT_DURATION,
+        });
+
+       if(!hideAfterTime){
+           toastInstance.options.duration = -1; // permanent
+       }
+
+       toastInstance.showToast();
 
        // onClick must be handled this way otherwise the `toastElement` is not available inside of callback body
         toastInstance.options.onClick = () => {

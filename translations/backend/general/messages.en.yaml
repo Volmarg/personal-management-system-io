@@ -1,3 +1,7 @@
 general:
   responseCodes:
     500: Internal server error
+  system:
+    state:
+      isDataTransferred:
+        no: No data has been transfered! Try again.

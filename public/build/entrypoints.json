@@ -3,12 +3,12 @@
     "app": {
       "js": [
         "/build/runtime.d94b3b43.js",
-        "/build/0.49790fad.js",
-        "/build/2.fadd3da9.js",
-        "/build/app.23231b06.js"
+        "/build/0.c746e820.js",
+        "/build/1.02325616.js",
+        "/build/app.f0703d68.js"
       ],
       "css": [
-        "/build/2.ad9c547b.css",
+        "/build/1.ad9c547b.css",
         "/build/app.730b5701.css"
       ]
     },
@@ -35,9 +35,9 @@
     "adminkit": {
       "js": [
         "/build/runtime.d94b3b43.js",
-        "/build/0.49790fad.js",
-        "/build/1.140155e7.js",
-        "/build/adminkit.892a96a1.js"
+        "/build/0.c746e820.js",
+        "/build/2.0bcaa7de.js",
+        "/build/adminkit.2e62d0a2.js"
       ],
       "css": [
         "/build/adminkit.3d5dab2d.css"
