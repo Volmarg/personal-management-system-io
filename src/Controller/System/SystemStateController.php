@@ -58,7 +58,7 @@ class SystemStateController extends AbstractController
      */
     public function isAllowedToInsertData(): bool
     {
-        return $this->systemStateRepository->isPositiveState(SystemState::STATE_NAME_ALLOW_INSERT_DATA);
+        return $this->systemStateRepository->isPositiveStateOrExistsInDatabase(SystemState::STATE_NAME_ALLOW_INSERT_DATA);
     }
 
     /**
@@ -91,7 +91,7 @@ class SystemStateController extends AbstractController
      */
     public function isDataTransferred(): bool
     {
-        return $this->systemStateRepository->isPositiveState(SystemState::STATE_NAME_IS_DATA_TRANSFERRED);
+        return $this->systemStateRepository->isPositiveStateOrExistsInDatabase(SystemState::STATE_NAME_IS_DATA_TRANSFERRED);
     }
 
 }

@@ -5,7 +5,6 @@ namespace App\Repository\System;
 use App\Entity\System\SystemState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,13 +41,13 @@ class SystemStateRepository extends ServiceEntityRepository
     }
 
     /**
-     * Will check if given state has positive value (true) in DB.
+     * Will check if the state with given name is in database and if is then return it's state, else false
      *
      * @param string $stateName
      * @return bool
      * @throws Exception
      */
-    public function isPositiveState(string $stateName): bool
+    public function isPositiveStateOrExistsInDatabase(string $stateName): bool
     {
         $settingValue = $this->getStateValueByName($stateName);
         if( is_null($settingValue) ){
@@ -74,7 +73,7 @@ class SystemStateRepository extends ServiceEntityRepository
             "name"       => $stateName,
         ];
 
-        if( $this->isStateInDatabase($stateName) ){
+        if( $this->isPositiveStateOrExistsInDatabase($stateName) ){
             $sql = "
                 UPDATE system_state
                 SET `value`  = :valueToSet
@@ -88,23 +87,6 @@ class SystemStateRepository extends ServiceEntityRepository
         }
 
         $connection->executeQuery($sql, $params);
-    }
-
-    /**
-     * Will check if the state with given name is in database
-     *
-     * @param string $stateName
-     * @return bool
-     * @throws Exception
-     */
-    private function isStateInDatabase(string $stateName): bool
-    {
-        $settingValue = $this->getStateValueByName($stateName);
-        if( is_null($settingValue) ){
-            return false;
-        }
-
-        return true;
     }
 
     /**
