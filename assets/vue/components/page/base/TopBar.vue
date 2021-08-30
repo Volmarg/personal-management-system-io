@@ -25,7 +25,7 @@
           </a>
 
           <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-            <!-- <img src="img/avatar.png" class="avatar img-fluid rounded me-1" alt="Charles Hall">  --> <span class="text-dark">{{ loggedInUserDto.shownName }}</span>
+            <!-- <img src="img/avatar.png" class="avatar img-fluid rounded me-1" alt="Charles Hall">  --> <span class="text-dark">{{ loggedInUserDto?.shownName ?? "" }}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-end">
             <a class="dropdown-item" href="#" @click="logoutClicked">{{ trans('topbar.menu.logout') }}</a>
