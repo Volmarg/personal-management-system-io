@@ -95,7 +95,7 @@ export default {
     /**
      * @description will fetch logged in user data and store it in local storage to prevent call over and over again
      */
-    getAndStoreLoggedInUserData(){
+    async getAndStoreLoggedInUserData(){
       if( !LocalStorageService.isLoggedInUserSet() ){
 
         this.axios.get(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_GET_LOGGED_IN_USER_DATA)).then( (response) => {
@@ -197,12 +197,12 @@ export default {
      */
     processWithStandardLogin(data){
       SpinnerService.showSpinner();
-      this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( (baseApiResponse) => {
+      this.postWithCsrf(SymfonyRoutes.getPathForName(SymfonyRoutes.ROUTE_NAME_LOGIN), data).then( async (baseApiResponse) => {
         SpinnerService.hideSpinner();
 
         if(baseApiResponse.success){
           ToastifyService.showGreenNotification(baseApiResponse.message)
-          this.getAndStoreLoggedInUserData();
+          await this.getAndStoreLoggedInUserData();
 
           if( StringUtils.isEmptyString(baseApiResponse.data.redirectRouteName) ){
             ToastifyService.showRedNotification(translationService.getTranslationForString('general.responseCodes.500'))
