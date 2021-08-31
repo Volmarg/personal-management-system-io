@@ -80,14 +80,31 @@ class NoteCategoryRepository extends ServiceEntityRepository {
     /**
      * Will save the new entity or update the state of already existing one
      *
+     * The data is being saved with plain sql due to the Issue / Bug in the spec sharper library
+     * where with relation the related entity is decrypted with local key and then re-encrypted with it
+     * this cause problems when the dynamic key is being used in login form
+     *
      * @param NoteCategory $myNoteCategory
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws Exception
      */
-    public function save(NoteCategory $myNoteCategory): void
+    public function createEntity(NoteCategory $myNoteCategory): void
     {
-        $this->_em->persist($myNoteCategory);
-        $this->_em->flush();
+        $connection = $this->_em->getConnection();
+
+        $sql = "
+            INSERT INTO note_category(id, icon, name, color, parent_id)
+            VALUES(:id, :icon, :name, :color, :parentId)
+        ";
+
+        $params = [
+            "id"       => $myNoteCategory->getId(),
+            "icon"     => $myNoteCategory->getIcon(),
+            "name"     => $myNoteCategory->getName(),
+            "color"    => $myNoteCategory->getColor(),
+            "parentId" => $myNoteCategory->getParentId(),
+        ];
+
+        $connection->executeQuery($sql, $params);
     }
 
     /**

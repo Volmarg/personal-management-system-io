@@ -147,12 +147,11 @@ class NotesCategoriesController
      * Will save the new entity or update the state of already existing one
      *
      * @param NoteCategory $myNoteCategory
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @throws Exception
      */
-    public function save(NoteCategory $myNoteCategory): void
+    public function createEntity(NoteCategory $myNoteCategory): void
     {
-        $this->noteCategoryRepository->save($myNoteCategory);
+        $this->noteCategoryRepository->createEntity($myNoteCategory);
     }
 
     /**

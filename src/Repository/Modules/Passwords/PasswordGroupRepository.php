@@ -42,15 +42,30 @@ class PasswordGroupRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Will save the new entity or update the state of already existing one
+     * Will create new entity
+     *
+     * The data is being saved with plain sql due to the Issue / Bug in the spec sharper library
+     * where with relation the related entity is decrypted with local key and then re-encrypted with it
+     * this cause problems when the dynamic key is being used in login form
      *
      * @param PasswordGroup $passwordGroup
-     * @throws ORMException
+     * @throws Exception
      */
-    public function save(PasswordGroup $passwordGroup): void
+    public function createEntity(PasswordGroup $passwordGroup): void
     {
-        $this->_em->persist($passwordGroup);;
-        $this->_em->flush();
+        $connection = $this->_em->getConnection();
+
+        $sql = "
+            INSERT INTO password_group(id, name)
+            VALUES(:id, :name)
+        ";
+
+        $params = [
+            "id"   => $passwordGroup->getId(),
+            "name" => $passwordGroup->getName(),
+        ];
+
+        $connection->executeQuery($sql, $params);
     }
 
     /**

@@ -100,7 +100,7 @@ class NotesApiAction extends ApiAction
                         return $response->toJsonResponse();
                     }
 
-                    $this->notesCategoriesController->save($noteCategoryEntity);
+                    $this->notesCategoriesController->createEntity($noteCategoryEntity);
                 }
 
             }catch(Exception|TypeError $e){

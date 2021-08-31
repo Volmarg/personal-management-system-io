@@ -50,9 +50,9 @@ class PasswordGroupController extends AbstractController
      * @param PasswordGroup $passwordGroup
      * @throws ORMException
      */
-    public function save(PasswordGroup $passwordGroup): void
+    public function createEntity(PasswordGroup $passwordGroup): void
     {
-        $this->passwordGroupRepository->save($passwordGroup);
+        $this->passwordGroupRepository->createEntity($passwordGroup);
     }
 
     /**

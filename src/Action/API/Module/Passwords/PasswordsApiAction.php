@@ -102,7 +102,7 @@ class PasswordsApiAction extends ApiAction
                         return $response->toJsonResponse();
                     }
 
-                    $this->passwordGroupController->save($passwordGroupEntity);
+                    $this->passwordGroupController->createEntity($passwordGroupEntity);
                 }
 
             }catch(Exception| TypeError $e){
