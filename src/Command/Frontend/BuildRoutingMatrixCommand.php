@@ -58,6 +58,11 @@ class BuildRoutingMatrixCommand extends Command
         $this->router       = $router;
     }
 
+    protected function configure()
+    {
+        $this->setDescription("Will build matrix of Symfony Backend routing - used later in fronted by Vue");
+    }
+
     /**
      * Initialize the logic
      *

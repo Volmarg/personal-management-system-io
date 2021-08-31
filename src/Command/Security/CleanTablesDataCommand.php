@@ -108,7 +108,7 @@ class CleanTablesDataCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription("Will create API user in DB");
+        $this->setDescription("Will attempt to clean up the table data as long as nobody has been active for last few minutes");
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
