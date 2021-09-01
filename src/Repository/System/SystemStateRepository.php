@@ -47,8 +47,29 @@ class SystemStateRepository extends ServiceEntityRepository
      * @return bool
      * @throws Exception
      */
-    public function isPositiveStateOrExistsInDatabase(string $stateName): bool
+    public function existsInDatabase(string $stateName): bool
     {
+        $settingValue = $this->getStateValueByName($stateName);
+        if( is_null($settingValue) ){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if state has a positive value in db (true)
+     *
+     * @param string $stateName
+     * @return bool
+     * @throws Exception
+     */
+    public function isPositiveState(string $stateName): bool
+    {
+        if( !$this->existsInDatabase($stateName) ){
+            return false;
+        }
+
         $settingValue = $this->getStateValueByName($stateName);
         if( is_null($settingValue) ){
             return false;
@@ -73,7 +94,7 @@ class SystemStateRepository extends ServiceEntityRepository
             "name"       => $stateName,
         ];
 
-        if( $this->isPositiveStateOrExistsInDatabase($stateName) ){
+        if( $this->existsInDatabase($stateName) ){
             $sql = "
                 UPDATE system_state
                 SET `value`  = :valueToSet
