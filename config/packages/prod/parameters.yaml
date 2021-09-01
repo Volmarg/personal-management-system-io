@@ -1,2 +1,3 @@
 parameters:
-  max_inactivity_time: 1200 #in seconds - bigger jus to keep the dev system alive (20min)
+  max_inactivity_time: 1200 #in seconds (20min)
+  max_insert_wait_time: 180 #in seconds (3 min)

@@ -1,2 +1,3 @@
 parameters:
   max_inactivity_time: 600000000 #in seconds - bigger jus to keep the dev system alive
+  max_insert_wait_time: 600000000 #in seconds - bigger jus to keep the dev system alive

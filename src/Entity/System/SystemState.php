@@ -3,6 +3,7 @@
 namespace App\Entity\System;
 
 use App\Repository\System\SystemStateRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,6 +22,8 @@ class SystemState
      */
     const STATE_NAME_IS_DATA_TRANSFERRED = "isDataTransferred";
 
+    const FIELD_NAME = "name";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,6 +40,16 @@ class SystemState
      * @ORM\Column(type="boolean")
      */
     private bool $value;
+
+    /**
+     * @ORM\Column(type="datetime", columnDefinition="DATETIME ON UPDATE CURRENT_TIMESTAMP", name="modified")
+     */
+    private $modified;
+
+    public function __construct()
+    {
+        $this->modified = new DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -69,5 +82,17 @@ class SystemState
     public function setValue(bool $value): void
     {
         $this->value = $value;
+    }
+
+    public function getModified(): ?\DateTime
+    {
+        return $this->modified;
+    }
+
+    public function setModified(\DateTime $modified): self
+    {
+        $this->modified = $modified;
+
+        return $this;
     }
 }

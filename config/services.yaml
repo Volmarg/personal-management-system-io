@@ -64,6 +64,7 @@ services:
         public: true
         calls:
             - setMaxInactivityTime: ["%max_inactivity_time%"]
+            - setMaxInsertWaitTime: ["%max_insert_wait_time%"]
 
     App\Service\ConfigLoader\ConfigLoaderApi:
         public: true

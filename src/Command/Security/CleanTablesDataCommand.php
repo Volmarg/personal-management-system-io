@@ -65,9 +65,9 @@ class CleanTablesDataCommand extends Command
     private PasswordController $passwordController;
 
     /**
-     * @var SystemStateController $settingController
+     * @var SystemStateController $systemStateController
      */
-    private SystemStateController $settingController;
+    private SystemStateController $systemStateController;
 
     /**
      * @var UserController $userController
@@ -77,7 +77,7 @@ class CleanTablesDataCommand extends Command
     /**
      * GenerateApiUserCommand constructor.
      * @param NotesCategoriesController $notesCategoriesController
-     * @param SystemStateController $settingController
+     * @param SystemStateController $systemStateController
      * @param UserController $userController
      * @param NotesController $notesController
      * @param PasswordGroupController $passwordGroupController
@@ -87,18 +87,18 @@ class CleanTablesDataCommand extends Command
      */
     public function __construct(
         NotesCategoriesController $notesCategoriesController,
-        SystemStateController         $settingController,
+        SystemStateController     $systemStateController,
         UserController            $userController,
         NotesController           $notesController,
         PasswordGroupController   $passwordGroupController,
         PasswordController        $passwordController,
         Services                  $services,
-        string $name = null
+        string                    $name = null
     )
     {
         parent::__construct($name);
         $this->notesCategoriesController = $notesCategoriesController;
-        $this->settingController         = $settingController;
+        $this->systemStateController     = $systemStateController;
         $this->userController            = $userController;
         $this->notesController           = $notesController;
         $this->passwordGroupController   = $passwordGroupController;
@@ -132,6 +132,11 @@ class CleanTablesDataCommand extends Command
                     return self::SUCCESS;
                 }
 
+                if( $this->systemStateController->hasTimeToInsert() ){
+                    $this->io->info("Insertion is allowed and there is still time to let it finish. Stopping here.");
+                    return self::SUCCESS;
+                }
+
                 // notes
                 $this->io->info("Handling notes");
 
@@ -145,8 +150,8 @@ class CleanTablesDataCommand extends Command
                 $this->passwordGroupController->removeAll();
 
                 // set system state
-                $this->settingController->denyDataInsertion();
-                $this->settingController->setDataIsNotTransferred();
+                $this->systemStateController->denyDataInsertion();
+                $this->systemStateController->setDataIsNotTransferred();
             }
             $this->io->success("Done! All data has been removed from tables");
         }catch(Exception | TypeError $e){

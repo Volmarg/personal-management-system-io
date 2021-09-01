@@ -17,6 +17,11 @@ class ConfigLoaderSystemData
     private int $maxInactivityTime;
 
     /**
+     * @var int $maxInsertWaitTime
+     */
+    private int $maxInsertWaitTime;
+
+    /**
      * @return int
      */
     public function getMaxInactivityTime(): int
@@ -30,6 +35,22 @@ class ConfigLoaderSystemData
     public function setMaxInactivityTime(int $maxInactivityTime): void
     {
         $this->maxInactivityTime = $maxInactivityTime;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxInsertWaitTime(): int
+    {
+        return $this->maxInsertWaitTime;
+    }
+
+    /**
+     * @param int $maxInsertWaitTime
+     */
+    public function setMaxInsertWaitTime(int $maxInsertWaitTime): void
+    {
+        $this->maxInsertWaitTime = $maxInsertWaitTime;
     }
 
 }
