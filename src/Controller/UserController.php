@@ -110,7 +110,7 @@ class UserController extends AbstractController implements UserControllerInterfa
     public function isAnyUserActive(): bool
     {
         $maxInactivityTime          = $this->configLoader->getConfigLoaderSystemData()->getMaxInactivityTime();
-        $activityExpirationDateTime = (new \DateTime())->modify("-{$maxInactivityTime} MINUTES");
+        $activityExpirationDateTime = (new \DateTime())->modify("-{$maxInactivityTime} SECONDS");
 
         $isAnyUserStillActive = false;
         $allUsers             = $this->getAllUsers();
