@@ -44,6 +44,8 @@ class SearchController extends AbstractController
 
     /**
      * Will return the search results for given parameters
+     * It's required to search in entities as these are returned decrypted from DB
+     * else searching in DB is done over the encrypted values which will never return proper value
      *
      * @param SearchParametersDTO $searchParametersDto
      * @return array
@@ -51,31 +53,34 @@ class SearchController extends AbstractController
      */
     public function getSearchResults(SearchParametersDTO $searchParametersDto): array
     {
+        $resultsJsons = [];
 
         // handle empty as concatenation of all possible module search result
         switch($searchParametersDto->getModuleName())
         {
             case ModulesController::MODULE_NAME_NOTES:
-            {
-                $results      = $this->noteRepository->getNotesContainingStringInTitle($searchParametersDto->getSearchedString());
-                $resultsJsons = array_map(
-                    fn(Note $myNote) => $myNote->toJson(),
-                    $results
-                );
 
-                return $resultsJsons;
+                $results = $this->noteRepository->getAll();
+                foreach($results as $note) {
+                    if( stristr($note->getTitle(), $searchParametersDto->getSearchedString()) ){
+                    $resultsJsons[] = $note->toJson();
+                }
             }
+            break;
 
             case ModulesController::MODULE_NAME_PASSWORDS:
             {
-                $results = $this->passwordRepository->getPasswordByDescriptionOrUrlContainingUrl($searchParametersDto->getSearchedString());
-                $resultsJsons = array_map(
-                    fn(Password $password) => $password->toJson(),
-                    $results
-                );
-
-                return $resultsJsons;
+                $results = $this->passwordRepository->getAll();
+                foreach($results as $note) {
+                    if (
+                            stristr($note->getDescription(), $searchParametersDto->getSearchedString())
+                        ||  stristr($note->getUrl(), $searchParametersDto->getSearchedString())
+                    ) {
+                        $resultsJsons[] = $note->toJson();
+                    }
+                }
             }
+            break;
 
             default:
                 $message = "This module is not supported for search action";
@@ -85,6 +90,7 @@ class SearchController extends AbstractController
                 throw new Exception($message);
         }
 
+        return $resultsJsons;
     }
 
 }

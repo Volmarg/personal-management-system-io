@@ -50,20 +50,16 @@ class PasswordRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Will return passwords which description or url consist given string
+     * Will return all passwords
      *
-     * @param string $searchedString - is automatically wrapped in LIKE % syntax
      * @return Password[]
      */
-    public function getPasswordByDescriptionOrUrlContainingUrl(string $searchedString): array
+    public function getAll(): array
     {
         $qb = $this->_em->createQueryBuilder();
 
         $qb->select("pswd")
-            ->from(Password::class, "pswd")
-            ->where("pswd.description LIKE :searchedStringLike")
-            ->orWhere("LOWER(pswd.url) LIKE LOWER(:searchedStringLike)")
-            ->setParameter("searchedStringLike", "%" . $searchedString . "%");
+            ->from(Password::class, "pswd");
 
         $results = $qb->getQuery()->getResult();
         return $results;

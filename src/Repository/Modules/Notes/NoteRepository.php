@@ -49,19 +49,16 @@ class NoteRepository extends ServiceEntityRepository {
     }
 
     /**
-     * Will returns notes for which given string is present in the title
+     * Will returns all notes
      *
-     * @param string $searchedString - is automatically wrapped in LIKE % syntax
      * @return Note[]
      */
-    public function getNotesContainingStringInTitle(string $searchedString): array
+    public function getAll(): array
     {
         $qb = $this->_em->createQueryBuilder();
 
         $qb->select("n")
-            ->from(Note::class, "n")
-            ->where("LOWER(n.title) LIKE LOWER(:searchedString)")
-            ->setParameter("searchedString", "%" . $searchedString . "%");
+            ->from(Note::class, "n");
 
         $results = $qb->getQuery()->getResult();
         return $results;
