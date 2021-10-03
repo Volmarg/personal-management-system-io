@@ -57,4 +57,21 @@ class SystemStateApiAction extends ApiAction
         return $responseDto->toJsonResponse();
     }
 
+    /**
+     * Handles checking if data can be inserted ata all
+     *
+     * @throws Exception
+     */
+    #[Route("/is-allowed-to-insert", name: "is_allowed_to_insert")]
+    #[ExternalActionAttribute]
+    public function isAllowedToInsert(): JsonResponse
+    {
+        $responseDto = BaseApiDTO::buildOkResponse();
+        if( !$this->systemStateController->isAllowedToInsertData() ){
+            $responseDto = BaseApiDTO::buildUnauthorizedResponse();
+        }
+
+        $responseDto->prefillBaseFieldsForSuccessResponse();
+        return $responseDto->toJsonResponse();
+    }
 }
