@@ -67,11 +67,12 @@ class SystemStateApiAction extends ApiAction
     public function isAllowedToInsert(): JsonResponse
     {
         $responseDto = BaseApiDTO::buildOkResponse();
+        $responseDto->prefillBaseFieldsForSuccessResponse();
         if( !$this->systemStateController->isAllowedToInsertData() ){
             $responseDto = BaseApiDTO::buildUnauthorizedResponse();
+            $responseDto->prefillBaseFieldsForBadRequestResponse();
         }
 
-        $responseDto->prefillBaseFieldsForSuccessResponse();
         return $responseDto->toJsonResponse();
     }
 }
