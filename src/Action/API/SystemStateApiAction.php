@@ -68,7 +68,10 @@ class SystemStateApiAction extends ApiAction
     {
         $responseDto = BaseApiDTO::buildOkResponse();
         $responseDto->prefillBaseFieldsForSuccessResponse();
-        if( !$this->systemStateController->isAllowedToInsertData() ){
+        if(
+                !$this->systemStateController->isAllowedToInsertData()
+            ||  $this->systemStateController->isDataTransferred()
+        ){
             $responseDto = BaseApiDTO::buildUnauthorizedResponse();
             $responseDto->prefillBaseFieldsForBadRequestResponse();
         }
