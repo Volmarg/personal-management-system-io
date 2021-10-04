@@ -243,7 +243,7 @@ class BaseApiDTO extends AbstractDTO
      * @param string $message
      * @return static
      */
-    public static function buildUnauthorizedResponse($message = self::MESSAGE_UNAUTHORIZED): static
+    public static function buildUnauthorizedResponse(string $message = self::MESSAGE_UNAUTHORIZED): static
     {
         $dto = new static();
         $dto->setCode(Response::HTTP_UNAUTHORIZED);

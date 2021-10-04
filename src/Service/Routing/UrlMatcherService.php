@@ -73,4 +73,25 @@ class UrlMatcherService
         return $controllerWithMethod;
     }
 
+    /**
+     * Will return matching route for called uri
+     *
+     * @param string $uri
+     * @return string|null
+     */
+    public function getRouteForCalledUri(string $uri): ?string
+    {
+        try{
+            $dataArray = $this->urlMatcher->match($uri);
+            $route     = $dataArray[self::URL_MATCHER_RESULT_ROUTE];
+        }catch(Exception){
+            $this->services->getLoggerService()->getLogger()->warning("No route found for called uri", [
+                "uri" => $uri,
+            ]);
+            return null;
+        }
+
+        return $route;
+    }
+
 }

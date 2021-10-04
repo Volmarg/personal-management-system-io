@@ -4,6 +4,7 @@
 namespace App\Listener;
 
 
+use App\Action\API\SystemStateApiAction;
 use App\Attribute\Action\ExternalActionAttribute;
 use App\Attribute\Security\ValidateCsrfTokenAttribute;
 use App\Controller\API\ApiController;
@@ -42,6 +43,10 @@ class RequestListener implements EventSubscriberInterface
     const ALLOWED_COUNTRIES_IP_ACCESS = [
       IpInfoService::COUNTRY_POLAND_SHORTNAME,
       IpInfoService::COUNTRY_GERMANY_SHORTNAME,
+    ];
+
+    const ROUTES_EXCLUDED_FROM_IP_CHECK = [
+        SystemStateApiAction::ROUTE_NAME_IS_ALLOWED_TO_INSERT,
     ];
 
     /**
@@ -286,6 +291,10 @@ class RequestListener implements EventSubscriberInterface
     private function validateCountryForIp(Request $request): bool
     {
         if( in_array($request->getClientIp(), IpInfoService::POSSIBLE_LOCALHOST_IPS) ){
+            return true;
+        }
+
+        if( in_array($this->services->getUrlMatcherService()->getRouteForCalledUri($request->getUri()), self::ROUTES_EXCLUDED_FROM_IP_CHECK) ){
             return true;
         }
 

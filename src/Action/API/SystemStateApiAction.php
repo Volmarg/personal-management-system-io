@@ -19,6 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/api/system", name:"api_system_")]
 class SystemStateApiAction extends ApiAction
 {
+    const ROUTE_NAME_IS_ALLOWED_TO_INSERT = "is_allowed_to_insert";
+
     /**
      * @var SystemStateController $systemStateController
      */
@@ -62,7 +64,7 @@ class SystemStateApiAction extends ApiAction
      *
      * @throws Exception
      */
-    #[Route("/is-allowed-to-insert", name: "is_allowed_to_insert")]
+    #[Route("/is-allowed-to-insert", name: self::ROUTE_NAME_IS_ALLOWED_TO_INSERT)]
     #[ExternalActionAttribute]
     public function isAllowedToInsert(): JsonResponse
     {
