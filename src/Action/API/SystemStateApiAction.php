@@ -16,9 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class SystemStateApiAction
  * @package App\Action\API
  */
-#[Route("/api/system", name:"api_system_")]
+#[Route("/api/system", name: self::ROUTE_CLASS_PREFIX)]
 class SystemStateApiAction extends ApiAction
 {
+    const ROUTE_CLASS_PREFIX              = "api_system_";
     const ROUTE_NAME_IS_ALLOWED_TO_INSERT = "is_allowed_to_insert";
 
     /**

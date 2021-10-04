@@ -46,7 +46,7 @@ class RequestListener implements EventSubscriberInterface
     ];
 
     const ROUTES_EXCLUDED_FROM_IP_CHECK = [
-        SystemStateApiAction::ROUTE_NAME_IS_ALLOWED_TO_INSERT,
+        SystemStateApiAction::ROUTE_CLASS_PREFIX . SystemStateApiAction::ROUTE_NAME_IS_ALLOWED_TO_INSERT,
     ];
 
     /**
@@ -294,7 +294,7 @@ class RequestListener implements EventSubscriberInterface
             return true;
         }
 
-        if( in_array($this->services->getUrlMatcherService()->getRouteForCalledUri($request->getUri()), self::ROUTES_EXCLUDED_FROM_IP_CHECK) ){
+        if( in_array($this->services->getUrlMatcherService()->getRouteForCalledUri($request->getRequestUri()), self::ROUTES_EXCLUDED_FROM_IP_CHECK) ){
             return true;
         }
 
